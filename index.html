@@ -3,210 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prehistoric World Explorer | הבית</title>
+    <title>עולם הפרהיסטוריה | ציר זמן אינטראקטיבי</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Assistant', sans-serif; background-color: #020617; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .timeline-line { background: linear-gradient(180deg, #f59e0b 0%, #d97706 50%, #b45309 100%); }
-        /* Language Toggle Style */
-        .lang-btn { transition: all 0.3s ease; }
-        .lang-btn:hover { background: rgba(245, 158, 11, 0.2); border-color: #f59e0b; }
-        
-        /* Toast Notification Animation */
-        #lang-toast {
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateY(100px);
-            opacity: 0;
-        }
-        #lang-toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
+        body { font-family: 'Assistant', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; }
+        .timeline-container { position: relative; padding: 2rem 0; }
+        .timeline-line { position: absolute; right: 50%; transform: translateX(50%); width: 2px; height: 100%; background: linear-gradient(to bottom, #1e293b, #ef4444, #1e293b); }
+        .era-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .era-card:hover { transform: scale(1.02); }
+        .glass-effect { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col">
+<body class="p-4 sm:p-8">
 
-    <!-- Header & Introduction -->
-    <header class="relative py-16 px-6 text-center bg-slate-900/50 border-b border-white/5">
-        <!-- Language Button -->
-        <div class="absolute top-6 left-6">
-            <button onclick="toggleLanguage()" class="lang-btn glass px-4 py-2 rounded-full text-xs font-bold text-amber-500 border border-amber-500/30 flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
-                <span>English</span>
-            </button>
-        </div>
-
-        <h1 class="text-5xl font-extrabold text-amber-500 mb-6 tracking-tight italic">Prehistoric World Explorer</h1>
-        <div class="max-w-3xl mx-auto glass p-8 rounded-3xl text-right">
-            <h2 class="text-2xl font-bold mb-4 border-r-4 border-amber-500 pr-4">מבוא למחקר</h2>
-            <p class="text-slate-300 leading-relaxed">
-                ברוכים הבאים למסע חוצה עידנים. אתר זה הוקם כדי לגשר על הפער שבין הממצא הארכיאולוגי לבין העולם הדיגיטלי המודרני. כאן נחקור את היצורים המופלאים שחיו על כדור הארץ, החל מהדגים המשוריינים של הדבון ועד ליונקי הענק של עידן הקרח. המחקר מתמקד לא רק במראה החיות, אלא בניתוח אטימולוגי מעמיק של שמותיהן, נסיבות גילוין וההישגים האבולוציוניים שאפשרו להן לשלוט בעולם.
-            </p>
-        </div>
+    <header class="text-center mb-16">
+        <h1 class="text-4xl font-black text-white mb-2 uppercase">עולם הפרהיסטוריה</h1>
+        <p class="text-red-500 uppercase tracking-widest text-xs font-bold">ארכיון מחקר אינטראקטיבי | רם</p>
     </header>
 
-    <main class="max-w-4xl mx-auto py-16 px-6 flex-grow text-right">
-        <!-- ציר זמן מורחב -->
-        <div class="relative pr-8 border-r-2 border-amber-500/30">
-            
-            <!-- עידן הדבון -->
-            <div class="relative mb-16 group">
-                <div class="absolute -right-[41px] top-0 w-5 h-5 bg-blue-600 rounded-full border-4 border-slate-950 shadow-[0_0_10px_#2563eb]"></div>
-                <a href="devonian.html" class="glass block p-6 rounded-2xl hover:scale-[1.02] transition-all border-r-4 border-blue-500">
-                    <h3 class="text-2xl font-bold text-blue-400">עידן הדבון</h3>
-                    <p class="text-sm text-slate-400 text-left" dir="ltr">The Devonian Era</p>
-                    <p class="text-xs text-slate-500 mt-2">עידן הדגים והאמוניטים הראשונים</p>
-                </a>
-            </div>
+    <div class="max-w-4xl mx-auto timeline-container">
+        <div class="timeline-line"></div>
 
-            <!-- עידן הקרבון -->
-            <div class="relative mb-16 group">
-                <div class="absolute -right-[41px] top-0 w-5 h-5 bg-emerald-600 rounded-full border-4 border-slate-950 shadow-[0_0_10px_#059669]"></div>
-                <a href="carboniferous.html" class="glass block p-6 rounded-2xl hover:scale-[1.02] transition-all border-r-4 border-emerald-500">
-                    <h3 class="text-2xl font-bold text-emerald-400">עידן הקרבון</h3>
-                    <p class="text-sm text-slate-400 text-left" dir="ltr">The Carboniferous Era</p>
-                    <p class="text-xs text-slate-500 mt-2">עידן היערות העצומים והחרקים הענקיים</p>
-                </a>
-            </div>
-
-            <!-- עידן הפרם -->
-            <div class="relative mb-16 group">
-                <div class="absolute -right-[41px] top-0 w-5 h-5 bg-red-600 rounded-full border-4 border-slate-950 shadow-[0_0_10px_#dc2626]"></div>
-                <a href="permian.html" class="glass block p-6 rounded-2xl hover:scale-[1.02] transition-all border-r-4 border-red-500">
-                    <h3 class="text-2xl font-bold text-red-400">עידן הפרם</h3>
-                    <p class="text-sm text-slate-400 text-left" dir="ltr">The Permian Era</p>
-                    <p class="text-xs text-slate-500 mt-2">הבית של הדימטרודון והכחדת הענק</p>
-                </a>
-            </div>
-
-            <!-- עידן הטריאס -->
-            <div class="relative mb-16 group">
-                <div class="absolute -right-[41px] top-0 w-5 h-5 bg-amber-600 rounded-full border-4 border-slate-950 shadow-[0_0_10px_#d97706]"></div>
-                <a href="triassic.html" class="glass block p-6 rounded-2xl hover:scale-[1.02] transition-all">
-                    <h3 class="text-2xl font-bold text-amber-400">עידן הטריאס</h3>
-                    <p class="text-sm text-slate-400 text-left" dir="ltr">The Triassic Era</p>
-                </a>
-            </div>
-
-            <!-- עידן היורה -->
-            <div class="relative mb-16 group">
-                <div class="absolute -right-[41px] top-0 w-5 h-5 bg-amber-500 rounded-full border-4 border-slate-950 shadow-[0_0_10px_#f59e0b]"></div>
-                <a href="jurassic.html" class="glass block p-6 rounded-2xl hover:scale-[1.02] transition-all">
-                    <h3 class="text-2xl font-bold text-amber-400">עידן היורה</h3>
-                    <p class="text-sm text-slate-400 text-left" dir="ltr">The Jurassic Era</p>
-                </a>
-            </div>
-
-            <!-- עידן הקרטיקון -->
-            <div class="relative mb-16 group">
-                <div class="absolute -right-[41px] top-0 w-5 h-5 bg-amber-400 rounded-full border-4 border-slate-950 shadow-[0_0_10px_#fbbf24]"></div>
-                <a href="cretaceous.html" class="glass block p-6 rounded-2xl hover:scale-[1.02] transition-all">
-                    <h3 class="text-2xl font-bold text-amber-400">עידן הקרטיקון</h3>
-                    <p class="text-sm text-slate-400 text-left" dir="ltr">The Cretaceous Era</p>
-                </a>
-            </div>
-
-            <!-- עידן הקרח -->
-            <div class="relative group">
-                <div class="absolute -right-[41px] top-0 w-5 h-5 bg-cyan-400 rounded-full border-4 border-slate-950 shadow-[0_0_10px_#22d3ee]"></div>
-                <a href="ice-age.html" class="glass block p-6 rounded-2xl hover:scale-[1.02] transition-all border-r-4 border-cyan-500">
-                    <h3 class="text-2xl font-bold text-cyan-400">עידן הקרח</h3>
-                    <p class="text-sm text-slate-400 text-left" dir="ltr">The Ice Age</p>
-                </a>
+        <!-- עידן הדבון -->
+        <div class="relative mb-12 era-card">
+            <div class="glass-effect rounded-[2rem] p-6 mr-12 sm:mr-0 sm:w-1/2 relative shadow-xl">
+                <div class="absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-blue-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-blue-400 font-bold">419-358 מיליון שנה</span>
+                <h2 class="text-2xl font-black text-white mt-1">עידן הדבון</h2>
+                <p class="text-xs text-slate-400 mt-2 mb-4">"עידן הדגים" והופעת היצורים הראשונים שהחלו לזחול אל היבשה.</p>
+                <a href="prehistoric-world-explorer/devonian.html" class="inline-block bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
             </div>
         </div>
 
-        <!-- מילון מונחים ועידנים מעודכן -->
-        <section class="mt-24">
-            <h2 class="text-3xl font-bold mb-8 text-amber-500 text-center">מילון מונחים ועידנים</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                <div class="glass p-5 rounded-2xl border-b-2 border-amber-500/50">
-                    <dt class="font-bold text-amber-400 mb-1">מאובן (Fossil)</dt>
-                    <dd class="text-sm text-slate-400">שאריות של בעל חיים או צמח מהעבר שהשתמרו בסלע לאורך מיליוני שנים.</dd>
-                </div>
-                <div class="glass p-5 rounded-2xl border-b-2 border-amber-500/50">
-                    <dt class="font-bold text-amber-400 mb-1">אטימולוגיה (Etymology)</dt>
-                    <dd class="text-sm text-slate-400">חקר מקור השמות והפירוש המילולי של חלקי השם (בדרך כלל מלטינית או יוונית).</dd>
-                </div>
-
-                <!-- עידנים חדשים -->
-                <div class="glass p-5 rounded-2xl">
-                    <dt class="font-bold text-blue-400 mb-1">עידן הדבון (Devonian)</dt>
-                    <div class="text-[10px] text-blue-600 font-bold mb-2 tracking-tighter uppercase italic text-left" dir="ltr">419 to 359 Million Years Ago</div>
-                    <dd class="text-sm text-slate-400">
-                        <b>פירוש השם:</b> על שם מחוז דבון (Devon) באנגליה, שם נחקרו לראשונה סלעים מתקופה זו.
-                        <br><b>מה היה בו:</b> ידוע כ"עידן הדגים" בשל המגוון העצום של דגים משוריינים. בתקופה זו הופיעו האמוניטים הראשונים והיבשה החלה להתכסות ביערות.
-                    </dd>
-                </div>
-
-                <div class="glass p-5 rounded-2xl">
-                    <dt class="font-bold text-emerald-400 mb-1">עידן הקרבון (Carboniferous)</dt>
-                    <div class="text-[10px] text-emerald-600 font-bold mb-2 tracking-tighter uppercase italic text-left" dir="ltr">359 to 299 Million Years Ago</div>
-                    <dd class="text-sm text-slate-400">
-                        <b>פירוש השם:</b> מהמילה הלטינית "Carbo" (פחם), על שם מאגרי הפחם העצומים שנוצרו מיערות התקופה.
-                        <br><b>מה היה בו:</b> אחוז החמצן הגבוה באטמוספירה אפשר הופעת חרקים ענקיים (כמו שפיריות בגודל נשר) ודו-חיים ראשונים.
-                    </dd>
-                </div>
-
-                <div class="glass p-5 rounded-2xl">
-                    <dt class="font-bold text-red-400 mb-1">עידן הפרם (Permian)</dt>
-                    <div class="text-[10px] text-red-600 font-bold mb-2 tracking-tighter uppercase italic text-left" dir="ltr">299 to 252 Million Years Ago</div>
-                    <dd class="text-sm text-slate-400">
-                        <b>פירוש השם:</b> על שם ממלכת "פרם" העתיקה ברוסיה, שם זוהו שכבות הסלע לראשונה.
-                        <br><b>מה היה בו:</b> עידן השליטה של הסינאפסידים (כמו הדימטרודון). הסתיים ב"הכחדה הגדולה" שבה נעלמו כ-90% מהמינים בעולם.
-                    </dd>
-                </div>
-
-                <!-- עידנים קיימים -->
-                <div class="glass p-5 rounded-2xl">
-                    <dt class="font-bold text-amber-500 mb-1">עידן הטריאס (Triassic)</dt>
-                    <div class="text-[10px] text-amber-600 font-bold mb-2 tracking-tighter uppercase italic text-left" dir="ltr">252 to 201 Million Years Ago</div>
-                    <dd class="text-sm text-slate-400">
-                        כדור הארץ החל להשתקם מהכחדה המונית, והדינוזאורים הראשונים החלו להופיע לצד זוחלים ימיים.
-                    </dd>
-                </div>
-
-                <div class="glass p-5 rounded-2xl">
-                    <dt class="font-bold text-amber-500 mb-1">עידן היורה (Jurassic)</dt>
-                    <div class="text-[10px] text-amber-600 font-bold mb-2 tracking-tighter uppercase italic text-left" dir="ltr">201 to 145 Million Years Ago</div>
-                    <dd class="text-sm text-slate-400">
-                        תקופת הזוהר של הדינוזאורים הענקיים. יבשת העל פנגיאה החלה להתפצל והופיעו הציפורים הראשונות.
-                    </dd>
-                </div>
-
-                <div class="glass p-5 rounded-2xl">
-                    <dt class="font-bold text-cyan-400 mb-1">עידן הקרח (Pleistocene)</dt>
-                    <div class="text-[10px] text-cyan-600 font-bold mb-2 tracking-tighter uppercase italic text-left" dir="ltr">2.6M to 11,700 Years Ago</div>
-                    <dd class="text-sm text-slate-400">
-                        תקופת יונקי הענק (המגה-פאונה) כמו הממותות, ועליית האדם המודרני כצייד ולקט.
-                    </dd>
-                </div>
+        <!-- עידן הקרבון -->
+        <div class="relative mb-12 era-card flex justify-end">
+            <div class="glass-effect rounded-[2rem] p-6 ml-12 sm:ml-0 sm:w-1/2 relative shadow-xl">
+                <div class="absolute -left-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-emerald-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-emerald-400 font-bold">358-298 מיליון שנה</span>
+                <h2 class="text-2xl font-black text-white mt-1">עידן הקרבון</h2>
+                <p class="text-xs text-slate-400 mt-2 mb-4">עידן יערות השרכים העצומים וחרקי הענק ששלטו בשמיים ובארץ.</p>
+                <a href="prehistoric-world-explorer/carboniferous.html" class="inline-block bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
             </div>
-        </section>
-    </main>
-
-    <!-- Language Toast Notification -->
-    <div id="lang-toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 glass px-6 py-4 rounded-2xl border-amber-500/50 shadow-2xl z-50 pointer-events-none text-center">
-        <div class="flex items-center gap-3">
-            <div class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-            <p class="text-sm font-bold">הגרסה האנגלית בבנייה... <br><span class="text-[10px] opacity-70">English version coming soon</span></p>
         </div>
+
+        <!-- עידן הפרם -->
+        <div class="relative mb-12 era-card">
+            <div class="glass-effect rounded-[2rem] p-6 mr-12 sm:mr-0 sm:w-1/2 relative shadow-xl">
+                <div class="absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-red-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-red-400 font-bold">298-251 מיליון שנה</span>
+                <h2 class="text-2xl font-black text-white mt-1">עידן הפרם</h2>
+                <p class="text-xs text-slate-400 mt-2 mb-4">תקופת הזוחלים דמויי היונקים וההכחדה המסיבית ביותר בתולדות העולם.</p>
+                <a href="prehistoric-world-explorer/permian.html" class="inline-block bg-red-600 hover:bg-red-500 text-white text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+            </div>
+        </div>
+
+        <!-- עידן הטריאס -->
+        <div class="relative mb-12 era-card flex justify-end">
+            <div class="glass-effect rounded-[2rem] p-6 ml-12 sm:ml-0 sm:w-1/2 relative shadow-xl">
+                <div class="absolute -left-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-amber-400 font-bold">251-201 מיליון שנה</span>
+                <h2 class="text-2xl font-black text-white mt-1">עידן הטריאס</h2>
+                <p class="text-xs text-slate-400 mt-2 mb-4">התאוששות החיים והופעת הדינוזאורים הראשונים על פני האדמה.</p>
+                <a href="prehistoric-world-explorer/triassic.html" class="inline-block bg-amber-600 hover:bg-amber-500 text-white text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+            </div>
+        </div>
+
+        <!-- עידן היורה -->
+        <div class="relative mb-12 era-card">
+            <div class="glass-effect rounded-[2rem] p-6 mr-12 sm:mr-0 sm:w-1/2 relative shadow-xl">
+                <div class="absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-yellow-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-yellow-400 font-bold">201-145 מיליון שנה</span>
+                <h2 class="text-2xl font-black text-white mt-1">עידן היורה</h2>
+                <p class="text-xs text-slate-400 mt-2 mb-4">תור הזהב שבו הדינוזאורים הגיעו לממדי ענק ושלטו בכל היבשות.</p>
+                <a href="prehistoric-world-explorer/jurassic.html" class="inline-block bg-yellow-600 hover:bg-yellow-500 text-black text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+            </div>
+        </div>
+
+        <!-- עידן הקרטיקון -->
+        <div class="relative mb-12 era-card flex justify-end">
+            <div class="glass-effect rounded-[2rem] p-6 ml-12 sm:ml-0 sm:w-1/2 relative shadow-xl">
+                <div class="absolute -left-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-orange-400 font-bold">145-66 מיליון שנה</span>
+                <h2 class="text-2xl font-black text-white mt-1">עידן הקרטיקון</h2>
+                <p class="text-xs text-slate-400 mt-2 mb-4">שיא התפתחות הטורפים האימתניים וסוף עידן הענקים.</p>
+                <a href="prehistoric-world-explorer/cretaceous.html" class="inline-block bg-orange-600 hover:bg-orange-500 text-white text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+            </div>
+        </div>
+
+        <!-- עידן הקרח -->
+        <div class="relative mb-12 era-card">
+            <div class="glass-effect rounded-[2rem] p-6 mr-12 sm:mr-0 sm:w-1/2 relative shadow-xl">
+                <div class="absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-cyan-400 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-cyan-400 font-bold">2.5 מיליון שנה - היום</span>
+                <h2 class="text-2xl font-black text-white mt-1">עידן הקרח</h2>
+                <p class="text-xs text-slate-400 mt-2 mb-4">עידן הממותות, נמרי החרב והופעת האדם המודרני.</p>
+                <a href="prehistoric-world-explorer/ice-age.html" class="inline-block bg-cyan-500 hover:bg-cyan-400 text-slate-900 text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+            </div>
+        </div>
+
     </div>
 
-    <footer class="py-8 text-center bg-slate-900 border-t border-white/5">
-        <p class="text-slate-500 text-sm italic">האתר נוצר על ידי ג'מיני ורם | פרויקט מחקר ארכיאולוגי דיגיטלי 2026</p>
+    <footer class="mt-20 text-center py-8 border-t border-white/5">
+        <p class="text-slate-500 text-[10px] uppercase tracking-widest font-bold italic">ארכיון עולם הפרהיסטוריה | 2026</p>
     </footer>
-
-    <script>
-        function toggleLanguage() {
-            const toast = document.getElementById('lang-toast');
-            toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 3000);
-        }
-    </script>
 
 </body>
 </html>
+
