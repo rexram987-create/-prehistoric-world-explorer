@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>עידן הטריאס | Prehistoric World Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Assistant', sans-serif; background-color: #020617; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .zoom-container { cursor: zoom-in; overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .zoom-target { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .zoomed { transform: scale(1.6); }
+        .data-label { @apply text-[10px] text-slate-500 uppercase tracking-wider mb-1 block; }
+        .unique-tag { @apply bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full text-[10px] font-bold inline-block mb-2; }
+    </style>
+</head>
+<body class="p-4 sm:p-8 flex flex-col min-h-screen">
+
+    <!-- ניווט עליון -->
+    <nav class="mb-12 flex justify-between items-center max-w-5xl mx-auto w-full">
+        <a href="index.html" class="flex items-center text-amber-500 font-bold hover:text-amber-400 transition-colors">
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            חזרה לציר הזמן
+        </a>
+        <div class="text-left">
+            <h2 class="text-2xl font-black text-amber-500 uppercase">עידן הטריאס</h2>
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest">The Triassic Era Research</p>
+        </div>
+    </nav>
+
+    <!-- רשימת בעלי חיים -->
+    <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 flex-grow">
+        
+        <!-- 1. Coelophysis - קואלופיזיס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-amber-600/30">
+            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
+                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-amber-900 zoom-target">
+                    
+                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+            </div>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: עצמות חלולות וזריזות קיצונית</span>
+                    <h3 class="text-3xl font-black text-white mb-1">קואלופיזיס <span class="text-lg font-light text-slate-400">Coelophysis</span></h3>
+                    <p class="text-amber-400 font-medium italic">"צורה חלולה"</p>
+                </header>
+
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-xs font-bold">1881</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">אורך</span>
+                        <span class="text-xs font-bold">3 מטר</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">משקל</span>
+                        <span class="text-xs font-bold">20-25 ק"ג</span>
+                    </div>
+                </div>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-amber-500 font-bold text-sm mb-3 border-b border-amber-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            היה אחד מהדינוזאורים התרופודים (טורפים) המוקדמים והמצליחים ביותר. הייחודיות שלו טמונה ב<b>עצמותיו החלולות</b>, תכונה שתאפיין מאוחר יותר את הציפורים. מבנה זה אפשר לו להיות קל משקל וזריז להפליא, מה שנתן לו יתרון מרדף על פני זוחלים כבדים יותר בערבות הטריאס.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-amber-500 font-bold text-sm mb-3 border-b border-amber-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li><b class="text-amber-400">Koilos (κοῖλος):</b> חלול (יוונית)</li>
+                            <li><b class="text-amber-400">Physis (φύσις):</b> צורה / מבנה (יוונית).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-amber-500/5 p-4 rounded-2xl border-r-2 border-amber-500">
+                        <h4 class="text-xs font-bold text-amber-400 mb-2">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> דייוויד בולדווין (David Baldwin).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> ניו מקסיקו, ארה"ב (חוות הרפאים - Ghost Ranch).</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות:</b> בולדווין מצא את השרידים הראשונים, אך התגלית המדהימה באמת קרתה ב-1947, כשנמצא "בית קברות" של מאות שלדים שלמים בחוות הרפאים, מה שאיפשר מחקר עומק על התנהגות העדר שלהם.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- 2. Plateosaurus - פלטאוזאורוס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-amber-600/30">
+            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
+                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-amber-900 zoom-target">
+                    
+                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+            </div>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: אב קדום דו-רגלי לענקים ארוכי הצוואר</span>
+                    <h3 class="text-3xl font-black text-white mb-1">פלטאוזאורוס <span class="text-lg font-light text-slate-400">Plateosaurus</span></h3>
+                    <p class="text-amber-400 font-medium italic">"לטאה רחבה"</p>
+                </header>
+
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-xs font-bold">1834</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">אורך</span>
+                        <span class="text-xs font-bold">5-10 מטר</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">משקל</span>
+                        <span class="text-xs font-bold">4 טון</span>
+                    </div>
+                </div>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-amber-500 font-bold text-sm mb-3 border-b border-amber-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            נחשב לאחד ה"פרו-זאורופודים" הראשונים. הייחודיות שלו היא היכולת לעמוד ולנוע על <b>שתי רגליים אחוריות</b> חזקות כדי להגיע לעלווה גבוהה, למרות גודלו המסיבי. הוא מהווה את החוליה האבולוציונית שהובילה מאוחר יותר לדינוזאורים הענקיים של תקופת היורה (כמו הברכיוזאורוס).
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-amber-500 font-bold text-sm mb-3 border-b border-amber-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li><b class="text-amber-400">Platys (πλατύς):</b> רחב / שטוח (יוונית)</li>
+                            <li><b class="text-amber-400">Sauros (σαῦρος):</b> לטאה (יוונית).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-amber-500/5 p-4 rounded-2xl border-r-2 border-amber-500">
+                        <h4 class="text-xs font-bold text-amber-400 mb-2">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> יוהאן פרידריך אנגלהרדט (Johann Friedrich Engelhardt).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> נירנברג, גרמניה.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות:</b> נמצא במהלך עבודות חפירה בגרמניה. זה היה הדינוזאור הראשון שנמצא בשלמות יחסית ביבשת אירופה, והוא עזר להבין שעידן הזוחלים היה עולמי ולא רק בצפון אמריקה.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- 3. Herrerasaurus - הררזאורוס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-amber-600/30">
+            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
+                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-amber-900 zoom-target">
+                    
+                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+            </div>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: הדינוזאור האמיתי הראשון</span>
+                    <h3 class="text-3xl font-black text-white mb-1">הררזאורוס <span class="text-lg font-light text-slate-400">Herrerasaurus</span></h3>
+                    <p class="text-amber-400 font-medium italic">"הלטאה של הררה"</p>
+                </header>
+
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-xs font-bold">1958</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">אורך</span>
+                        <span class="text-xs font-bold">3-6 מטר</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">משקל</span>
+                        <span class="text-xs font-bold">350 ק"ג</span>
+                    </div>
+                </div>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-amber-500 font-bold text-sm mb-3 border-b border-amber-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            הוא נחשב לאחד הדינוזאורים ה"אמיתיים" העתיקים ביותר. הייחודיות שלו היא ה<b>ידיים התופסות</b> שלו – היו לו חמש אצבעות, אך רק שלוש מהן היו ארוכות ובעלות טפרים חדים, מה שאפשר לו לתפוס טרף קטן וזריז ביעילות שלא נראתה לפני כן בעולם החי.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-amber-500 font-bold text-sm mb-3 border-b border-amber-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li><b class="text-amber-400">Herrera:</b> על שם ויקטורינו הררה (Victorino Herrera), חוואי מקומי שמצא את המאובן.</li>
+                            <li><b class="text-amber-400">Sauros:</b> לטאה (יוונית).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-amber-500/5 p-4 rounded-2xl border-r-2 border-amber-500">
+                        <h4 class="text-xs font-bold text-amber-400 mb-2">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> ויקטורינו הררה (Victorino Herrera).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> תצורת אישיגואלסטו (Ischigualasto), ארגנטינה.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות:</b> נמצא בעמק הירח (Valle de la Luna). השלד היה כה קדום שהוא עזר למדענים להגדיר מהו בדיוק "דינוזאור" ולהבדיל אותם מזוחלים קדומים אחרים של הטריאס.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- 4. Cynognathus - צינוגנתוס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-amber-600/30">
+            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
+                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-amber-900 zoom-target">
+                    
+                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+            </div>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: זוחל דמוי כלב עם פרווה וחיך משני</span>
+                    <h3 class="text-3xl font-black text-white mb-1">צינוגנתוס <span class="text-lg font-light text-slate-400">Cynognathus</span></h3>
+                    <p class="text-amber-400 font-medium italic">"לסת כלב"</p>
+                </header>
+
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-xs font-bold">1895</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">אורך</span>
+                        <span class="text-xs font-bold">1.2 מטר</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">חשיבות</span>
+                        <span class="text-xs font-bold">אב קדום ליונקים</span>
+                    </div>
+                </div>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-amber-500 font-bold text-sm mb-3 border-b border-amber-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            הוא אינו דינוזאור אלא "סינאפסיד" מתקדם. הייחודיות שלו היא הופעת ה<b>חיך המשני</b> (המאפשר לו לנשום ולאכול בו-זמנית) ושיניים שהתמיינו לסוגים שונים (ניבים, חותכות וטוחנות) – בדיוק כמו אצל יונקים. בנוסף, חוקרים מעריכים כי היה לו <b>שיער או פרווה</b> ראשוניים ודם חם.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-amber-500 font-bold text-sm mb-3 border-b border-amber-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li><b class="text-amber-400">Kyon (κύων):</b> כלב (יוונית)</li>
+                            <li><b class="text-amber-400">Gnathos (γνάθος):</b> לסת (יוונית).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-amber-500/5 p-4 rounded-2xl border-r-2 border-amber-500">
+                        <h4 class="text-xs font-bold text-amber-400 mb-2">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> הארי סילי (Harry Seeley).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> דרום אפריקה ולסוטו.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות:</b> סילי זיהה את הקשר ההדוק שבין המבנה הגופני של הצינוגנתוס לבין היונקים המודרניים. המצאות מאובניו בדרום אפריקה ובדרום אמריקה שימשה ראיה חזקה לנדידת היבשות.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- 5. Postosuchus - פוסטוסוכוס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-amber-600/30">
+            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
+                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-amber-900 zoom-target">
+                    
+                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+            </div>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: טורף-על תניני השולט ביבשה</span>
+                    <h3 class="text-3xl font-black text-white mb-1">פוסטוסוכוס <span class="text-lg font-light text-slate-400">Postosuchus</span></h3>
+                    <p class="text-amber-400 font-medium italic">"התנין של פוסט"</p>
+                </header>
+
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-xs font-bold">1980</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">אורך</span>
+                        <span class="text-xs font-bold">4-5 מטר</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">סוג</span>
+                        <span class="text-xs font-bold">ארכוזאור תניני</span>
+                    </div>
+                </div>
+
+                <section class="space-y-6 text-right">
+                    <div>
+                        <h4 class="text-amber-500 font-bold text-sm mb-3 border-b border-amber-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            היה טורף-העל של צפון אמריקה בטריאס. למרות מראהו המזכיר תנין, הוא הלך על <b>ארבע רגליים זקופות</b> (ולעיתים על שתיים), מה שאפשר לו לנוע במהירות רבה ביבשה. הוא אינו דינוזאור אלא שייך לקו האבולוציוני של התנינים, והיה המתחרה העיקרי של הדינוזאורים הטורפים הראשונים.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-amber-500 font-bold text-sm mb-3 border-b border-amber-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li><b class="text-amber-400">Post:</b> על שם העיר פוסט (Post), טקסס.</li>
+                            <li><b class="text-amber-400">Souchos (σοῦχος):</b> תנין (יוונית - בהקשר לאל המצרי סובק).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-amber-500/5 p-4 rounded-2xl border-r-2 border-amber-500">
+                        <h4 class="text-xs font-bold text-amber-400 mb-2">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> סנקאר צ'אטרג'י (Sankar Chatterjee).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> טקסס ואריזונה, ארה"ב.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות:</b> צ'אטרג'י מצא שלדים מרהיבים של היצור בתוך מחצבות בוץ בטקסס. הגילוי הבהיר כי בטריאס, התנינים היו יצורי יבשה קטלניים ולא רק שוכני מים כפי שהם היום.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- פוטר משותף -->
+    <footer class="py-8 text-center bg-slate-900 border-t border-white/5 mt-12 w-full">
+        <p class="text-slate-500 text-sm italic">האתר נוצר על ידי ג'מיני ורם | פרויקט מחקר ארכיאולוגי דיגיטלי 2026</p>
+    </footer>
+
+    <script>
+        function toggleZoom(container) {
+            const img = container.querySelector('.zoom-target');
+            img.classList.toggle('zoomed');
+        }
+    </script>
+</body>
+</html>
+
