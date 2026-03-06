@@ -3,155 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>עידן הדבון | Prehistoric World Explorer</title>
+    <title>עידן הדבון | ארכיון עולם הפרהיסטוריה</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Assistant', sans-serif; background-color: #020617; color: #f8fafc; }
         .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .zoom-container { cursor: zoom-in; overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); height: 20rem; }
+        .zoom-container { cursor: zoom-in; overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); height: 22rem; }
         .zoom-target { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; height: 100%; object-fit: cover; }
         .zoomed { transform: scale(1.6); }
         .data-label { @apply text-[10px] text-slate-500 uppercase tracking-wider mb-1 block; }
         .unique-tag { @apply bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1 rounded-full text-[10px] font-bold inline-block mb-2; }
+        .etymology-part { @apply text-blue-400 font-bold; }
     </style>
 </head>
 <body class="p-4 sm:p-8 flex flex-col min-h-screen">
 
-    <!-- ניווט -->
+    <!-- ניווט עליון -->
     <nav class="mb-12 flex justify-between items-center max-w-5xl mx-auto w-full">
-        <a href="index.html" class="flex items-center text-blue-500 font-bold hover:text-blue-400 transition-colors">
+        <a href="../index.html" class="flex items-center text-blue-500 font-bold hover:text-blue-400 transition-colors">
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             חזרה לציר הזמן
         </a>
         <div class="text-left">
             <h2 class="text-2xl font-black text-blue-500 uppercase">עידן הדבון</h2>
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest">The Devonian Era Gallery</p>
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest">The Age of Fishes - Full Archive</p>
         </div>
     </nav>
 
     <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
         
-        <!-- 1. דנקליאוסטיוס -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl">
+        <!-- 1. Dunkleosteus - דנקליאוסטיוס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-blue-500/30">
             <div class="zoom-container">
-                <img src="dunkleosteus.png" class="zoom-target" onclick="this.classList.toggle('zoomed')" onerror="this.src='https://via.placeholder.com/800x600?text=Dunkleosteus+Image+Missing'">
+                <img src="dunkleosteus.png" class="zoom-target" onclick="this.classList.toggle('zoomed')" alt="" onerror="this.src='https://via.placeholder.com/800x600?text=dunkleosteus.png+Not+Found'">
             </div>
             <div class="p-8">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: לוחיות עצם משוננות</span>
+                    <span class="unique-tag">ייחודיות: לוחיות עצם במקום שיניים</span>
                     <h3 class="text-3xl font-black text-white mb-1">דנקליאוסטיוס <span class="text-lg font-light text-slate-400">Dunkleosteus</span></h3>
+                    <p class="text-blue-400 font-medium italic">"העצם של דנקל"</p>
                 </header>
+
                 <div class="grid grid-cols-3 gap-2 mb-8 text-center">
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">גילוי</span><span class="text-xs font-bold">1867</span></div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">אורך</span><span class="text-xs font-bold">10 מ'</span></div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">אורך</span><span class="text-xs font-bold">6-10 מטר</span></div>
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">משקל</span><span class="text-xs font-bold">1 טון+</span></div>
                 </div>
-                <section class="space-y-4">
-                    <p class="text-sm text-slate-300"><b>אטימולוגיה:</b> Dunkle (על שם דייוויד דנקל) + Osteon (עצם ביוונית).</p>
-                    <div class="bg-blue-500/5 p-4 rounded-2xl border-r-2 border-blue-500 text-xs text-slate-400">
-                        <p><b>המגלה:</b> ג'יי טרל | <b>מיקום:</b> אוהיו, ארה"ב.</p>
-                        <p class="mt-2 italic"><b>נסיבות:</b> נמצא בתוך פצלים שחורים; השרידים היו כה מסיביים שבתחילה חשבו שמדובר בחלקי ספינה טרופה.</p>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 underline italic">ניתוח אטימולוגי:</h4>
+                        <p class="text-sm leading-relaxed">
+                            <span class="etymology-part">Dunkle:</span> על שם דייוויד דנקל (David Dunkle), אוצר במוזיאון להיסטוריה של הטבע. <br>
+                            <span class="etymology-part">Osteon (ὀστέον):</span> מילה יוונית שפירושה "עצם".
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-500/5 p-4 rounded-2xl border-r-2 border-blue-500">
+                        <h4 class="text-xs font-bold text-blue-400 mb-2 underline">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300"><b>המגלה:</b> ג'יי טרל (Jay Terrell).</p>
+                        <p class="text-xs text-slate-300"><b>מיקום:</b> צוקי קליבלנד, אוהיו, ארה"ב.</p>
+                        <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">
+                            <b>נסיבות:</b> המאובן התגלה בתוך שכבות פצלים שחורים. השרידים היו כה עצומים ומסיביים שהמגלים הראשונים חשבו שמדובר בחלקי ספינה טרופה או סלעים משונים לפני שהבינו שמדובר בשריון גוף של דג טורף ענק.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 underline italic">ייחודיות אבולוציונית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            היה טורף-העל של האוקיינוסים בדבון. עוצמת הנשיכה שלו נאמדת ב-6,000 ניוטון. הוא פיתח מנגנון שבו לוחיות העצם שלו השתחזו זו בזו בכל סגירת פה, מה שגרם להן להיות חדות תמידית כמו סכיני גילוח.
+                        </p>
                     </div>
                 </section>
             </div>
         </article>
 
-        <!-- 2. טיקטאליק -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl">
+        <!-- 2. Tiktaalik - טיקטאליק -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-blue-500/30">
             <div class="zoom-container">
-                <img src="tiktaalik.png" class="zoom-target" onclick="this.classList.toggle('zoomed')" onerror="this.src='https://via.placeholder.com/800x600?text=Tiktaalik+Image+Missing'">
+                <img src="tiktaalik.png" class="zoom-target" onclick="this.classList.toggle('zoomed')" alt="" onerror="this.src='https://via.placeholder.com/800x600?text=tiktaalik.png+Not+Found'">
             </div>
             <div class="p-8">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: דג בעל צוואר ומפרקים</span>
+                    <span class="unique-tag">ייחודיות: דג בעל צוואר ומפרקים</span>
                     <h3 class="text-3xl font-black text-white mb-1">טיקטאליק <span class="text-lg font-light text-slate-400">Tiktaalik</span></h3>
+                    <p class="text-blue-400 font-medium italic">"החוליה החסרה"</p>
                 </header>
+
                 <div class="grid grid-cols-3 gap-2 mb-8 text-center">
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">גילוי</span><span class="text-xs font-bold">2004</span></div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">אורך</span><span class="text-xs font-bold">2.7 מ'</span></div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">אורך</span><span class="text-xs font-bold">2.7 מטר</span></div>
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">סוג</span><span class="text-xs font-bold">חוליה חסרה</span></div>
                 </div>
-                <section class="space-y-4">
-                    <p class="text-sm text-slate-300"><b>אטימולוגיה:</b> "דג מים מתוקים גדול" בשפת האינואיטים (Inuktitut).</p>
-                    <div class="bg-blue-500/5 p-4 rounded-2xl border-r-2 border-blue-500 text-xs text-slate-400">
-                        <p><b>המגלים:</b> ניל שובין וצוותו | <b>מיקום:</b> האי אלסמיר, קנדה.</p>
-                        <p class="mt-2 italic"><b>נסיבות:</b> נמצא לאחר משלחת מתוכננת שחיפשה סלעים מהדבון המאוחר באזור הארקטי הקפוא.</p>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 underline italic">ניתוח אטימולוגי:</h4>
+                        <p class="text-sm leading-relaxed">
+                            <span class="etymology-part">Tiktaalik:</span> מילה משפת ה<b>אינוקטיטוט</b> (קנדה הארקטית). פירושה הוא "דג מים מתוקים גדול" (דג הבורבוט). השם נבחר על ידי זקני השבט המקומי באי אלסמיר.
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-500/5 p-4 rounded-2xl border-r-2 border-blue-500">
+                        <h4 class="text-xs font-bold text-blue-400 mb-2 underline">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300"><b>המגלים:</b> ניל שובין, טד דשלר ופאריס ג'נקינס.</p>
+                        <p class="text-xs text-slate-300"><b>מיקום:</b> האי אלסמיר, נונאווט, קנדה.</p>
+                        <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">
+                            <b>נסיבות:</b> הצוות חיפש סלעים מהדבון המאוחר במטרה למצוא את המעבר בין דגים לחיות יבשה. המשלחת עבדה בטמפרטורות קפואות עד שחשפו את חוטמו השטוח של היצור המבצבץ מהסלע.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 underline italic">ייחודיות אבולוציונית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            זהו "דג עם רגליים". בניגוד לדגים אחרים, לטיקטאליק היה צוואר חופשי שאפשר לו להזיז את הראש בלי להזיז את כל הגוף, וסנפיריו הכילו עצמות מפרק דמויות כף יד שאפשרו לו לשאת את משקלו בבוץ.
+                        </p>
                     </div>
                 </section>
             </div>
         </article>
 
-        <!-- 3. בות'ריולפיס -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl">
+        <!-- 3. Bothriolepis - בות'ריולפיס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-blue-500/30">
             <div class="zoom-container">
-                <img src="bothriolepis.png" class="zoom-target" onclick="this.classList.toggle('zoomed')" onerror="this.src='https://via.placeholder.com/800x600?text=Bothriolepis+Image+Missing'">
+                <img src="bothriolepis.png" class="zoom-target" onclick="this.classList.toggle('zoomed')" alt="" onerror="this.src='https://via.placeholder.com/800x600?text=bothriolepis.png+Not+Found'">
             </div>
             <div class="p-8">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: גפיים משוריינות לחפירה</span>
+                    <span class="unique-tag">ייחודיות: סנפירי חזה משוריינים</span>
                     <h3 class="text-3xl font-black text-white mb-1">בות'ריולפיס <span class="text-lg font-light text-slate-400">Bothriolepis</span></h3>
+                    <p class="text-blue-400 font-medium italic">"קשקש חפור"</p>
                 </header>
+
                 <div class="grid grid-cols-3 gap-2 mb-8 text-center">
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">גילוי</span><span class="text-xs font-bold">1840</span></div>
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">אורך</span><span class="text-xs font-bold">30 ס"מ</span></div>
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">תפוצה</span><span class="text-xs font-bold">עולמית</span></div>
                 </div>
-                <section class="space-y-4">
-                    <p class="text-sm text-slate-300"><b>אטימולוגיה:</b> Bothros (בור) + Lepis (קשקש) ביוונית.</p>
-                    <div class="bg-blue-500/5 p-4 rounded-2xl border-r-2 border-blue-500 text-xs text-slate-400">
-                        <p><b>המגלה:</b> קארל אייכוולד | <b>מיקום:</b> סקוטלנד ורוסיה.</p>
-                        <p class="mt-2 italic"><b>נסיבות:</b> התפוצה הרחבה שלו בשתי יבשות עזרה להוכיח כי היבשות היו פעם מחוברות.</p>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 underline italic">ניתוח אטימולוגי:</h4>
+                        <p class="text-sm leading-relaxed">
+                            <span class="etymology-part">Bothros (βόθρος):</span> מילה יוונית שפירושה "בור" או "תעלה". <br>
+                            <span class="etymology-part">Lepis (λεπίς):</span> מילה יוונית שפירושה "קשקש". השם מתייחס למרקם המחורר והחפור של לוחות השריון שלו.
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-500/5 p-4 rounded-2xl border-r-2 border-blue-500">
+                        <h4 class="text-xs font-bold text-blue-400 mb-2 underline">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300"><b>המגלה:</b> קארל אייכוולד (Karl Eichwald).</p>
+                        <p class="text-xs text-slate-300"><b>מיקום:</b> סקוטלנד, רוסיה, וצפון אמריקה.</p>
+                        <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">
+                            <b>נסיבות:</b> נמצא בכמויות אדירות ב"אבן החול האדומה הישנה" בסקוטלנד. התפוצה הכלל-עולמית שלו בשכבות זהות עזרה למדענים להוכיח כי היבשות היו פעם מחוברות בתוך יבשת על אחת.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 underline italic">ייחודיות אבולוציונית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            דג משוריין שהיה מסוגל לנשום אוויר. סנפירי החזה שלו היו מוגנים בלוחות עצם והיו בעלי מפרק, מה שאפשר לו להשתמש בהם כ"זרועות" כדי להתחפר בבוץ או לצאת למים רדודים מאוד.
+                        </p>
                     </div>
                 </section>
             </div>
         </article>
 
-        <!-- 4. איכטיוסטגה -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl">
+        <!-- 4. Ichthyostega - איכטיוסטגה -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-blue-500/30">
             <div class="zoom-container">
-                <img src="ichthyostega.png" class="zoom-target" onclick="this.classList.toggle('zoomed')" onerror="this.src='https://via.placeholder.com/800x600?text=Ichthyostega+Image+Missing'">
+                <img src="ichthyostega.png" class="zoom-target" onclick="this.classList.toggle('zoomed')" alt="" onerror="this.src='https://via.placeholder.com/800x600?text=ichthyostega.png+Not+Found'">
             </div>
             <div class="p-8">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: כלוב צלעות להליכה ביבשה</span>
+                    <span class="unique-tag">ייחודיות: הולך יבשה עם כלוב צלעות חזק</span>
                     <h3 class="text-3xl font-black text-white mb-1">איכטיוסטגה <span class="text-lg font-light text-slate-400">Ichthyostega</span></h3>
+                    <p class="text-blue-400 font-medium italic">"דג גג"</p>
                 </header>
+
                 <div class="grid grid-cols-3 gap-2 mb-8 text-center">
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">גילוי</span><span class="text-xs font-bold">1932</span></div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">אורך</span><span class="text-xs font-bold">1.5 מ'</span></div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">חשיבות</span><span class="text-xs font-bold">הולך יבשה</span></div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">אורך</span><span class="text-xs font-bold">1.5 מטר</span></div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">חשיבות</span><span class="text-xs font-bold">צעד ליבשה</span></div>
                 </div>
-                <section class="space-y-4">
-                    <p class="text-sm text-slate-300"><b>אטימולוגיה:</b> Ichthys (דג) + Stega (גג/כיסוי) ביוונית.</p>
-                    <div class="bg-blue-500/5 p-4 rounded-2xl border-r-2 border-blue-500 text-xs text-slate-400">
-                        <p><b>המגלה:</b> גונאר סב-סודרברג | <b>מיקום:</b> גרינלנד.</p>
-                        <p class="mt-2 italic"><b>נסיבות:</b> השלדים נמצאו שלמים במזרח גרינלנד ושינו את ההבנה על המעבר של חולייתנים ליבשה.</p>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 underline italic">ניתוח אטימולוגי:</h4>
+                        <p class="text-sm leading-relaxed">
+                            <span class="etymology-part">Ichthys (ἰχθύς):</span> מילה יוונית שפירושה "דג". <br>
+                            <span class="etymology-part">Stega (στέγη):</span> מילה יוונית שפירושה "גג" או "כיסוי". מתייחס למבנה הגולגולת המכוסה בלוחות עצם רחבים המגנים על הראש.
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-500/5 p-4 rounded-2xl border-r-2 border-blue-500">
+                        <h4 class="text-xs font-bold text-blue-400 mb-2 underline">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300"><b>המגלה:</b> גונאר סב-סודרברג (Gunnar Säve-Söderbergh).</p>
+                        <p class="text-xs text-slate-300"><b>מיקום:</b> מזרח גרינלנד.</p>
+                        <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">
+                            <b>נסיבות:</b> הממצאים נחשפו במהלך משלחת דנית לגרינלנד. השלדים היו כה שלמים שהם אפשרו לשחזר לראשונה איך יצור שחי במים פיתח מערכת שלד שמסוגלת לשאת משקל גוף ביבשה ללא תמיכת מים.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 underline italic">ייחודיות אבולוציונית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            היה בעל שבע אצבעות בכל רגל אחורית. החידוש העיקרי שלו היה כלוב צלעות חזק וסידור חוליות עמוד שדרה שמנע מהריאות שלו להימעך תחת כובד המשקל כאשר יצא מהמים אל החוף.
+                        </p>
                     </div>
                 </section>
             </div>
         </article>
 
-        <!-- 5. סתתקנתוס -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl">
+        <!-- 5. Stethacanthus - סתתקנתוס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-blue-500/30">
             <div class="zoom-container">
-                <img src="stethacanthus.png" class="zoom-target" onclick="this.classList.toggle('zoomed')" onerror="this.src='https://via.placeholder.com/800x600?text=Stethacanthus+Image+Missing'">
+                <img src="stethacanthus.png" class="zoom-target" onclick="this.classList.toggle('zoomed')" alt="" onerror="this.src='https://via.placeholder.com/800x600?text=stethacanthus.png+Not+Found'">
             </div>
             <div class="p-8">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: סנפיר גב דמוי "מברשת"</span>
+                    <span class="unique-tag">ייחודיות: סנפיר גב דמוי "סדן"</span>
                     <h3 class="text-3xl font-black text-white mb-1">סתתקנתוס <span class="text-lg font-light text-slate-400">Stethacanthus</span></h3>
+                    <p class="text-blue-400 font-medium italic">"קוץ חזה"</p>
                 </header>
+
                 <div class="grid grid-cols-3 gap-2 mb-8 text-center">
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">גילוי</span><span class="text-xs font-bold">1889</span></div>
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">אורך</span><span class="text-xs font-bold">70 ס"מ</span></div>
                     <div class="bg-white/5 p-3 rounded-2xl border border-white/5"><span class="data-label">סוג</span><span class="text-xs font-bold">כריש קדום</span></div>
                 </div>
-                <section class="space-y-4">
-                    <p class="text-sm text-slate-300"><b>אטימולוגיה:</b> Stethos (חזה) + Akantha (קוץ) ביוונית.</p>
-                    <div class="bg-blue-500/5 p-4 rounded-2xl border-r-2 border-blue-500 text-xs text-slate-400">
-                        <p><b>המגלה:</b> ג'ון ניוברי | <b>מיקום:</b> מונטנה, ארה"ב.</p>
-                        <p class="mt-2 italic"><b>נסיבות:</b> רק לאחר גילוי שלדים שלמים התברר כי ה"קוצים" המוזרים שייכים לכריש בעל סנפיר ייחודי.</p>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 underline italic">ניתוח אטימולוגי:</h4>
+                        <p class="text-sm leading-relaxed">
+                            <span class="etymology-part">Stethos (στῆθος):</span> מילה יוונית שפירושה "חזה". <br>
+                            <span class="etymology-part">Akantha (ἄκανθα):</span> מילה יוונית שפירושה "קוץ". השם מתייחס לקוצים הגדולים שנמצאו על חזהו וגבו של הכריש.
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-500/5 p-4 rounded-2xl border-r-2 border-blue-500">
+                        <h4 class="text-xs font-bold text-blue-400 mb-2 underline">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300"><b>המגלה:</b> ג'ון סטרונג ניוברי (John Strong Newberry).</p>
+                        <p class="text-xs text-slate-300"><b>מיקום:</b> אוהיו ומונטנה, ארה"ב.</p>
+                        <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">
+                            <b>נסיבות:</b> התיאור הראשוני התבסס על ה"קוצים" המוזרים שנמצאו בסלע. במשך שנים לא ידעו לאיזה בעל חיים הם שייכים, עד שנמצא שלד שלם שהראה כי מדובר בכריש בעל סנפיר גב מוזר בצורת מברשת משוננת.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 underline italic">ייחודיות אבולוציונית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            הכריש המוזר ביותר בדבון. סנפיר הגב שלו היה שטוח ומכוסה בקוצי שיניים. חוקרים מעריכים כי המבנה שימש לחיזור או להפחדת טורפים על ידי יצירת אשליה של "פה פתוח" ענקי במבט מלמעלה.
+                        </p>
                     </div>
                 </section>
             </div>
@@ -160,7 +265,7 @@
     </main>
 
     <footer class="py-8 text-center bg-slate-900 border-t border-white/5 mt-12 w-full">
-        <p class="text-slate-500 text-xs italic">האתר נוצר על ידי ג'מיני ורם | פרויקט מחקר ארכיאולוגי דיגיטלי 2026</p>
+        <p class="text-slate-500 text-[10px] italic">ארכיון עולם הפרהיסטוריה | מחקר רם 2026</p>
     </footer>
 
 </body>
