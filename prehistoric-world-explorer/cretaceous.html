@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>עידן הקרטיקון | Prehistoric World Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Assistant', sans-serif; background-color: #020617; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .zoom-container { cursor: zoom-in; overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .zoom-target { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .zoomed { transform: scale(1.6); }
+        .data-label { @apply text-[10px] text-slate-500 uppercase tracking-wider mb-1 block; }
+        .unique-tag { @apply bg-orange-500/10 text-orange-400 border border-orange-500/20 px-3 py-1 rounded-full text-[10px] font-bold inline-block mb-2; }
+    </style>
+</head>
+<body class="p-4 sm:p-8 flex flex-col min-h-screen">
+
+    <!-- ניווט עליון -->
+    <nav class="mb-12 flex justify-between items-center max-w-5xl mx-auto w-full">
+        <a href="index.html" class="flex items-center text-orange-500 font-bold hover:text-orange-400 transition-colors">
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            חזרה לציר הזמן
+        </a>
+        <div class="text-left">
+            <h2 class="text-2xl font-black text-orange-500 uppercase">עידן הקרטיקון</h2>
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest">The Cretaceous Era Research</p>
+        </div>
+    </nav>
+
+    <!-- רשימת בעלי חיים -->
+    <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 flex-grow">
+        
+        <!-- 1. Tyrannosaurus Rex - טירנוזאורוס רקס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-orange-600/30">
+            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
+                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-orange-900 zoom-target">
+                    
+                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+            </div>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: נשיכה מרסקת עצמות וראייה בינוקולרית</span>
+                    <h3 class="text-3xl font-black text-white mb-1">טירנוזאורוס רקס <span class="text-lg font-light text-slate-400">T-Rex</span></h3>
+                    <p class="text-orange-400 font-medium italic">"מלך הלטאות העריצות"</p>
+                </header>
+
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-xs font-bold">1902</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">אורך</span>
+                        <span class="text-xs font-bold">12-13 מטר</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">משקל</span>
+                        <span class="text-xs font-bold">8-9 טון</span>
+                    </div>
+                </div>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            ה-T-Rex היה אחד הטורפים היבשתיים הגדולים ביותר. הייחודיות שלו הייתה <b>עוצמת נשיכה</b> של כ-6 טון, שאפשרה לו לרסק עצמות של טריצרטופסים. בניגוד לרוב הדינוזאורים הטורפים, עיניו הופנו קדימה, מה שהעניק לו <b>ראייה תלת-ממדית</b> (בינוקולרית) מעולה לציד מדויק.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li><b class="text-orange-400">Tyrannos (τύραννος):</b> עריץ (יוונית).</li>
+                            <li><b class="text-orange-400">Sauros (σαῦρος):</b> לטאה (יוונית).</li>
+                            <li><b class="text-orange-400">Rex:</b> מלך (לטינית).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-orange-500/5 p-4 rounded-2xl border-r-2 border-orange-500">
+                        <h4 class="text-xs font-bold text-orange-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> בארנום בראון (Barnum Brown).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> הל קריק (Hell Creek), מונטנה, ארה"ב.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות:</b> בראון, שכונה "מר עצמות", מצא את השלד המשמעותי הראשון לאחר שנים של חיפושים במישורים הגדולים. הגילוי הפך את ה-T-Rex לסמל התרבותי של הדינוזאורים ברחבי העולם.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- 2. Triceratops - טריצרטופס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-orange-600/30">
+            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
+                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-orange-900 zoom-target">
+                    
+                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+            </div>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: עטרת צוואר משוריינת ושלוש קרני הגנה</span>
+                    <h3 class="text-3xl font-black text-white mb-1">טריצרטופס <span class="text-lg font-light text-slate-400">Triceratops</span></h3>
+                    <p class="text-orange-400 font-medium italic">"פנים בעלי שלוש קרניים"</p>
+                </header>
+
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-xs font-bold">1888</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">אורך</span>
+                        <span class="text-xs font-bold">8-9 מטר</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">משקל</span>
+                        <span class="text-xs font-bold">6-12 טון</span>
+                    </div>
+                </div>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            היה ה"טנק" של הקרטיקון. הייחודיות שלו הייתה ה<b>עטרה (Frill)</b> הגדולה שהגנה על הצוואר מפני נשיכות טורפים ושימשה לתצוגת כוח. היו לו שתי קרניים ארוכות מעל העיניים וקרן קטנה על האף, והוא היה אחד הצמחונים האחרונים והמצליחים ביותר לפני ההכחדה.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li><b class="text-orange-400">Tri (τρί):</b> שלוש (יוונית).</li>
+                            <li><b class="text-orange-400">Keras (κέρας):</b> קרן (יוונית).</li>
+                            <li><b class="text-orange-400">Ops (ὤψ):</b> פנים (יוונית).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-orange-500/5 p-4 rounded-2xl border-r-2 border-orange-500">
+                        <h4 class="text-xs font-bold text-orange-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> ג'ון בל האצ'ר (John Bell Hatcher).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> ויומינג, ארה"ב.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות:</b> נמצא שלד כמעט שלם שהוביל את עותניאל צ'ארלס מארש לתאר אותו מדעית ב-1889. בתחילה חשבו שמדובר בביזון ענקי בגלל הקרניים, עד שנחשפה הגולגולת המלאה והמרהיבה.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- 3. Spinosaurus - ספינוזאורוס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-orange-600/30">
+            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
+                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-orange-900 zoom-target">
+                    
+                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+            </div>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: דינוזאור חצי-ימי עם מפרש גב ענק</span>
+                    <h3 class="text-3xl font-black text-white mb-1">ספינוזאורוס <span class="text-lg font-light text-slate-400">Spinosaurus</span></h3>
+                    <p class="text-orange-400 font-medium italic">"לטאת הקוצים"</p>
+                </header>
+
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-xs font-bold">1912</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">אורך</span>
+                        <span class="text-xs font-bold">14-18 מטר</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">סביבה</span>
+                        <span class="text-xs font-bold">חצי-ימית</span>
+                    </div>
+                </div>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            היה הדינוזאור הטורף הגדול ביותר. הייחודיות שלו הייתה ה<b>מפרש הגבי</b> (הסנפיר) שהגיע לגובה של 1.65 מטר. הוא היה הדינוזאור הראשון שזוהה כ<b>חצי-ימי</b>, עם זנב דמוי משוט ורגליים אחוריות קצרות, מה שאפשר לו לשחות ולצוד דגים ענקיים בנהרות.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li><b class="text-orange-400">Spina:</b> קוץ / עמוד שדרה (לטינית).</li>
+                            <li><b class="text-orange-400">Sauros:</b> לטאה (יוונית).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-orange-500/5 p-4 rounded-2xl border-r-2 border-orange-500">
+                        <h4 class="text-xs font-bold text-orange-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> ארנסט סטרומר (Ernst Stromer).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> נווה המדבר בחריה, מצרים.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות:</b> הממצאים המקוריים הושמדו בהפצצה בגרמניה במלחמת העולם השנייה. רק ב-2014, גילוי של מאובנים חדשים על ידי ניזאר איברהים חשף את המבנה האמיתי והמדהים של הדינוזאור השוחה הזה.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- 4. Quetzalcoatlus - קוצלקואטלוס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-orange-600/30">
+            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
+                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-orange-900 zoom-target">
+                    
+                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+            </div>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: החיה המעופפת הגדולה ביותר בהיסטוריה</span>
+                    <h3 class="text-3xl font-black text-white mb-1">קוצלקואטלוס <span class="text-lg font-light text-slate-400">Quetzalcoatlus</span></h3>
+                    <p class="text-orange-400 font-medium italic">"האל הנחש המנוצה"</p>
+                </header>
+
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-xs font-bold">1971</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">מוטה</span>
+                        <span class="text-xs font-bold">10-11 מטר</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">סוג</span>
+                        <span class="text-xs font-bold">פטרוזאור ענק</span>
+                    </div>
+                </div>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            היה פטרוזאור ענקי עם מוטת כנפיים של מטוס קרב קטן. הייחודיות שלו הייתה היכולת להמריא למרות גודלו המסיבי והיכולת שלו <b>לנוע על ארבע</b> ביעילות על הקרקע, שם הוא ניזון מדינוזאורים קטנים בדומה לחסידה מודרנית ענקית.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li><b class="text-orange-400">Quetzalcoatl:</b> על שם האל האצטקי <b>קוצלקואטל</b> - הנחש המנוצה.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-orange-500/5 p-4 rounded-2xl border-r-2 border-orange-500">
+                        <h4 class="text-xs font-bold text-orange-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> דאגלס לוסון (Douglas A. Lawson).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> הפארק הלאומי ביג בנד, טקסס, ארה"ב.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות:</b> לוסון היה סטודנט לתואר שני כשמצא את עצמות הכנפיים העצומות. הגילוי הפתיע את הקהילה המדעית, שחשבה עד אז שפטרוזאורים לא יכלו להגיע לממדים כאלו.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- 5. Velociraptor - ולוצירפטור -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-orange-600/30">
+            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
+                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-orange-900 zoom-target">
+                    
+                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+            </div>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: טפרים דמויי מגל ואינטליגנציה גבוהה</span>
+                    <h3 class="text-3xl font-black text-white mb-1">ולוצירפטור <span class="text-lg font-light text-slate-400">Velociraptor</span></h3>
+                    <p class="text-orange-400 font-medium italic">"שודד זריז"</p>
+                </header>
+
+                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-xs font-bold">1923</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">אורך</span>
+                        <span class="text-xs font-bold">2 מטר</span>
+                    </div>
+                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                        <span class="data-label">גובה</span>
+                        <span class="text-xs font-bold">0.5 מטר</span>
+                    </div>
+                </div>
+
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            היה צייד חכם ומהיר. הייחודיות שלו הייתה ה<b>טופר הקטלני</b> דמוי המגל (Sickle claw) באצבע השנייה של הרגל, ששימש לשיסוע טרף. בניגוד לסרטים, הוא היה בגודל של תרנגול הודו גדול והיה מכוסה ב<b>נוצות</b>, מה שמעיד על הקשר ההדוק לציפורים מודרניות.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
+                        <ul class="text-sm space-y-1">
+                            <li><b class="text-orange-400">Velox:</b> מהיר / זריז (לטינית).</li>
+                            <li><b class="text-orange-400">Raptor:</b> שודד / גוזל (לטינית).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-orange-500/5 p-4 rounded-2xl border-r-2 border-orange-500">
+                        <h4 class="text-xs font-bold text-orange-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> פיטר קייזן (Peter Kaisen).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> מדבר גובי, מונגוליה.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות:</b> נמצא במהלך משלחת של המוזיאון האמריקאי לתולדות הטבע. הממצא המפורסם ביותר הוא "הדינוזאורים הלוחמים" – מאובן שבו נראה ולוצירפטור בעיצומו של קרב לחיים ולמוות עם פרוטוצרטופס.
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- פוטר משותף -->
+    <footer class="py-8 text-center bg-slate-900 border-t border-white/5 mt-12 w-full">
+        <p class="text-slate-500 text-sm italic">האתר נוצר על ידי ג'מיני ורם | פרויקט מחקר ארכיאולוגי דיגיטלי 2026</p>
+    </footer>
+
+    <script>
+        function toggleZoom(container) {
+            const img = container.querySelector('.zoom-target');
+            img.classList.toggle('zoomed');
+        }
+    </script>
+</body>
+</html>
+
