@@ -3,111 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>עולם הפרהיסטוריה | ציר זמן אינטראקטיבי</title>
+    <title>עולם הפרהיסטוריה | ציר זמן ומילון מונחים</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Assistant', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; }
+        body { font-family: 'Assistant', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; scroll-behavior: smooth; }
         .timeline-container { position: relative; padding: 2rem 0; }
         .timeline-line { position: absolute; right: 50%; transform: translateX(50%); width: 2px; height: 100%; background: linear-gradient(to bottom, #1e293b, #ef4444, #1e293b); }
         .era-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .era-card:hover { transform: scale(1.02); }
+        .era-card:hover { transform: scale(1.02); z-index: 10; }
         .glass-effect { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glossary-card { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); transition: transform 0.3s ease; }
+        .glossary-card:hover { border-color: rgba(255, 255, 255, 0.2); transform: translateY(-5px); }
+        
+        /* Modal Animations */
+        #imageModal { transition: opacity 0.3s ease-out; }
+        .modal-active { opacity: 1; pointer-events: auto; }
+        .modal-hidden { opacity: 0; pointer-events: none; }
     </style>
 </head>
-<body class="p-4 sm:p-8">
+<body class="p-4 sm:p-8 relative">
 
-    <header class="text-center mb-16">
-        <h1 class="text-4xl font-black text-white mb-2 uppercase">עולם הפרהיסטוריה</h1>
-        <p class="text-red-500 uppercase tracking-widest text-xs font-bold">ארכיון מחקר אינטראקטיבי | רם</p>
+    <!-- ניווט עליון -->
+    <nav class="max-w-6xl mx-auto flex justify-center space-x-6 space-x-reverse mb-12 text-sm font-bold text-slate-400">
+        <a href="#timeline" class="hover:text-white transition-colors">ציר הזמן</a>
+        <a href="#glossary" class="hover:text-white transition-colors">מילון מונחים</a>
+        <a href="#about" class="hover:text-white transition-colors">אודות היוצרים</a>
+    </nav>
+
+    <header class="text-center mb-16" id="timeline">
+        <h1 class="text-4xl sm:text-5xl font-black text-white mb-2 uppercase tracking-tight">עולם הפרהיסטוריה</h1>
+        <p class="text-red-500 uppercase tracking-widest text-xs font-bold">ארכיון מחקר אינטראקטיבי</p>
     </header>
 
-    <div class="max-w-4xl mx-auto timeline-container">
-        <div class="timeline-line"></div>
+    <!-- סקשן ציר הזמן -->
+    <div class="max-w-4xl mx-auto timeline-container mb-32">
+        <div class="timeline-line hidden sm:block"></div>
 
         <!-- עידן הדבון -->
         <div class="relative mb-12 era-card">
-            <div class="glass-effect rounded-[2rem] p-6 mr-12 sm:mr-0 sm:w-1/2 relative shadow-xl">
-                <div class="absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-blue-500 rounded-full border-4 border-slate-900 z-10"></div>
-                <span class="text-[10px] text-blue-400 font-bold">419-358 מיליון שנה</span>
+            <div class="glass-effect rounded-[2rem] p-6 sm:mr-0 sm:w-1/2 relative shadow-xl ml-auto sm:ml-0">
+                <div class="hidden sm:block absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-blue-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-blue-400 font-bold tracking-wider">לפני 419-358 מיליון שנה</span>
                 <h2 class="text-2xl font-black text-white mt-1">עידן הדבון</h2>
-                <p class="text-xs text-slate-400 mt-2 mb-4">"עידן הדגים" והופעת היצורים הראשונים שהחלו לזחול אל היבשה.</p>
-                <a href="prehistoric-world-explorer/devonian.html" class="inline-block bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+                <p class="text-sm text-slate-400 mt-2 mb-5">"עידן הדגים" והופעת היצורים הראשונים שהחלו לזחול מהאוקיינוס אל היבשה.</p>
+                <a href="devonian.html" class="inline-block bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold py-2.5 px-6 rounded-full transition-all shadow-lg shadow-blue-500/20">חקור עידן זה</a>
             </div>
         </div>
 
         <!-- עידן הקרבון -->
         <div class="relative mb-12 era-card flex justify-end">
-            <div class="glass-effect rounded-[2rem] p-6 ml-12 sm:ml-0 sm:w-1/2 relative shadow-xl">
-                <div class="absolute -left-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-emerald-500 rounded-full border-4 border-slate-900 z-10"></div>
-                <span class="text-[10px] text-emerald-400 font-bold">358-298 מיליון שנה</span>
+            <div class="glass-effect rounded-[2rem] p-6 sm:ml-0 sm:w-1/2 relative shadow-xl mr-auto sm:mr-0 text-right sm:text-left">
+                <div class="hidden sm:block absolute -left-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-emerald-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-emerald-400 font-bold tracking-wider">לפני 358-298 מיליון שנה</span>
                 <h2 class="text-2xl font-black text-white mt-1">עידן הקרבון</h2>
-                <p class="text-xs text-slate-400 mt-2 mb-4">עידן יערות השרכים העצומים וחרקי הענק ששלטו בשמיים ובארץ.</p>
-                <a href="prehistoric-world-explorer/carboniferous.html" class="inline-block bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+                <p class="text-sm text-slate-400 mt-2 mb-5">עידן יערות השרכים העצומים וחרקי הענק ששלטו בשמיים ובארץ בזכות רמות חמצן אדירות.</p>
+                <a href="carboniferous.html" class="inline-block bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold py-2.5 px-6 rounded-full transition-all shadow-lg shadow-emerald-500/20">חקור עידן זה</a>
             </div>
         </div>
 
         <!-- עידן הפרם -->
         <div class="relative mb-12 era-card">
-            <div class="glass-effect rounded-[2rem] p-6 mr-12 sm:mr-0 sm:w-1/2 relative shadow-xl">
-                <div class="absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-red-500 rounded-full border-4 border-slate-900 z-10"></div>
-                <span class="text-[10px] text-red-400 font-bold">298-251 מיליון שנה</span>
+            <div class="glass-effect rounded-[2rem] p-6 sm:mr-0 sm:w-1/2 relative shadow-xl ml-auto sm:ml-0">
+                <div class="hidden sm:block absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-purple-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-purple-400 font-bold tracking-wider">לפני 298-251 מיליון שנה</span>
                 <h2 class="text-2xl font-black text-white mt-1">עידן הפרם</h2>
-                <p class="text-xs text-slate-400 mt-2 mb-4">תקופת הזוחלים דמויי היונקים וההכחדה המסיבית ביותר בתולדות העולם.</p>
-                <a href="prehistoric-world-explorer/permian.html" class="inline-block bg-red-600 hover:bg-red-500 text-white text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+                <p class="text-sm text-slate-400 mt-2 mb-5">תקופת יבשת פנגיאה והזוחלים דמויי-היונקים (הסינאפסידים), שהסתיימה ב"מוות הגדול".</p>
+                <a href="permian.html" class="inline-block bg-purple-600 hover:bg-purple-500 text-white text-[11px] font-bold py-2.5 px-6 rounded-full transition-all shadow-lg shadow-purple-500/20">חקור עידן זה</a>
             </div>
         </div>
 
         <!-- עידן הטריאס -->
         <div class="relative mb-12 era-card flex justify-end">
-            <div class="glass-effect rounded-[2rem] p-6 ml-12 sm:ml-0 sm:w-1/2 relative shadow-xl">
-                <div class="absolute -left-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500 rounded-full border-4 border-slate-900 z-10"></div>
-                <span class="text-[10px] text-amber-400 font-bold">251-201 מיליון שנה</span>
+            <div class="glass-effect rounded-[2rem] p-6 sm:ml-0 sm:w-1/2 relative shadow-xl mr-auto sm:mr-0 text-right sm:text-left">
+                <div class="hidden sm:block absolute -left-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-orange-400 font-bold tracking-wider">לפני 251-201 מיליון שנה</span>
                 <h2 class="text-2xl font-black text-white mt-1">עידן הטריאס</h2>
-                <p class="text-xs text-slate-400 mt-2 mb-4">התאוששות החיים והופעת הדינוזאורים הראשונים על פני האדמה.</p>
-                <a href="prehistoric-world-explorer/triassic.html" class="inline-block bg-amber-600 hover:bg-amber-500 text-white text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+                <p class="text-sm text-slate-400 mt-2 mb-5">עידן ההתאוששות ועלייתם של הדינוזאורים הראשונים והיונקים הקדומים ביותר.</p>
+                <a href="triassic.html" class="inline-block bg-orange-600 hover:bg-orange-500 text-white text-[11px] font-bold py-2.5 px-6 rounded-full transition-all shadow-lg shadow-orange-500/20">חקור עידן זה</a>
             </div>
         </div>
 
         <!-- עידן היורה -->
         <div class="relative mb-12 era-card">
-            <div class="glass-effect rounded-[2rem] p-6 mr-12 sm:mr-0 sm:w-1/2 relative shadow-xl">
-                <div class="absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-yellow-500 rounded-full border-4 border-slate-900 z-10"></div>
-                <span class="text-[10px] text-yellow-400 font-bold">201-145 מיליון שנה</span>
+            <div class="glass-effect rounded-[2rem] p-6 sm:mr-0 sm:w-1/2 relative shadow-xl ml-auto sm:ml-0">
+                <div class="hidden sm:block absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-yellow-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-yellow-400 font-bold tracking-wider">לפני 201-145 מיליון שנה</span>
                 <h2 class="text-2xl font-black text-white mt-1">עידן היורה</h2>
-                <p class="text-xs text-slate-400 mt-2 mb-4">תור הזהב שבו הדינוזאורים הגיעו לממדי ענק ושלטו בכל היבשות.</p>
-                <a href="prehistoric-world-explorer/jurassic.html" class="inline-block bg-yellow-600 hover:bg-yellow-500 text-black text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+                <p class="text-sm text-slate-400 mt-2 mb-5">תור הזהב שבו הדינוזאורים הגיעו לממדי ענק בלתי נתפסים ושלטו ביבשות המתפצלות.</p>
+                <a href="jurassic.html" class="inline-block bg-yellow-600 hover:bg-yellow-500 text-black text-[11px] font-bold py-2.5 px-6 rounded-full transition-all shadow-lg shadow-yellow-500/20">חקור עידן זה</a>
             </div>
         </div>
 
         <!-- עידן הקרטיקון -->
         <div class="relative mb-12 era-card flex justify-end">
-            <div class="glass-effect rounded-[2rem] p-6 ml-12 sm:ml-0 sm:w-1/2 relative shadow-xl">
-                <div class="absolute -left-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full border-4 border-slate-900 z-10"></div>
-                <span class="text-[10px] text-orange-400 font-bold">145-66 מיליון שנה</span>
+            <div class="glass-effect rounded-[2rem] p-6 sm:ml-0 sm:w-1/2 relative shadow-xl mr-auto sm:mr-0 text-right sm:text-left">
+                <div class="hidden sm:block absolute -left-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-red-500 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-red-400 font-bold tracking-wider">לפני 145-66 מיליון שנה</span>
                 <h2 class="text-2xl font-black text-white mt-1">עידן הקרטיקון</h2>
-                <p class="text-xs text-slate-400 mt-2 mb-4">שיא התפתחות הטורפים האימתניים וסוף עידן הענקים.</p>
-                <a href="prehistoric-world-explorer/cretaceous.html" class="inline-block bg-orange-600 hover:bg-orange-500 text-white text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+                <p class="text-sm text-slate-400 mt-2 mb-5">שיא התפתחות הטורפים האימתניים כדוגמת הטי-רקס, וסוף עידן הדינוזאורים עקב פגיעת אסטרואיד.</p>
+                <a href="cretaceous.html" class="inline-block bg-red-600 hover:bg-red-500 text-white text-[11px] font-bold py-2.5 px-6 rounded-full transition-all shadow-lg shadow-red-500/20">חקור עידן זה</a>
             </div>
         </div>
 
         <!-- עידן הקרח -->
         <div class="relative mb-12 era-card">
-            <div class="glass-effect rounded-[2rem] p-6 mr-12 sm:mr-0 sm:w-1/2 relative shadow-xl">
-                <div class="absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-cyan-400 rounded-full border-4 border-slate-900 z-10"></div>
-                <span class="text-[10px] text-cyan-400 font-bold">2.5 מיליון שנה - היום</span>
-                <h2 class="text-2xl font-black text-white mt-1">עידן הקרח</h2>
-                <p class="text-xs text-slate-400 mt-2 mb-4">עידן הממותות, נמרי החרב והופעת האדם המודרני.</p>
-                <a href="prehistoric-world-explorer/ice-age.html" class="inline-block bg-cyan-500 hover:bg-cyan-400 text-slate-900 text-[10px] font-bold py-2 px-6 rounded-full transition-all">חקור עידן זה</a>
+            <div class="glass-effect rounded-[2rem] p-6 sm:mr-0 sm:w-1/2 relative shadow-xl ml-auto sm:ml-0">
+                <div class="hidden sm:block absolute -right-14 top-1/2 -translate-y-1/2 w-4 h-4 bg-cyan-400 rounded-full border-4 border-slate-900 z-10"></div>
+                <span class="text-[10px] text-cyan-400 font-bold tracking-wider">לפני 2.5M - 11,000 שנה</span>
+                <h2 class="text-2xl font-black text-white mt-1">עידן הקרח (הפליסטוקן)</h2>
+                <p class="text-sm text-slate-400 mt-2 mb-5">עידן קיפאון ממושך ששלטו בו המגאפאונה (ממותות, סמילודונים) והתפתחות האדם הקדמון.</p>
+                <a href="ice_age.html" class="inline-block bg-cyan-500 hover:bg-cyan-400 text-slate-900 text-[11px] font-bold py-2.5 px-6 rounded-full transition-all shadow-lg shadow-cyan-500/20">חקור עידן זה</a>
             </div>
         </div>
-
     </div>
 
-    <footer class="mt-20 text-center py-8 border-t border-white/5">
-        <p class="text-slate-500 text-[10px] uppercase tracking-widest font-bold italic">ארכיון עולם הפרהיסטוריה | 2026</p>
+    <!-- קו הפרדה -->
+    <hr class="border-t border-white/10 max-w-4xl mx-auto my-16">
+
+    <!-- סקשן מילון מונחים -->
+    <section id="glossary" class="max-w-5xl mx-auto mb-32">
+        <header class="text-center mb-10">
+            <h2 class="text-3xl font-black text-white uppercase">מילון מונחים ועידנים</h2>
+            <p class="text-slate-400 text-sm mt-2">הסברים מפורטים על התקופות והמושגים המרכזיים המופיעים בארכיון.</p>
+        </header>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- פנגיאה -->
+            <div class="glossary-card p-6 rounded-3xl border-t-2 border-indigo-500">
+                <h3 class="text-xl font-bold text-indigo-400 mb-2">יבשת פנגיאה (Pangea)</h3>
+                <p class="text-sm text-slate-300 leading-relaxed">יבשת-על עצומה שהייתה קיימת במהלך עידני הפלאוזואיקון והמזוזואיקון (לפני כ-335 עד 175 מיליון שנה). שמה מגיע מיוונית ("כל האדמות"). בתקופה זו, כל היבשות המוכרות לנו כיום (אפריקה, אמריקה, אירואסיה וכו') היו מחוברות לגוש יבשה ענק אחד שהוקף באוקיינוס עולמי בודד הנקרא "פנתלסה". המבנה הזה יצר אקלים מדברי קיצוני במרכז היבשת, ואפשר לבעלי חיים לנדוד מקצה לקצה של כדור הארץ ללא מחסומי מים.</p>
+            </div>
+
+            <!-- דבון -->
+            <div class="glossary-card p-6 rounded-3xl border-t-2 border-blue-500">
+                <h3 class="text-xl font-bold text-blue-400 mb-2">עידן הדבון (Devonian)</h3>
+                <p class="text-sm text-slate-300 leading-relaxed">ידוע בשם "עידן הדגים". תקופה גיאולוגית בפלאוזואיקון שבה החיים בים שגשגו בצורה חסרת תקדים. זהו העידן שבו הופיעו הכרישים הראשונים, דגי השריון המפלצתיים, וחשוב מכל – דגי בשר-סנפיר פיתחו רגליים פרימיטיביות וריאות, והפכו לדו-חיים הראשונים (Tetrapods) שזחלו מהמים אל היבשה הצעירה שהחלה להתכסות ביערות הראשונים.</p>
+            </div>
+
+            <!-- קרבון -->
+            <div class="glossary-card p-6 rounded-3xl border-t-2 border-emerald-500">
+                <h3 class="text-xl font-bold text-emerald-400 mb-2">עידן הקרבון (Carboniferous)</h3>
+                <p class="text-sm text-slate-300 leading-relaxed">משמעות שמו "נושא פחם", שכן רוב פחם האבן שאנו כורים היום נוצר מהיערות העבותים של תקופה זו. העידן מתאפיין ברמות חמצן אטמוספריות אדירות (עד 35%), שאפשרו לחרקים ולפרוקי רגליים לצמוח לממדי ענק מפלצתיים (כמו שפיריות בגודל עיט). בעידן זה התפתח גם הפטנט האבולוציוני המהפכני ביותר ליבשה: "ביצת השפיר" (Amniotic egg), שאפשרה לזוחלים להתרבות הרחק ממקווי מים.</p>
+            </div>
+
+            <!-- פרם -->
+            <div class="glossary-card p-6 rounded-3xl border-t-2 border-purple-500">
+                <h3 class="text-xl font-bold text-purple-400 mb-2">עידן הפרם (Permian)</h3>
+                <p class="text-sm text-slate-300 leading-relaxed">העידן האחרון של עידן הפלאוזואיקון. אופיין ביצירתה הסופית של יבשת-העל פנגיאה. היבשה נשלטה על ידי סינאפסידים – זוחלים דמויי-יונקים בעלי מפרשי גב וניבים קטלניים שהיו אבות-אבותינו הרחוקים. העידן הסתיים באירוע ההכחדה החמור ביותר בהיסטוריה של כדור הארץ (הכחדת פרם-טריאס), שבו נמחקו כ-90% מכלל המינים הימיים ו-70% מהמינים היבשתיים עקב פעילות געשית אדירה.</p>
+            </div>
+
+            <!-- טריאס -->
+            <div class="glossary-card p-6 rounded-3xl border-t-2 border-orange-500">
+                <h3 class="text-xl font-bold text-orange-400 mb-2">עידן הטריאס (Triassic)</h3>
+                <p class="text-sm text-slate-300 leading-relaxed">תחילת עידן המזוזואיקון (עידן הזוחלים). עולם שהתאושש לאט מאסון ההכחדה. האקלים היה חם וצחיח מאוד. בעידן זה הופיעו במקביל שני כוחות טבע חדשים שיתחרו על השליטה: הדינוזאורים הראשונים (שהיו קטנים וזריזים) והיונקים האמיתיים הראשונים (שהיו קטנים וליליים). בסוף העידן התרחשה הכחדה נוספת שפינתה את הבמה סופית לשלטון הדינוזאורים.</p>
+            </div>
+
+            <!-- יורה -->
+            <div class="glossary-card p-6 rounded-3xl border-t-2 border-yellow-500">
+                <h3 class="text-xl font-bold text-yellow-400 mb-2">עידן היורה (Jurassic)</h3>
+                <p class="text-sm text-slate-300 leading-relaxed">"תור הזהב של הדינוזאורים". יבשת פנגיאה החלה להתפצל, מה שיצר אקלים לח, גשום, ועשיר בצמחייה (מחטניים ושרכים). השפע הזה אִפשר לדינוזאורים הצמחוניים (הזאורופודים ארוכי הצוואר) להגיע לממדים הגדולים ביותר של יצור יבשתי אי פעם. לצדם התפתחו טורפי-על ענקיים כמו האלוזאורוס, ובשמיים החלו להתעופף הציפורים הראשונות (כדוגמת הארכיאופטריקס).</p>
+            </div>
+
+            <!-- קרטיקון -->
+            <div class="glossary-card p-6 rounded-3xl border-t-2 border-red-500">
+                <h3 class="text-xl font-bold text-red-400 mb-2">עידן הקרטיקון (Cretaceous)</h3>
+                <p class="text-sm text-slate-300 leading-relaxed">הארוך מבין עידני המזוזואיקון. היבשות המשיכו להיפרד והחלו לקבל צורה הדומה למפת העולם של ימינו. בעידן זה הופיעו לראשונה פרחים וצמחים בעלי פרי, וחרקים מאביקים. זהו תורם של הטורפים המפורסמים והאימתניים ביותר כמו הטי-רקס והספינוזאורוס, ושל צמחוניים משוריינים כמו הטריצרטופס. העידן הגיע לקיצו הפתאומי לפני 66 מיליון שנה מפגיעת אסטרואיד עצום במפרץ מקסיקו.</p>
+            </div>
+
+            <!-- עידן הקרח -->
+            <div class="glossary-card p-6 rounded-3xl border-t-2 border-cyan-400">
+                <h3 class="text-xl font-bold text-cyan-400 mb-2">עידן הקרח (Pleistocene)</h3>
+                <p class="text-sm text-slate-300 leading-relaxed">תקופה גיאולוגית קרובה יחסית לימינו שהתאפיינה בתנודות אקלים קיצוניות, שבהן קרחוני ענק התפשטו ונסוגו על פני יבשות שלמות. בעלי החיים התפתחו לממדי "מגאפאונה" כדי לשמר חום גוף (ממותות צמריריות, קרנפים צמריריים, וחתולי שן-חרב). זהו גם העידן שבו האדם הקדמון התפתח, למד לשלוט באש, והתפשט מאפריקה לכל רחבי העולם.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- קו הפרדה -->
+    <hr class="border-t border-white/10 max-w-4xl mx-auto my-16">
+
+    <!-- סקשן אודות היוצרים -->
+    <section id="about" class="max-w-4xl mx-auto mb-20">
+        <div class="glass-effect rounded-[2.5rem] p-8 sm:p-12 shadow-2xl flex flex-col md:flex-row items-center md:items-start gap-8 border-t-4 border-slate-500">
+            <!-- אזור התמונה עם יכולת הגדלה (Lightbox) -->
+            <div class="w-48 h-48 md:w-64 md:h-64 shrink-0 relative rounded-full overflow-hidden border-4 border-slate-700 shadow-xl cursor-zoom-in group" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/ramprofile.png', 'רם - יוצר הארכיון')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/ramprofile.png" alt="תמונת הפרופיל של רם" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/300x300/1e293b/94a3b8?text=Ram'">
+                <!-- אייקון זכוכית מגדלת שמופיע בהובר -->
+                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <svg class="w-12 h-12 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                </div>
+            </div>
+            
+            <!-- אזור הטקסט -->
+            <div class="text-center md:text-right flex-1">
+                <span class="bg-slate-700/50 text-slate-300 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4 inline-block border border-slate-600">על יוצרי הארכיון</span>
+                <h2 class="text-3xl font-black text-white mb-4">נעים מאוד, אני רם.</h2>
+                <p class="text-slate-300 leading-relaxed mb-4 text-sm sm:text-base">
+                    בניתי את האתר <b>"עולם הפרהיסטוריה"</b> (Prehistoric World Explorer) ביחד עם ג'מיני (Gemini), מודל הבינה המלאכותית. מאז ומתמיד נמשכתי לעולמות תוכן עמוקים ומרתקים. התחביבים הגדולים שלי כוללים קריאת ספרי היסטוריה, ביוגרפיות של אישים משפיעים, וספרי הרפתקאות שלוקחים את הדמיון למחוזות רחוקים.
+                </p>
+                <p class="text-slate-300 leading-relaxed mb-4 text-sm sm:text-base">
+                    תשוקה נוספת שלי היא יצירה ופיתוח באמצעות בינה מלאכותית. שילבנו יחד את אהבת ההיסטוריה והפלאונטולוגיה עם הכלים הטכנולוגיים המתקדמים ביותר, כדי להנגיש את המידע המדעי והאטימולוגי של יצורי העבר בצורה אינטראקטיבית, מרהיבה וללא פשרות.
+                </p>
+                <p class="text-slate-400 leading-relaxed text-sm italic border-r-2 border-slate-600 pr-4 mt-6">
+                    "מי שלא יודע מניין בא, לעולם לא יבין לאן הוא הולך. חקר העבר של כדור הארץ הוא המפתח להבנת החיים עצמם."
+                    <span class="block mt-2 text-[11px] font-bold text-slate-500/80 not-italic">— רם וג'מיני, מתוך חזון פרויקט עולם הפרהיסטוריה</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- פוטר משותף מתוקן -->
+    <footer class="mt-20 text-center py-8 border-t border-white/5 bg-slate-900/50 rounded-t-[3rem]">
+        <p class="text-slate-500 text-[10px] uppercase tracking-widest font-bold">נוצר על ידי רם בשיתוף פעולה עם ג'מיני | ארכיון עולם הפרהיסטוריה 2026</p>
     </footer>
+
+    <!-- מודל חלון צף (Lightbox) לתמונות -->
+    <div id="imageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm modal-hidden" onclick="closeModal()">
+        <div class="relative w-full max-w-3xl mx-4 flex flex-col items-center">
+            <!-- כפתור סגירה -->
+            <button onclick="closeModal()" class="absolute -top-12 sm:-top-16 right-0 text-slate-300 hover:text-white transition-colors p-2 bg-slate-800/50 rounded-full border border-slate-700">
+                <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <!-- התמונה המוצגת בגדול -->
+            <img id="modalImage" src="" alt="תמונה מוגדלת" class="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl border border-white/10" onclick="event.stopPropagation()">
+            
+            <!-- כיתוב התמונה -->
+            <p id="modalCaption" class="text-white font-bold mt-4 text-xl sm:text-2xl drop-shadow-md tracking-wider"></p>
+        </div>
+    </div>
+
+    <!-- סקריפטים -->
+    <script>
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+
+        function openModal(src, caption) {
+            modalImg.src = src;
+            modalCaption.innerText = caption;
+            
+            // הצגת המודל
+            modal.classList.remove('modal-hidden');
+            modal.classList.add('modal-active');
+            
+            // חסימת גלילה של הרקע כשחלון פתוח
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            // הסתרת המודל
+            modal.classList.remove('modal-active');
+            modal.classList.add('modal-hidden');
+            
+            // החזרת הגלילה לרקע
+            document.body.style.overflow = 'auto';
+            
+            // ניקוי המקור לאחר האנימציה
+            setTimeout(() => {
+                modalImg.src = '';
+            }, 300);
+        }
+
+        // סגירה עם כפתור Escape במקלדת
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && modal.classList.contains('modal-active')) {
+                closeModal();
+            }
+        });
+    </script>
 
 </body>
 </html>
-
