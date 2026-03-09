@@ -9,23 +9,29 @@
     <style>
         body { font-family: 'Assistant', sans-serif; background-color: #020617; color: #f8fafc; }
         .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .zoom-container { cursor: zoom-in; overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .zoom-target { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .zoomed { transform: scale(1.6); }
+        .image-container { overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); cursor: zoom-in; }
+        .image-target { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; height: 100%; object-fit: cover; }
+        .image-container:hover .image-target { transform: scale(1.05); }
         .data-label { @apply text-[10px] text-slate-500 uppercase tracking-wider mb-1 block; }
-        .unique-tag { @apply bg-orange-500/10 text-orange-400 border border-orange-500/20 px-3 py-1 rounded-full text-[10px] font-bold inline-block mb-2; }
+        .unique-tag { @apply bg-red-500/10 text-red-400 border border-red-500/20 px-3 py-1 rounded-full text-[10px] font-bold inline-block mb-2; }
+        .etymology-box { @apply bg-slate-800/50 rounded-xl p-4 border border-slate-700 mt-2; }
+        
+        /* Modal Animations */
+        #imageModal { transition: opacity 0.3s ease-out; }
+        .modal-active { opacity: 1; pointer-events: auto; }
+        .modal-hidden { opacity: 0; pointer-events: none; }
     </style>
 </head>
-<body class="p-4 sm:p-8 flex flex-col min-h-screen">
+<body class="p-4 sm:p-8 flex flex-col min-h-screen relative">
 
     <!-- ניווט עליון -->
     <nav class="mb-12 flex justify-between items-center max-w-5xl mx-auto w-full">
-        <a href="index.html" class="flex items-center text-orange-500 font-bold hover:text-orange-400 transition-colors">
+        <a href="index.html" class="flex items-center text-red-500 font-bold hover:text-red-400 transition-colors">
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             חזרה לציר הזמן
         </a>
         <div class="text-left">
-            <h2 class="text-2xl font-black text-orange-500 uppercase">עידן הקרטיקון</h2>
+            <h2 class="text-2xl font-black text-red-500 uppercase">עידן הקרטיקון</h2>
             <p class="text-[10px] text-slate-500 uppercase tracking-widest">The Cretaceous Era Research</p>
         </div>
     </nav>
@@ -34,58 +40,79 @@
     <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 flex-grow">
         
         <!-- 1. Tyrannosaurus Rex - טירנוזאורוס רקס -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-orange-600/30">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-orange-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-red-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/tyrannosaurusrex.png', 'טירנוזאורוס רקס')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/tyrannosaurusrex.png" alt="טירנוזאורוס רקס" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/ef4444?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
             <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: נשיכה מרסקת עצמות וראייה בינוקולרית</span>
-                    <h3 class="text-3xl font-black text-white mb-1">טירנוזאורוס רקס <span class="text-lg font-light text-slate-400">T-Rex</span></h3>
-                    <p class="text-orange-400 font-medium italic">"מלך הלטאות העריצות"</p>
+                    <span class="unique-tag">מאפיין ייחודי: כוח נשיכה אדיר המרסק עצמות</span>
+                    <h3 class="text-3xl font-black text-white mb-1">טירנוזאורוס רקס <span class="text-lg font-light text-slate-400">Tyrannosaurus Rex</span></h3>
+                    <p class="text-red-400 font-medium italic">"מלך הלטאות העריצות"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 68-66 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1902</span>
+                        <span class="text-[11px] font-bold">1902</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">אורך</span>
-                        <span class="text-xs font-bold">12-13 מטר</span>
+                        <span class="text-[11px] font-bold">כ-12.3 מטר</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">משקל</span>
-                        <span class="text-xs font-bold">8-9 טון</span>
+                        <span class="text-[11px] font-bold">8.4-14 טון</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            הטי-רקס היה טורף-העל האולטימטיבי של סוף עידן הקרטיקון. הייחודיות הביומכנית הבולטת ביותר שלו הייתה גולגולת עצומה באורך של כ-1.5 מטרים, שהונעה על ידי שרירי צוואר ולסת אדירים. מדענים מעריכים כי היה לו את <b>כוח הנשיכה החזק ביותר</b> של כל יצור יבשתי אי פעם (כ-35,000 ניוטון), מה שאפשר לו לרסק ולבלוע עצמות שלמות של טרפו, תכונה נדירה בקרב דינוזאורים טורפים.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            ה-T-Rex היה אחד הטורפים היבשתיים הגדולים ביותר. הייחודיות שלו הייתה <b>עוצמת נשיכה</b> של כ-6 טון, שאפשרה לו לרסק עצמות של טריצרטופסים. בניגוד לרוב הדינוזאורים הטורפים, עיניו הופנו קדימה, מה שהעניק לו <b>ראייה תלת-ממדית</b> (בינוקולרית) מעולה לציד מדויק.
+                            על אף שלעיתים לועגים לזרועותיו הקצרות (בעלות שתי אצבעות בלבד), מחקרים מראים שהן היו שריריות להפליא ויכלו להרים כ-200 ק"ג כל אחת. בנוסף, עיניו פנו קדימה וסיפקו לו <b>ראייה סטריאוסקופית מעולה</b> (תפיסת עומק) שהייתה טובה מזו של נץ מודרני, וחוש ריח מפותח להפליא שאפשר לו לאתר נבלות וטרף ממרחקים.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-orange-400">Tyrannos (τύραννος):</b> עריץ (יוונית).</li>
-                            <li><b class="text-orange-400">Sauros (σαῦρος):</b> לטאה (יוונית).</li>
-                            <li><b class="text-orange-400">Rex:</b> מלך (לטינית).</li>
-                        </ul>
+                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-red-400 text-base">Tyrannos (τύραννος):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"עריץ" או "שליט אכזר"</b>. השם נבחר כדי לייצג את הדומיננטיות המוחלטת שלו כטורף-העל בסביבתו.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-red-400 text-base">Sauros (σαῦρος):</b><br>
+                                    <span class="text-slate-300">ביוונית עתיקה: <b>"לטאה" או "זוחל"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-red-400 text-base">Rex:</b><br>
+                                    <span class="text-slate-300">משמעות המילה בלטינית היא <b>"מלך"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-red-500">המשמעות המלאה:</b> <span class="text-white font-bold">"מלך הלטאות העריצות"</span> (Tyrant Lizard King).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-orange-500/5 p-4 rounded-2xl border-r-2 border-orange-500">
-                        <h4 class="text-xs font-bold text-orange-400 mb-2 underline italic">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> בארנום בראון (Barnum Brown).</p>
-                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> הל קריק (Hell Creek), מונטנה, ארה"ב.</p>
+                    <div class="bg-red-500/5 p-4 rounded-2xl border-r-2 border-red-500">
+                        <h4 class="text-xs font-bold text-red-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> הפלאונטולוג האגדי ברנום בראון (Barnum Brown), שזכה לכינוי "מר עצמות".</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> הֶל קְרִיק (Hell Creek), מונטנה, ארה"ב.</p>
                         <p class="text-xs leading-relaxed text-slate-400 italic">
-                            <b>נסיבות:</b> בראון, שכונה "מר עצמות", מצא את השלד המשמעותי הראשון לאחר שנים של חיפושים במישורים הגדולים. הגילוי הפך את ה-T-Rex לסמל התרבותי של הדינוזאורים ברחבי העולם.
+                            <b>נסיבות הגילוי (1902):</b> בראון גילה את השלד החלקי הראשון בשנת 1902 מטעם המוזיאון האמריקאי לתולדות הטבע. ב-1905, נשיא המוזיאון הנרי פיירפילד אוסבורן פרסם את המאמר המדעי שהעניק לטי-רקס את שמו האייקוני. המאובן המפורסם והשלם ביותר בעולם, המכונה "סו" (Sue), התגלה ב-1990 וחשף פרטים רבים על מחלות ופציעות שהמין הזה שרד.
                         </p>
                     </div>
                 </section>
@@ -93,58 +120,79 @@
         </article>
 
         <!-- 2. Triceratops - טריצרטופס -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-orange-600/30">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-orange-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-red-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/triceratops.png', 'טריצרטופס')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/triceratops.png" alt="טריצרטופס" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/ef4444?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
             <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: עטרת צוואר משוריינת ושלוש קרני הגנה</span>
+                    <span class="unique-tag">מאפיין ייחודי: עטרת עצם ושלוש קרניים להגנה</span>
                     <h3 class="text-3xl font-black text-white mb-1">טריצרטופס <span class="text-lg font-light text-slate-400">Triceratops</span></h3>
-                    <p class="text-orange-400 font-medium italic">"פנים בעלי שלוש קרניים"</p>
+                    <p class="text-red-400 font-medium italic">"פרצוף בעל שלוש קרניים"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 68-66 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1888</span>
+                        <span class="text-[11px] font-bold">1887</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">אורך</span>
-                        <span class="text-xs font-bold">8-9 מטר</span>
+                        <span class="text-[11px] font-bold">8-9 מטר</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">משקל</span>
-                        <span class="text-xs font-bold">6-12 טון</span>
+                        <span class="text-[11px] font-bold">6-12 טון</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            הטריצרטופס היה ה"טנק" של תקופת הקרטיקון. הגולגולת שלו היא מהגדולות ביותר של יצור יבשתי כלשהו (הגיעה לאורך של כ-2.5 מטרים, כמעט שליש מאורך גופו). היא התאפיינה ב<b>עטרת עצם מוצקה (Frill)</b> שנועדה להגן על צווארו או לשמש בטקסי חיזור ודו-קרב בין זכרים, ובשלוש קרניים אימתניות - שתיים מעל העיניים (באורך של עד מטר) ואחת קצרה על האף.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            היה ה"טנק" של הקרטיקון. הייחודיות שלו הייתה ה<b>עטרה (Frill)</b> הגדולה שהגנה על הצוואר מפני נשיכות טורפים ושימשה לתצוגת כוח. היו לו שתי קרניים ארוכות מעל העיניים וקרן קטנה על האף, והוא היה אחד הצמחונים האחרונים והמצליחים ביותר לפני ההכחדה.
+                            מדענים מצאו סימני נשיכה ושברים שהחלימו על קרניים ועטרות של טריצרטופסים, המוכיחים בוודאות שהם השתמשו בנשק זה בקרבות פנים-אל-פנים נגד הטי-רקס. פיו הסתיים במקור קרני חזק (כמו של תוכי ענק) ומאחוריו "סוללות" של מאות שיניים שפעלו כמספריים, ונועדו לחיתוך צמחייה קשה וסיבית במיוחד (כמו כפות תמרים וציקסיים) שאוכלי עשב אחרים לא יכלו לעכל.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-orange-400">Tri (τρί):</b> שלוש (יוונית).</li>
-                            <li><b class="text-orange-400">Keras (κέρας):</b> קרן (יוונית).</li>
-                            <li><b class="text-orange-400">Ops (ὤψ):</b> פנים (יוונית).</li>
-                        </ul>
+                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-red-400 text-base">Tri (τρί):</b><br>
+                                    <span class="text-slate-300">קידומת יוונית שמשמעותה <b>"שלוש"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-red-400 text-base">Keras (κέρας):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"קרן"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-red-400 text-base">Ops (ὤψ):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"פנים" או "פרצוף"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-red-500">המשמעות המלאה:</b> <span class="text-white font-bold">"פרצוף בעל שלוש קרניים"</span> (Three-horned face).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-orange-500/5 p-4 rounded-2xl border-r-2 border-orange-500">
-                        <h4 class="text-xs font-bold text-orange-400 mb-2 underline italic">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> ג'ון בל האצ'ר (John Bell Hatcher).</p>
-                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> ויומינג, ארה"ב.</p>
+                    <div class="bg-red-500/5 p-4 rounded-2xl border-r-2 border-red-500">
+                        <h4 class="text-xs font-bold text-red-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> עותניאל צ'ארלס מארש (O.C. Marsh).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> דנבר, קולורדו (ותצורות רבות נוספות ברחבי צפון אמריקה).</p>
                         <p class="text-xs leading-relaxed text-slate-400 italic">
-                            <b>נסיבות:</b> נמצא שלד כמעט שלם שהוביל את עותניאל צ'ארלס מארש לתאר אותו מדעית ב-1889. בתחילה חשבו שמדובר בביזון ענקי בגלל הקרניים, עד שנחשפה הגולגולת המלאה והמרהיבה.
+                            <b>נסיבות הגילוי (1887):</b> באופן משעשע, כשמארש בחן לראשונה ב-1887 שתי קרניים גדולות שנמצאו מחוברות לחלק גולגולת (שנשלחו אליו על ידי ג'ורג' קנון), הוא סבר שמדובר בשרידים של ביזון פרהיסטורי ענק בעל קרניים, וקרא לו *Bison alticornis*. רק שנה מאוחר יותר, כשנמצאה גולגולת שלמה יותר עם העטרה האופיינית על ידי ג'ון בל האטצ'ר, מארש הבין את טעותו והכריז כי מדובר בדינוזאור חדש לחלוטין.
                         </p>
                     </div>
                 </section>
@@ -152,57 +200,75 @@
         </article>
 
         <!-- 3. Spinosaurus - ספינוזאורוס -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-orange-600/30">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-orange-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-red-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/spinosaurus.png', 'ספינוזאורוס')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/spinosaurus.png" alt="ספינוזאורוס" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/ef4444?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
             <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: דינוזאור חצי-ימי עם מפרש גב ענק</span>
+                    <span class="unique-tag">מאפיין ייחודי: טורף ימי-למחצה עם מפרש גב ענק</span>
                     <h3 class="text-3xl font-black text-white mb-1">ספינוזאורוס <span class="text-lg font-light text-slate-400">Spinosaurus</span></h3>
-                    <p class="text-orange-400 font-medium italic">"לטאת הקוצים"</p>
+                    <p class="text-red-400 font-medium italic">"לטאת קוץ / לטאת שדרה"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 99-93 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1912</span>
+                        <span class="text-[11px] font-bold">1912</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">אורך</span>
-                        <span class="text-xs font-bold">14-18 מטר</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">אורך מקסימלי</span>
+                        <span class="text-[11px] font-bold">14-18 מטר</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">סביבה</span>
-                        <span class="text-xs font-bold">חצי-ימית</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">התאמה</span>
+                        <span class="text-[11px] font-bold">חיים במים מתוקים</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            הספינוזאורוס מחזיק בתואר <b>הדינוזאור הטורף הגדול ביותר הידוע למדע</b> (ארוך וכבד יותר מהטי-רקס). הייחודיות המסעירה ביותר שלו, שהתגלתה רק בעשור האחרון, היא שהוא הדינוזאור היחיד המוכר שהיה מותאם במובהק ל<b>חיים ימיים-למחצה (Semi-aquatic)</b>. עצמותיו היו צפופות (כמו של פינגווין) כדי לאפשר לו לצלול, וזנבו היה שטוח ורחב כמו משוט שאפשר לו לשחות במהירות במים.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            היה הדינוזאור הטורף הגדול ביותר. הייחודיות שלו הייתה ה<b>מפרש הגבי</b> (הסנפיר) שהגיע לגובה של 1.65 מטר. הוא היה הדינוזאור הראשון שזוהה כ<b>חצי-ימי</b>, עם זנב דמוי משוט ורגליים אחוריות קצרות, מה שאפשר לו לשחות ולצוד דגים ענקיים בנהרות.
+                            הייתה לו גולגולת ארוכה וצרה דמוית תנין המלאה בשיניים חרוטיות שנועדו ללכידת דגי-ענק נהרוניים חלקלקים. על גבו התנשא <b>מפרש עצום</b> המורכב מעצמות שדרה (Neural spines) שהגיעו לאורך של מעל 1.6 מטרים. המדענים חלוקים לגבי תפקידו: האם שימש כקולט סולארי לוויסות חום הגוף, או כמנגנון תצוגה מרשים שנועד לאותת לספינוזאורוסים אחרים בביצות הסבך של צפון אפריקה הקדומה.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-orange-400">Spina:</b> קוץ / עמוד שדרה (לטינית).</li>
-                            <li><b class="text-orange-400">Sauros:</b> לטאה (יוונית).</li>
-                        </ul>
+                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-red-400 text-base">Spina:</b><br>
+                                    <span class="text-slate-300">משמעות המילה בלטינית היא <b>"קוץ" או "עמוד שדרה"</b>. השם נגזר מעצמות השדרה המוארכות (Spines) שיצרו את מפרש הגב האייקוני שלו.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-red-400 text-base">Sauros (σαῦρος):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"לטאה" או "זוחל"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-red-500">המשמעות המלאה:</b> <span class="text-white font-bold">"לטאת קוץ" או "לטאת שדרה"</span> (Spine Lizard).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-orange-500/5 p-4 rounded-2xl border-r-2 border-orange-500">
-                        <h4 class="text-xs font-bold text-orange-400 mb-2 underline italic">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> ארנסט סטרומר (Ernst Stromer).</p>
-                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> נווה המדבר בחריה, מצרים.</p>
+                    <div class="bg-red-500/5 p-4 rounded-2xl border-r-2 border-red-500">
+                        <h4 class="text-xs font-bold text-red-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> ריצ'רד מרקגראף (עבור הפלאונטולוג הגרמני ארנסט שטרומר).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> נווה המדבר בחריה (Bahariya Oasis), מצרים.</p>
                         <p class="text-xs leading-relaxed text-slate-400 italic">
-                            <b>נסיבות:</b> הממצאים המקוריים הושמדו בהפצצה בגרמניה במלחמת העולם השנייה. רק ב-2014, גילוי של מאובנים חדשים על ידי ניזאר איברהים חשף את המבנה האמיתי והמדהים של הדינוזאור השוחה הזה.
+                            <b>נסיבות הגילוי וההשמדה (1912):</b> הסיפור של הספינוזאורוס הוא טרגי במיוחד במדע. השרידים המקוריים התגלו במצרים והובאו למוזיאון במינכן על ידי שטרומר. למרבה הצער, בליל ה-24 באפריל 1944, במהלך מלחמת העולם השנייה, חיל האוויר המלכותי הבריטי הפציץ את מינכן. המוזיאון ספג פגיעה ישירה והמאובן המקורי, יחיד במינו באותה עת, <b>הושמד כליל</b>. רק בשנת 2014 התגלו שרידים חדשים ושלמים יותר במרוקו על ידי צוות בראשות ניזאר איברהים, שחשפו את מראהו האמיתי כחיית מים.
                         </p>
                     </div>
                 </section>
@@ -210,56 +276,71 @@
         </article>
 
         <!-- 4. Quetzalcoatlus - קוצלקואטלוס -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-orange-600/30">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-orange-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-red-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/quetzalcoatlus.png', 'קוצלקואטלוס')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/quetzalcoatlus.png" alt="קוצלקואטלוס" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/ef4444?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
             <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: החיה המעופפת הגדולה ביותר בהיסטוריה</span>
+                    <span class="unique-tag">מאפיין ייחודי: היצור המעופף הגדול ביותר בהיסטוריה</span>
                     <h3 class="text-3xl font-black text-white mb-1">קוצלקואטלוס <span class="text-lg font-light text-slate-400">Quetzalcoatlus</span></h3>
-                    <p class="text-orange-400 font-medium italic">"האל הנחש המנוצה"</p>
+                    <p class="text-red-400 font-medium italic">"על שם אל הנחש המנוצה האצטקי"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 68-66 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1971</span>
+                        <span class="text-[11px] font-bold">1971</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">מוטה</span>
-                        <span class="text-xs font-bold">10-11 מטר</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">מוטת כנפיים</span>
+                        <span class="text-[11px] font-bold">10-11 מטר</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">סוג</span>
-                        <span class="text-xs font-bold">פטרוזאור ענק</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גובה (בקרקע)</span>
+                        <span class="text-[11px] font-bold">כשל ג'ירפה מודרנית</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            הקוצלקואטלוס איננו דינוזאור, אלא הפטרוזאור העצום ביותר שהתגלה אי פעם, והוא מחזיק בתואר <b>היצור הגדול ביותר ששלט אי פעם בשמיים</b>. גודלו היה פשוט בלתי נתפס: מוטת הכנפיים שלו הגיעה לכ-11 מטרים (כמו של מטוס ססנה קטן), וכשהוא קופל כנפיים ועמד על הקרקע, צווארו הארוך אפשר לו להישיר מבט לג'ירפה מודרנית (כ-5.5 מטר גובה).
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            היה פטרוזאור ענקי עם מוטת כנפיים של מטוס קרב קטן. הייחודיות שלו הייתה היכולת להמריא למרות גודלו המסיבי והיכולת שלו <b>לנוע על ארבע</b> ביעילות על הקרקע, שם הוא ניזון מדינוזאורים קטנים בדומה לחסידה מודרנית ענקית.
+                            למרות גודלו, המדענים מעריכים שהוא שקל רק כ-200 עד 250 ק"ג, הודות לעצמות חלולות ודקיקות להפליא. בניגוד לציפורים מודרניות הניזונות מדגים תוך כדי תעופה, ההערכה כיום היא שהקוצלקואטלוס היה <b>"צייד יבשתי" (Terrestrial stalker)</b>. הוא התהלך על ארבע רגליו בסוואנות ובאגורני המים של הקרטיקון, תוך שימוש במקורו העצום והחד כדי לחטוף דינוזאורים קטנים, יונקים ודו-חיים מהקרקע, בדומה לחסידה או קלאו ענקיים. כדי להמריא, הוא נזקק לזינוק עוצמתי (Vault) בעזרת רגליו הקדמיות העבות.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-orange-400">Quetzalcoatl:</b> על שם האל האצטקי <b>קוצלקואטל</b> - הנחש המנוצה.</li>
-                        </ul>
+                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-red-400 text-base">Quetzalcoatl (קצלקואטל):</b><br>
+                                    <span class="text-slate-300">השם לא נגזר מיוונית או לטינית כנהוג, אלא משפת הנאוואטל (Nahuatl). קצלקואטל הוא שמו של אל מרכזי בפנתיאון המיתולוגיה האצטקית (ושל עמי מסו-אמריקה אחרים), הידוע גם בכינוי <b>"הנחש המנוצה"</b> (Feathered Serpent) - המסמל את השמיים, הרוח והיצירה.</span>
+                                </li>
+                                <li>
+                                    <b class="text-red-500">המשמעות המלאה:</b> <span class="text-white font-bold">על שם אל הנחש המנוצה והמעופף מהמיתולוגיה האצטקית.</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-orange-500/5 p-4 rounded-2xl border-r-2 border-orange-500">
-                        <h4 class="text-xs font-bold text-orange-400 mb-2 underline italic">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> דאגלס לוסון (Douglas A. Lawson).</p>
-                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> הפארק הלאומי ביג בנד, טקסס, ארה"ב.</p>
+                    <div class="bg-red-500/5 p-4 rounded-2xl border-r-2 border-red-500">
+                        <h4 class="text-xs font-bold text-red-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> הסטודנט לתואר שני דאגלס א. לוסון (Douglas A. Lawson).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> הפארק הלאומי ביג בנד (Big Bend National Park), טקסס, ארה"ב.</p>
                         <p class="text-xs leading-relaxed text-slate-400 italic">
-                            <b>נסיבות:</b> לוסון היה סטודנט לתואר שני כשמצא את עצמות הכנפיים העצומות. הגילוי הפתיע את הקהילה המדעית, שחשבה עד אז שפטרוזאורים לא יכלו להגיע לממדים כאלו.
+                            <b>נסיבות הגילוי (1971):</b> לוסון עסק במחקר שדה עבור עבודת התזה שלו באוניברסיטת טקסס, כאשר הבחין בעצם מאובנת יוצאת דופן שבצבצה מן הסלע. כשהצוות חפר את המאובן, התברר שזוהי עצם כנף ענקית ששברה את כל השיאים המוכרים למדע עד לאותה עת. הגילוי הכריח את הפיזיקאים והביולוגים לחשב מחדש את המגבלות האווירודינמיות והביו-מכניות של תעופה אצל יצורים ביולוגיים.
                         </p>
                     </div>
                 </section>
@@ -267,57 +348,75 @@
         </article>
 
         <!-- 5. Velociraptor - ולוצירפטור -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-orange-600/30">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-orange-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-red-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/velociraptor.png', 'ולוצירפטור')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/velociraptor.png" alt="ולוצירפטור" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/ef4444?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
             <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: טפרים דמויי מגל ואינטליגנציה גבוהה</span>
+                    <span class="unique-tag">מאפיין ייחודי: טופר מגל קטלני וכסות נוצות</span>
                     <h3 class="text-3xl font-black text-white mb-1">ולוצירפטור <span class="text-lg font-light text-slate-400">Velociraptor</span></h3>
-                    <p class="text-orange-400 font-medium italic">"שודד זריז"</p>
+                    <p class="text-red-400 font-medium italic">"גנב מהיר / שודד זריז"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 75-71 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1923</span>
+                        <span class="text-[11px] font-bold">1923</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">אורך</span>
-                        <span class="text-xs font-bold">2 מטר</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גודל אמיתי</span>
+                        <span class="text-[11px] font-bold">כבגודל תרנגול הודו</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">גובה</span>
-                        <span class="text-xs font-bold">0.5 מטר</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">נשק סודי</span>
+                        <span class="text-[11px] font-bold">טופר מגל באצבע הרגל</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            המציאות המדעית של הולוצירפטור שונה מאוד (ומרתקת לא פחות) מהמפלצת הענקית וקירחת-הקשקשים שהוצגה בתרבות הפופולרית ("פארק היורה"). במציאות, הולוצירפטור היה דינוזאור קטן, בערך <b>בגודלו של תרנגול הודו גדול</b>, ששקל כ-15 קילוגרמים בלבד. בדומה לכל משפחת הדרומאוזאוריים, הוכח מדעית שהוא היה <b>מכוסה כולו בנוצות</b>, וזרועותיו תפקדו ככנפיים קטנות שאמנם לא אפשרו תעופה, אך סייעו בשמירה על שיווי משקל, ניווט בריצה מהירה, או חימום הקן והגוזלים.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            היה צייד חכם ומהיר. הייחודיות שלו הייתה ה<b>טופר הקטלני</b> דמוי המגל (Sickle claw) באצבע השנייה של הרגל, ששימש לשיסוע טרף. בניגוד לסרטים, הוא היה בגודל של תרנגול הודו גדול והיה מכוסה ב<b>נוצות</b>, מה שמעיד על הקשר ההדוק לציפורים מודרניות.
+                            נשקו הקטלני והאייקוני ביותר היה <b>"טופר המגל" (Sickle claw)</b> - טופר שוקי גדול וחד (באורך של כ-6.5 ס"מ) באצבע השנייה של כל רגל אחורית. בעת הליכה הטופר הוחזק באוויר כדי שלא יישחק. בזמן הציד, הוא שימש כמעין "קרס" קטלני או פגיון שאפשר לולוצירפטור לזנק ולנעוץ את רגליו בצוואר או בצידי טרפו ולשסע אותו. חוטם ארוך ומוח גדול יחסית מצביעים על חיה חכמה, זריזה ומותאמת היטב למדבריות אסיאתיים קדומים.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-orange-500 font-bold text-sm mb-3 border-b border-orange-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-orange-400">Velox:</b> מהיר / זריז (לטינית).</li>
-                            <li><b class="text-orange-400">Raptor:</b> שודד / גוזל (לטינית).</li>
-                        </ul>
+                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-red-400 text-base">Velox (ולוקס):</b><br>
+                                    <span class="text-slate-300">משמעות המילה בלטינית היא <b>"מהיר" או "זריז"</b> (מכאן גם המילה האנגלית Velocity, מהירות). השם ניתן לו עקב מבנה רגליו האחוריות הארוכות שהעידו על היותו אצן מצטיין.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-red-400 text-base">Raptor (רפטור):</b><br>
+                                    <span class="text-slate-300">משמעות המילה בלטינית היא <b>"גנב", "שודד" או "צייד/טורף"</b> (כמו עוף דורס).</span>
+                                </li>
+                                <li>
+                                    <b class="text-red-500">המשמעות המלאה:</b> <span class="text-white font-bold">"גנב מהיר" או "שודד זריז"</span> (Swift Seizer / Swift Thief).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-orange-500/5 p-4 rounded-2xl border-r-2 border-orange-500">
-                        <h4 class="text-xs font-bold text-orange-400 mb-2 underline italic">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> פיטר קייזן (Peter Kaisen).</p>
-                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> מדבר גובי, מונגוליה.</p>
+                    <div class="bg-red-500/5 p-4 rounded-2xl border-r-2 border-red-500">
+                        <h4 class="text-xs font-bold text-red-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> פיטר קייזן (Peter Kaisen), כחלק ממשלחת היסטורית בראשות רוי צ'פמן אנדרוס.</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> תצורת דג'אדוכטה (Djadochta Formation), מדבר גובי, מונגוליה.</p>
                         <p class="text-xs leading-relaxed text-slate-400 italic">
-                            <b>נסיבות:</b> נמצא במהלך משלחת של המוזיאון האמריקאי לתולדות הטבע. הממצא המפורסם ביותר הוא "הדינוזאורים הלוחמים" – מאובן שבו נראה ולוצירפטור בעיצומו של קרב לחיים ולמוות עם פרוטוצרטופס.
+                            <b>נסיבות הגילוי (1923):</b> הגילוי התרחש במסגרת משלחת אפית של המוזיאון האמריקאי לתולדות הטבע לאסיה (שנאמר עליה שהיוותה את ההשראה לדמותו של אינדיאנה ג'ונס). המאובן המפורסם ביותר של המין נמצא ב-1971 וזכה לכינוי "הדינוזאורים הלוחמים": מאובן נדיר המציג ולוצירפטור קפוא בזמן בקרב לחיים ולמוות עם פרוטוצרטופס אוכל עשב, כאשר טופר המגל של הולוצירפטור נעוץ בצווארו של הטרף, רגע לפני שסופת חול פתאומית קברה את שניהם יחד.
                         </p>
                     </div>
                 </section>
@@ -328,15 +427,65 @@
 
     <!-- פוטר משותף -->
     <footer class="py-8 text-center bg-slate-900 border-t border-white/5 mt-12 w-full">
-        <p class="text-slate-500 text-sm italic">האתר נוצר על ידי ג'מיני ורם | פרויקט מחקר ארכיאולוגי דיגיטלי 2026</p>
+        <p class="text-slate-500 text-sm italic">האתר נוצר על ידי ג'מיני ורם | פרויקט מחקר ארכיאולוגי/פלאונטולוגי דיגיטלי 2026</p>
     </footer>
 
+    <!-- מודל חלון צף (Lightbox) לתמונות -->
+    <div id="imageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm modal-hidden" onclick="closeModal()">
+        <div class="relative w-full max-w-5xl mx-4 flex flex-col items-center">
+            <!-- כפתור סגירה -->
+            <button onclick="closeModal()" class="absolute -top-12 sm:-top-16 right-0 text-slate-300 hover:text-red-500 transition-colors p-2 bg-slate-800/50 rounded-full border border-slate-700">
+                <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <!-- התמונה המוצגת בגדול -->
+            <img id="modalImage" src="" alt="תמונה מוגדלת" class="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl border border-white/10" onclick="event.stopPropagation()">
+            
+            <!-- כיתוב התמונה -->
+            <p id="modalCaption" class="text-red-500 font-bold mt-4 text-xl sm:text-2xl drop-shadow-md tracking-wider"></p>
+        </div>
+    </div>
+
+    <!-- סקריפטים -->
     <script>
-        function toggleZoom(container) {
-            const img = container.querySelector('.zoom-target');
-            img.classList.toggle('zoomed');
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+
+        function openModal(src, caption) {
+            modalImg.src = src;
+            modalCaption.innerText = caption;
+            
+            // הצגת המודל
+            modal.classList.remove('modal-hidden');
+            modal.classList.add('modal-active');
+            
+            // חסימת גלילה של הרקע כשחלון פתוח
+            document.body.style.overflow = 'hidden';
         }
+
+        function closeModal() {
+            // הסתרת המודל
+            modal.classList.remove('modal-active');
+            modal.classList.add('modal-hidden');
+            
+            // החזרת הגלילה לרקע
+            document.body.style.overflow = 'auto';
+            
+            // ניקוי המקור לאחר האנימציה
+            setTimeout(() => {
+                modalImg.src = '';
+            }, 300);
+        }
+
+        // סגירה עם כפתור Escape במקלדת
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && modal.classList.contains('modal-active')) {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
+
 
