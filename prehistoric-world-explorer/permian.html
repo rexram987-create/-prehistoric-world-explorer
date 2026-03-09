@@ -9,24 +9,30 @@
     <style>
         body { font-family: 'Assistant', sans-serif; background-color: #020617; color: #f8fafc; }
         .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .zoom-container { cursor: zoom-in; overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .zoom-target { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .zoomed { transform: scale(1.6); }
+        .image-container { overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); cursor: zoom-in; }
+        .image-target { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; height: 100%; object-fit: cover; }
+        .image-container:hover .image-target { transform: scale(1.05); }
         .data-label { @apply text-[10px] text-slate-500 uppercase tracking-wider mb-1 block; }
-        .unique-tag { @apply bg-red-500/10 text-red-400 border border-red-500/20 px-3 py-1 rounded-full text-[10px] font-bold inline-block mb-2; }
+        .unique-tag { @apply bg-purple-500/10 text-purple-400 border border-purple-500/20 px-3 py-1 rounded-full text-[10px] font-bold inline-block mb-2; }
+        .etymology-box { @apply bg-slate-800/50 rounded-xl p-4 border border-slate-700 mt-2; }
+        
+        /* Modal Animations */
+        #imageModal { transition: opacity 0.3s ease-out; }
+        .modal-active { opacity: 1; pointer-events: auto; }
+        .modal-hidden { opacity: 0; pointer-events: none; }
     </style>
 </head>
-<body class="p-4 sm:p-8 flex flex-col min-h-screen">
+<body class="p-4 sm:p-8 flex flex-col min-h-screen relative">
 
     <!-- ניווט עליון -->
     <nav class="mb-12 flex justify-between items-center max-w-5xl mx-auto w-full">
-        <a href="index.html" class="flex items-center text-red-500 font-bold hover:text-red-400 transition-colors">
+        <a href="index.html" class="flex items-center text-purple-500 font-bold hover:text-purple-400 transition-colors">
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             חזרה לציר הזמן
         </a>
         <div class="text-left">
-            <h2 class="text-2xl font-black text-red-500">עידן הפרם</h2>
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest">The Permian Era Research</p>
+            <h2 class="text-2xl font-black text-purple-500 uppercase">עידן הפרם</h2>
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest">The Permian Era</p>
         </div>
     </nav>
 
@@ -34,270 +40,380 @@
     <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 flex-grow">
         
         <!-- 1. Dimetrodon - דימטרודון -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-red-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-purple-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/dimetrodon.png', 'דימטרודון')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/dimetrodon.png" alt="דימטרודון" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/a855f7?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
-            <div class="p-8">
+            <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: סנפיר גב תרמי</span>
+                    <span class="unique-tag">מאפיין ייחודי: מפרש גב עצום ושני סוגי שיניים</span>
                     <h3 class="text-3xl font-black text-white mb-1">דימטרודון <span class="text-lg font-light text-slate-400">Dimetrodon</span></h3>
-                    <p class="text-red-400 font-medium italic">"שיניים בשתי מידות"</p>
+                    <p class="text-purple-400 font-medium italic">"שתי מידות של שיניים"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 295-272 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1878</span>
+                        <span class="text-[11px] font-bold">1878</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">אורך</span>
-                        <span class="text-xs font-bold">4.6 מטר</span>
+                        <span class="text-[11px] font-bold">עד 4.6 מטרים</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">משקל</span>
-                        <span class="text-xs font-bold">250 ק"ג</span>
+                        <span class="text-[11px] font-bold">עד 250 ק"ג</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase italic underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-purple-500 font-bold text-sm mb-3 border-b border-purple-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            למרות שהוא נראה כמו דינוזאור ולעתים קרובות נמכר כצעצוע באריזות של דינוזאורים, הדימטרודון <b>איננו דינוזאור כלל</b>, והוא חי עשרות מיליוני שנים לפני שהדינוזאור הראשון בכלל הופיע. למעשה, הוא "סינאפסיד" – כלומר, הוא קרוב יותר אבולוציונית אלינו (היונקים) מאשר לזוחלים! הוא היה טורף העל של היבשת, וצד זוחלים ודו-חיים אחרים.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            המאפיין הבולט ביותר הוא ה<b>סנפיר (מפרש)</b> העצום הנוצר מהארכת חוליות עמוד השדרה. מחקרים מעריכים כי הסנפיר שימש כ"רדיאטור" ביולוגי: פריסת הסנפיר מול השמש אפשרה לדימטרודון להעלות את חום גופו במהירות בבקרים קרים, מה שהפך אותו לפעיל וקטלני יותר מטרפו האיטי.
+                            המאפיין הבולט ביותר שלו הוא כמובן <b>מפרש הגב הענק</b>, שהיה מורכב מעצמות עמוד שדרה מוארכות המכוסות בעור ובעשירות בכלי דם. התאוריה המובילה היא שהמפרש שימש לוויסות חום – בבקרים הקרירים הוא הפנה את המפרש לשמש כדי להתחמם במהירות ולהתחיל לצוד בזמן שטרפו (זוחלים בעלי דם קר) עדיין היה קפוא ואיטי. בנוסף, הייתה לו תכונה חדשנית: שני סוגים שונים של שיניים (ניבים ארוכים לחיתוך מקדימה, ושיניים קטנות יותר מאחור), בניגוד לזוחלים שלרוב יש להם סוג אחד של שיניים בלבד.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase">אטימולוגיה:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-red-400">Di:</b> שתיים (יוונית) | <b class="text-red-400">Metron:</b> מידה | <b class="text-red-400">Odon:</b> שן.</li>
-                        </ul>
+                        <h4 class="text-purple-500 font-bold text-sm mb-3 border-b border-purple-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-purple-400 text-base">Di (δι):</b><br>
+                                    <span class="text-slate-300">קידומת יוונית שמשמעותה <b>"שניים"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-purple-400 text-base">Metron (μέτρον):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"מידה" או "גודל"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-purple-400 text-base">Odon (ὀδών):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"שן"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-purple-500">המשמעות המלאה:</b> <span class="text-white font-bold">"שתי מידות של שיניים"</span> (Two-measure tooth), המתייחסת למערכת השיניים הדיפרנציאלית (הטרודונטית) שלו.
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-red-500/5 p-4 rounded-2xl border-r-2 border-red-500">
-                        <h4 class="text-xs font-bold text-red-400 mb-2">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> אדוארד דרינקר קופ (Cope)</p>
-                        <p class="text-xs text-slate-400 italic"><b>נסיבות:</b> נמצא ב"שכבות האדומות" של טקסס. קופ זיהה לראשונה את הלסת המכילה סוגי שיניים שונים, תכונה המבשרת את הופעת היונקים העתידיים.</p>
+                    <div class="bg-purple-500/5 p-4 rounded-2xl border-r-2 border-purple-500">
+                        <h4 class="text-xs font-bold text-purple-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> הפלאונטולוג המפורסם אדוארד דרינקר קופ (Edward Drinker Cope).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> טקסס וברחבי צפון אמריקה.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות הגילוי (1878):</b> השרידים הראשונים התגלו ב"מיטות האדומות" (Red Beds) של טקסס, אזור העשיר בצורה יוצאת דופן במאובני עידן הפרם. הגילוי נרשם שוב במהלך "מלחמות העצמות" האפיות בין קופ ליריבו עותניאל מארש. השלדים השלמים הרבים שנמצאו איפשרו למדענים לזהות כי היו מספר מינים של דימטרודון, שחיו בסביבות של ביצות ומדבריות.
+                        </p>
                     </div>
                 </section>
             </div>
         </article>
 
         <!-- 2. Ammonite - אמוניט -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-blue-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-purple-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/ammonite.png', 'אמוניט')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/ammonite.png" alt="אמוניט" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/a855f7?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
-            <div class="p-8">
+            <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag !bg-blue-500/10 !text-blue-400 !border-blue-500/20">מאפיין ייחודי: הנדסת ציפה</span>
+                    <span class="unique-tag">מאפיין ייחודי: קונכייה ספירלית המשמשת כצוללת זעירה</span>
                     <h3 class="text-3xl font-black text-white mb-1">אמוניט <span class="text-lg font-light text-slate-400">Ammonite</span></h3>
-                    <p class="text-blue-400 font-medium italic">"האבן של אמון"</p>
+                    <p class="text-purple-400 font-medium italic">"קרנו של האל אמוּן"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">סיווג</span>
-                        <span class="text-xs font-bold">1884</span>
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני כ-400 עד 66 מיליון שנה</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">קוטר</span>
-                        <span class="text-xs font-bold">עד 2.5 מ'</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-[11px] font-bold">מוכר עוד מימי קדם</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">סביבה</span>
-                        <span class="text-xs font-bold">אוקיינוס</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גודל</span>
+                        <span class="text-[11px] font-bold">מילימטרים עד 2 מטרים</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">קבוצה</span>
+                        <span class="text-[11px] font-bold">רכיכות (סילוניות)</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-purple-500 font-bold text-sm mb-3 border-b border-purple-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            האמוניטים היו רכיכות ימיות ששגשגו במיוחד בעידן הפרם והמשיכו עד להכחדת הדינוזאורים. הם קרובי משפחה של הדיונונים והתמנונים של ימינו, אך חיו בתוך <b>קונכייה ספירלית קשיחה</b> (הקרובה יותר לנאוטילוס המודרני). הקונכייה המרתקת הזו הייתה מחולקת לתאים פנימיים. הרכיכה חיה רק בתא החיצוני והגדול ביותר, ואת שאר התאים היא מילאה בגז כדי לשלוט בציפה שלה במים – ממש כמו המנגנון של צוללת.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            ה<b>שריון (קונכייה)</b> של האמוניט הוא פלא הנדסי. הוא מחולק לתאים המחוברים בצינורית דקה (Siphuncle). האמוניט יכול היה לשנות את כמות הגז והנוזל בתאים אלו, ובכך לשלוט ב<b>ציפה</b> שלו – בדיוק כמו צוללת מודרנית – ולעלות או לרדת במעמקי הים ללא מאמץ פיזי.
+                            הם נעו במים באמצעות הנעת סילון (התזת מים בלחץ), והשתמשו בזרועותיהם (שכנראה לא היו מרובות כפי שחשבו בעבר) כדי לתפוס פלנקטון וסרטנים זעירים. האמוניטים הם "מאובנים מנחים" (Index fossils) מצוינים בגיאולוגיה: בגלל שהיו כל כך נפוצים והתפתחו במהירות לאלפי מינים שונים, מציאת סוג ספציפי של אמוניט בסלע מאפשרת לגיאולוגים לקבוע בדיוק רב את גיל הסלע שבו הוא נמצא.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-blue-500 font-bold text-sm mb-3 border-b border-blue-500/20 pb-1 italic uppercase">אטימולוגיה:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-blue-400">Ammon:</b> האל אמון המצרי | <b class="text-blue-400">Ites:</b> אבן/מאובן.</li>
-                        </ul>
+                        <h4 class="text-purple-500 font-bold text-sm mb-3 border-b border-purple-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-purple-400 text-base">Ammonis (אמוּן):</b><br>
+                                    <span class="text-slate-300">השם מגיע מ<b>פליניוס הזקן</b>, חוקר הטבע הרומאי. הוא כינה את המאובנים האלו "Cornua Ammonis" – מכיוון שהקונכיות הספירליות הזכירו לו את הקרניים המסולסלות של איל, שהוא הסמל של האל המצרי-יווני העתיק <b>אמוּן (Ammon)</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-purple-500">המשמעות המלאה:</b> <span class="text-white font-bold">"קרנו של אמוּן"</span> (Horn of Ammon).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-blue-500/5 p-4 rounded-2xl border-r-2 border-blue-500">
-                        <h4 class="text-xs font-bold text-blue-400 mb-2">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> קארל פון ציטל (Zittel)</p>
-                        <p class="text-xs text-slate-400 italic"><b>נסיבות:</b> אף שהיו מוכרים כ"אבני נחש", ציטל היה הראשון שהבין את המבנה הפנימי המורכב של הקונכייה ואת תפקידה האבולוציוני בשינוי לחצים ימיים.</p>
+                    <div class="bg-purple-500/5 p-4 rounded-2xl border-r-2 border-purple-500">
+                        <h4 class="text-xs font-bold text-purple-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> המאובנים מוכרים משחר ההיסטוריה באזורים רבים בעולם.</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> בכל העולם (כולל במכתש רמון בישראל).</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות הגילוי:</b> בשל השתמרותן המצוינת של הקונכיות שלהם, האמוניטים שבו את הדמיון האנושי במשך אלפי שנים. בימי הביניים באירופה הם כונו לעתים "אבני נחשים" (Snakestones) – אנשים האמינו שאלו נחשים שהפכו לאבן על ידי קדושים (כמו סנט הילדה), ואפילו נהגו לגלף ראשי נחש בקצה הקונכייה המאובנת כדי למכור אותה לתיירים. בנפאל ובהודו, מאובני האמוניט (שנקראים שאלגרם) נחשבים עד היום לקדושים בדת ההינדית ומייצגים את האל וישנו.
+                        </p>
                     </div>
                 </section>
             </div>
         </article>
 
         <!-- 3. Gorgonops - גורגונופס -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-red-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-purple-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/gorgonops.png', 'גורגונופס')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/gorgonops.png" alt="גורגונופס" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/a855f7?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
-            <div class="p-8">
+            <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: ניבי חרב קטלניים</span>
+                    <span class="unique-tag">מאפיין ייחודי: טורף על סינאפסידי עם ניבי "חרב" קדומים</span>
                     <h3 class="text-3xl font-black text-white mb-1">גורגונופס <span class="text-lg font-light text-slate-400">Gorgonops</span></h3>
-                    <p class="text-red-400 font-medium italic">"עין הגורגונה"</p>
+                    <p class="text-purple-400 font-medium italic">"פני גורגונה"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 260-254 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1876</span>
+                        <span class="text-[11px] font-bold">1876</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">אורך</span>
-                        <span class="text-xs font-bold">3 מטר</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">אורך משוער</span>
+                        <span class="text-[11px] font-bold">2 עד 3.5 מטרים</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">משקל</span>
-                        <span class="text-xs font-bold">150 ק"ג</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">קבוצה</span>
+                        <span class="text-[11px] font-bold">תראפסיד (דמוי יונק)</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-purple-500 font-bold text-sm mb-3 border-b border-purple-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            לקראת אמצע-סוף עידן הפרם, הסינאפסידים התפתחו ליצורים דמויי יונקים מפותחים יותר שנקראו "תראפסידים". הגורגונופס היה טורף-העל האימתני ביותר של התקופה. המאפיין הקטלני ביותר שלו היה זוג <b>ניבים עליונים ארוכים במיוחד ("שיני חרב")</b> שהגיעו לאורך של כ-12 ס"מ. למעשה, הגורגונופס הוא היצור הראשון הידוע בהיסטוריה שפיתח את מנגנון "שיני החרב", עשרות מיליוני שנים לפני הסמילודון והחתולים הגדולים.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            הגורגונופס היה "נמר שנחרבי" לפני זמנו. הוא הציג <b>שיני ניב</b> ארוכות במיוחד שנועדו לחדירת עורם העבה של זוחלי הענק. בנוסף, רגליו מוקמו לראשונה ישירות <b>מתחת לגופו</b> ולא בפישוק לצדדים, מה שאפשר לו מהירות ריצה גבוהה בהרבה מכל טורף אחר בעידן הפרם.
+                            הגולגולת שלו הייתה ארוכה וחזקה, מותאמת לנשיכה עמוקה בצוואר טרף משוריין ועבה-עור (כמו הסקוטוזאורוס). היו לו רגליים ארוכות שהוצבו מתחת לגופו (בניגוד לזוחלים שרגליהם נוטות הצידה), מה שהפך אותו לרץ מהיר ויעיל. המדענים מעריכים כי לא היו לו קשקשים, אלא עור חלק וכנראה גם פרווה ראשונית ובלוטות זיעה, סממנים מובהקים של התפתחות לכיוון היונקים של ימינו. הגורגונופסידים הוכחדו לחלוטין ב"מוות הגדול" בסוף עידן הפרם.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-red-500 font-bold text-sm mb-3 border-b border-red-500/20 pb-1 italic uppercase">אטימולוגיה:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-red-400">Gorgon:</b> מפלצת מיתולוגית | <b class="text-red-400">Ops:</b> עין/פנים.</li>
-                        </ul>
+                        <h4 class="text-purple-500 font-bold text-sm mb-3 border-b border-purple-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-purple-400 text-base">Gorgon (Γοργών):</b><br>
+                                    <span class="text-slate-300">במיתולוגיה היוונית, גורגונה היא מפלצת נשית (כדוגמת מדוזה) בעלת שיער נחשים ומבט המאבן את מי שרואה אותה. השם נבחר על ידי ריצ'רד אוון כדי לתאר את המראה המבעית והמפלצתי של גולגולת הטורף הזה.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-purple-400 text-base">Ops / Opos (ὤψ):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"פנים", "עין" או "מראה"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-purple-500">המשמעות המלאה:</b> <span class="text-white font-bold">"פני גורגונה" או "מראה מפלצתי"</span> (Gorgon face / Gorgon eye).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-red-500/5 p-4 rounded-2xl border-r-2 border-red-500">
-                        <h4 class="text-xs font-bold text-red-400 mb-2">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> ריצ'רד אוון (Richard Owen)</p>
-                        <p class="text-xs text-slate-400 italic"><b>נסיבות:</b> אוון זיהה כי מדובר ביצור המשלב תכונות של זוחל ושל יונק, מה שהוביל להבנת הקבוצה המכונה "זוחלים דמויי יונקים".</p>
+                    <div class="bg-purple-500/5 p-4 rounded-2xl border-r-2 border-purple-500">
+                        <h4 class="text-xs font-bold text-purple-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> הגיאולוג הבריטי אנדרו גדס ביין (Andrew Geddes Bain), תואר על ידי ריצ'רד אוון (Richard Owen).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> אזור הקארו (Karoo Basin), דרום אפריקה.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות הגילוי (1876):</b> המאובנים הראשונים (בעיקר גולגולות) נמצאו באגן הקארו בדרום אפריקה, אזור בעל השתמרות אדירה של חיות יבשתיות מעידן הפרם והטריאס. סר ריצ'רד אוון (אותו מדען שטבע את המונח "דינוזאור") חקר את הגולגולת ב-1876 והיה המום מהשילוב יוצא הדופן של מאפייני יונקים (כמו שיני החרב) בגוף של יצור הדומה לזוחל קדום, מה שחיזק את ההבנה על השושלת המורכבת של היונקים.
+                        </p>
                     </div>
                 </section>
             </div>
         </article>
 
         <!-- 4. Scutosaurus - סקוטוזאורוס -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-emerald-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-purple-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/scutosaurus.png', 'סקוטוזאורוס')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/scutosaurus.png" alt="סקוטוזאורוס" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/a855f7?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
-            <div class="p-8">
+            <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag !bg-emerald-500/10 !text-emerald-400 !border-emerald-500/20">מאפיין ייחודי: שריון לוחות עצם</span>
+                    <span class="unique-tag">מאפיין ייחודי: זוחל כבד וענקי מכוסה בלוחות שריון</span>
                     <h3 class="text-3xl font-black text-white mb-1">סקוטוזאורוס <span class="text-lg font-light text-slate-400">Scutosaurus</span></h3>
-                    <p class="text-emerald-400 font-medium italic">"לטאת מגן"</p>
+                    <p class="text-purple-400 font-medium italic">"לטאת מגן"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 265-252 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1922</span>
+                        <span class="text-[11px] font-bold">1922</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">אורך</span>
-                        <span class="text-xs font-bold">3.5 מטר</span>
+                        <span class="text-[11px] font-bold">2.5 עד 3 מטרים</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">משקל</span>
-                        <span class="text-xs font-bold">1 טון</span>
+                        <span class="text-[11px] font-bold">כ-1 טון</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-purple-500 font-bold text-sm mb-3 border-b border-purple-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            הסקוטוזאורוס היה זוחל צמחוני ענקי וכבד במיוחד שחי בסוף עידן הפרם. הוא היה שייך לקבוצה ייחודית של זוחלים (Pareiasaurs) שלא הותירו אחריהם צאצאים מודרניים. גופו היה בנוי בצורה גוצית, חביתוית ומאסיבית כדי להכיל מערכת עיכול עצומה שנדרשה לפרק צמחייה מדברית קשה שאפיינה את יבשת-העל פנגיאה באותה תקופה.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            הסקוטוזאורוס היה טנק מהלך. עורו היה מכוסה ב<b>לוחות עצם (אוסטאודרמים)</b> קשיחים ששימשו כשריון נגד טורפים. בשונה מזוחלים אחרים, רגליו היו מסיביות וקצרות כדי לשאת את משקלו האדיר, והוא היה אחד הצמחונים הראשונים שהגיעו לממדים כאלו על היבשה.
+                            מכיוון שהיה כבד ואיטי מכדי לברוח מטורפים אימתניים כמו הגורגונופס, הוא פיתח הגנה אחרת: עורו היה מכוסה ב<b>"אוסטיאודרמים" – לוחיות עצם קשיחות</b> (דמויות קשקשי שריון) שצמחו בתוך העור עצמו. היו לו גם עצמות עבות במיוחד וצוואר קצר, ולעיתים אף בליטות עצם על לחייו. רגליו הקצרות והעבות מוקמו מתחת לגופו כדי שיוכל לשאת את משקלו הרב (מעל טון) במסעות ארוכים בחיפוש אחר מים ומזון באקלים הצחיח.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase">אטימולוגיה:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-emerald-400">Scutum:</b> מגן (לטינית) | <b class="text-emerald-400">Sauros:</b> לטאה.</li>
-                        </ul>
+                        <h4 class="text-purple-500 font-bold text-sm mb-3 border-b border-purple-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-purple-400 text-base">Scutum (סקוּטוּם):</b><br>
+                                    <span class="text-slate-300">משמעות המילה בלטינית היא <b>"מגן"</b> (זהו גם שמו של מגן הלגיונר הרומאי הקלאסי). השם מתייחס ללוחיות העצם הגדולות (Scutes) שציפו את גופו כמעין שריון.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-purple-400 text-base">Sauros (σαῦρος):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"לטאה"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-purple-500">המשמעות המלאה:</b> <span class="text-white font-bold">"לטאת מגן" או "לטאה משוריינת"</span> (Shield Lizard).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-emerald-500/5 p-4 rounded-2xl border-r-2 border-emerald-500">
-                        <h4 class="text-xs font-bold text-emerald-400 mb-2">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> ולדימיר אמליצקי (Amalitzky)</p>
-                        <p class="text-xs text-slate-400 italic"><b>נסיבות:</b> נמצא ברוסיה בשכבות סלע עמוקות. אמליצקי חשף שלמים שלמים כמעט לחלוטין שאפשרו לראות את סידור הלוחות המדויק על עורו.</p>
+                    <div class="bg-purple-500/5 p-4 rounded-2xl border-r-2 border-purple-500">
+                        <h4 class="text-xs font-bold text-purple-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> הפלאונטולוג הרוסי ולדימיר אמאליצקי (Vladimir Amalitzky).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> נהר מלאיה סברנאיה דווינה, ברוסיה (Sokolki).</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות הגילוי (1922):</b> בתחילת המאה ה-20, אמאליצקי הוביל משלחת חפירות בגדות הנהרות ברוסיה וחשף בית קברות המוני ובו מספר שלדים שלמים ומרהיבים של סקוטוזאורוסים ששקעו בבוץ של מה שהיה כנראה נווה מדבר או אפיק נהר מתייבש. גילויים אלו סייעו לחוקרים לשחזר לראשונה תמונה אקולוגית שלמה של החיים ביבשת-העל הצפונית של סוף עידן הפרם, ממש לפני ההכחדה ההמונית.
+                        </p>
                     </div>
                 </section>
             </div>
         </article>
 
         <!-- 5. Diplocaulus - דיפלוקאולוס -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-cyan-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-purple-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/diplocaulus.png', 'דיפלוקאולוס')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/diplocaulus.png" alt="דיפלוקאולוס" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/a855f7?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
-            <div class="p-8">
+            <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag !bg-cyan-500/10 !text-cyan-400 !border-cyan-500/20">מאפיין ייחודי: ראש בומרנג הידרודינמי</span>
+                    <span class="unique-tag">מאפיין ייחודי: ראש מוזר בצורת בומרנג</span>
                     <h3 class="text-3xl font-black text-white mb-1">דיפלוקאולוס <span class="text-lg font-light text-slate-400">Diplocaulus</span></h3>
-                    <p class="text-cyan-400 font-medium italic">"גבעול כפול"</p>
+                    <p class="text-purple-400 font-medium italic">"גבעול כפול / כיפה כפולה"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 300-252 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1877</span>
+                        <span class="text-[11px] font-bold">1877</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">אורך</span>
-                        <span class="text-xs font-bold">1 מטר</span>
+                        <span class="text-[11px] font-bold">עד 1 מטר</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">צורה</span>
-                        <span class="text-xs font-bold">בומרנג</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">קבוצה</span>
+                        <span class="text-[11px] font-bold">דו-חיים קדום</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-purple-500 font-bold text-sm mb-3 border-b border-purple-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            הדיפלוקאולוס הוא כנראה אחד הדו-חיים המוזרים ביותר שחיו אי פעם. גופו היה ארוך ודק כמו של סלמנדרה או צלופח, והיו לו רגליים קצרות מאוד. אבל המאפיין הייחודי והביזארי שלו היה הגולגולת: בבגרותו, צידי ראשו צמחו לשתי בליטות עצם מוארכות ומחודדות, שיצרו לגולגולת צורה ברורה של <b>בומרנג או ראש של פטישון</b>.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            המאפיין המדהים ביותר הוא <b>הראש הרחב</b> בצורת בומרנג. צורה זו פעלה כ"כנף הידרודינמית" מתחת למים: כאשר הדיפלוקאולוס שחה כנגד הזרם, מבנה הראש ייצר <b>כוח עילוי</b> שאפשר לו לזנק במהירות מהקרקעית לעבר טרפו, בדומה למטוס שממריא.
+                            מדענים הציעו מספר תיאוריות לצורת הראש המוזרה: אחת מהן היא "הידרודינמיקה" – הראש דמוי ה"כנף" עזר לו לצלול במהירות או להישאר צמוד לקרקעית של נהרות זורמים (כמו ספוילר של מכונית מרוץ) כדי לארוב לטרף. התיאוריה המובילה השנייה היא הגנה: קשה מאוד לטורף גדול (כמו הדימטרודון) לבלוע יצור שרוחב ראשו גדול מאורך גופו, וה"בומרנג" היה נתקע להם בגרון!
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase">אטימולוגיה:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-cyan-400">Diploos:</b> כפול (יוונית) | <b class="text-cyan-400">Kaulos:</b> גבעול/עמוד.</li>
-                        </ul>
+                        <h4 class="text-purple-500 font-bold text-sm mb-3 border-b border-purple-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-purple-400 text-base">Diploos (διπλόος):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"כפול"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-purple-400 text-base">Kaulos (καυλός):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"גבעול" או "כיפה"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-purple-500">המשמעות המלאה:</b> <span class="text-white font-bold">"גבעול כפול"</span> (Double stalk). באופן מעניין, למרות צורת הבומרנג המפורסמת של הראש, השם הוענק לו על ידי החוקר קופ בגלל צורת החוליות של עמוד השדרה שלו שהיו להן בליטות כפולות (לפני שהוא בכלל ראה גולגולת שלמה!).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="bg-cyan-500/5 p-4 rounded-2xl border-r-2 border-cyan-500">
-                        <h4 class="text-xs font-bold text-cyan-400 mb-2">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> אדוארד דרינקר קופ (Cope)</p>
-                        <p class="text-xs text-slate-400 italic"><b>נסיבות:</b> המאובנים נמצאו בטקסס. קופ נדהם מהגולגולת השטוחה והרחבה, והעריך כי מדובר בהתאמה קיצונית לחיים בזרמי מים חזקים.</p>
+                    <div class="bg-purple-500/5 p-4 rounded-2xl border-r-2 border-purple-500">
+                        <h4 class="text-xs font-bold text-purple-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> אדוארד דרינקר קופ (Edward Drinker Cope).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> טקסס ואילינוי, ארה"ב (ואפילו שריד מסוים במרוקו).</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות הגילוי (1877):</b> השרידים הראשונים שנמצאו בטקסס היו של חוליות בודדות. חלפו מספר שנים עד שנמצאו גולגולות שלמות, ורק אז הבינו המדענים עד כמה היצור הזה היה ביזארי. המאובנים גם גילו סדרת התבגרות (אונטוגניה) מרתקת: הדיפלוקאולוסים הצעירים נולדו עם ראשים עגולים רגילים, ורק כשהתבגרו, "קרני הבומרנג" שלהם צמחו והתרחבו החוצה!
+                        </p>
                     </div>
                 </section>
             </div>
@@ -307,14 +423,63 @@
 
     <!-- פוטר משותף -->
     <footer class="py-8 text-center bg-slate-900 border-t border-white/5 mt-12 w-full">
-        <p class="text-slate-500 text-sm italic">האתר נוצר על ידי ג'מיני ורם | פרויקט מחקר ארכיאולוגי דיגיטלי 2026</p>
+        <p class="text-slate-500 text-sm italic">האתר נוצר על ידי ג'מיני ורם | פרויקט מחקר ארכיאולוגי/פלאונטולוגי דיגיטלי 2026</p>
     </footer>
 
+    <!-- מודל חלון צף (Lightbox) לתמונות -->
+    <div id="imageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm modal-hidden" onclick="closeModal()">
+        <div class="relative w-full max-w-5xl mx-4 flex flex-col items-center">
+            <!-- כפתור סגירה -->
+            <button onclick="closeModal()" class="absolute -top-12 sm:-top-16 right-0 text-slate-300 hover:text-purple-500 transition-colors p-2 bg-slate-800/50 rounded-full border border-slate-700">
+                <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <!-- התמונה המוצגת בגדול -->
+            <img id="modalImage" src="" alt="תמונה מוגדלת" class="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl border border-white/10" onclick="event.stopPropagation()">
+            
+            <!-- כיתוב התמונה -->
+            <p id="modalCaption" class="text-purple-500 font-bold mt-4 text-xl sm:text-2xl drop-shadow-md tracking-wider"></p>
+        </div>
+    </div>
+
+    <!-- סקריפטים -->
     <script>
-        function toggleZoom(container) {
-            const img = container.querySelector('.zoom-target');
-            img.classList.toggle('zoomed');
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+
+        function openModal(src, caption) {
+            modalImg.src = src;
+            modalCaption.innerText = caption;
+            
+            // הצגת המודל
+            modal.classList.remove('modal-hidden');
+            modal.classList.add('modal-active');
+            
+            // חסימת גלילה של הרקע כשחלון פתוח
+            document.body.style.overflow = 'hidden';
         }
+
+        function closeModal() {
+            // הסתרת המודל
+            modal.classList.remove('modal-active');
+            modal.classList.add('modal-hidden');
+            
+            // החזרת הגלילה לרקע
+            document.body.style.overflow = 'auto';
+            
+            // ניקוי המקור לאחר האנימציה
+            setTimeout(() => {
+                modalImg.src = '';
+            }, 300);
+        }
+
+        // סגירה עם כפתור Escape במקלדת
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && modal.classList.contains('modal-active')) {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
