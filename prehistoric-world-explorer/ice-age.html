@@ -9,14 +9,20 @@
     <style>
         body { font-family: 'Assistant', sans-serif; background-color: #020617; color: #f8fafc; }
         .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .zoom-container { cursor: zoom-in; overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .zoom-target { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .zoomed { transform: scale(1.6); }
+        .image-container { overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); cursor: zoom-in; }
+        .image-target { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; height: 100%; object-fit: cover; }
+        .image-container:hover .image-target { transform: scale(1.05); }
         .data-label { @apply text-[10px] text-slate-500 uppercase tracking-wider mb-1 block; }
         .unique-tag { @apply bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full text-[10px] font-bold inline-block mb-2; }
+        .etymology-box { @apply bg-slate-800/50 rounded-xl p-4 border border-slate-700 mt-2; }
+        
+        /* Modal Animations */
+        #imageModal { transition: opacity 0.3s ease-out; }
+        .modal-active { opacity: 1; pointer-events: auto; }
+        .modal-hidden { opacity: 0; pointer-events: none; }
     </style>
 </head>
-<body class="p-4 sm:p-8 flex flex-col min-h-screen">
+<body class="p-4 sm:p-8 flex flex-col min-h-screen relative">
 
     <!-- ניווט עליון -->
     <nav class="mb-12 flex justify-between items-center max-w-5xl mx-auto w-full">
@@ -25,7 +31,7 @@
             חזרה לציר הזמן
         </a>
         <div class="text-left">
-            <h2 class="text-2xl font-black text-cyan-500 uppercase">עידן הקרח</h2>
+            <h2 class="text-2xl font-black text-cyan-500 uppercase">עידן הקרח (הפליסטוקן)</h2>
             <p class="text-[10px] text-slate-500 uppercase tracking-widest">The Ice Age Research</p>
         </div>
     </nav>
@@ -34,173 +40,227 @@
     <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 flex-grow">
         
         <!-- 1. Woolly Mammoth - ממותה צמרירית -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-cyan-600/30">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-cyan-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-cyan-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/woollymammoth.png', 'ממותה צמרירית')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/woollymammoth.png" alt="ממותה צמרירית" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/06b6d4?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
             <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: המוגלובין עמיד לקפיאה ובידוד תלת-שכבתי</span>
-                    <h3 class="text-3xl font-black text-white mb-1">ממותה צמרירית <span class="text-lg font-light text-slate-400 italic">Mammuthus</span></h3>
-                    <p class="text-cyan-400 font-medium italic">"קרן אדמה"</p>
+                    <span class="unique-tag">מאפיין ייחודי: פרווה כפולה וחטי שנהב ענקיים מעוקלים</span>
+                    <h3 class="text-3xl font-black text-white mb-1">ממותה צמרירית <span class="text-lg font-light text-slate-400">Woolly Mammoth</span></h3>
+                    <p class="text-cyan-400 font-medium italic">"חפירת האדמה הראשונית"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 400,000 עד 4,000 שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1799</span>
+                        <span class="text-[11px] font-bold">1799 (הגדרה מדעית)</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">גובה</span>
-                        <span class="text-xs font-bold">3.5 מטר</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גובה (כתף)</span>
+                        <span class="text-[11px] font-bold">2.7 - 3.4 מטרים</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">משקל</span>
-                        <span class="text-xs font-bold">6 טון</span>
+                        <span class="text-[11px] font-bold">4 עד 6 טון</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
                         <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            הממותה הצמרירית היא הסמל המובהק של עידן הקרח, והייתה מותאמת באופן מושלם לסביבות קיפאון קיצוניות ("ערבות הממותה"). להבדיל מפילים מודרניים, היו לה אוזניים וזנב קטנטנים כדי למנוע אובדן חום וכוויות קור, ושכבת שומן עבה בעובי 10 ס"מ מתחת לעורה. פרוותה הייתה מורכבת משתי שכבות: פלומה פנימית דחוסה, ושערות חיצוניות ארוכות שהגיעו לאורך של כמעט מטר. 
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            הממותה הייתה מותאמת באופן קיצוני לקור. מעבר לפרווה עבה באורך 90 ס"מ, היה לה <b>דם ייחודי</b> עם המוגלובין שהמשיך לשחרר חמצן לרקמות גם בטמפרטורות קפיאה. חטי השנהב המעוקלים שלה שימשו כ"מפלסות שלג" כדי להגיע לעשב הקבור מתחת למעטה הלבן.
+                            החטים (Tusks) שלה היו יוצאי דופן – הם צמחו בספירלה מעוקלת כלפי פנים ויכלו להגיע לאורך של מעל 4 מטרים. המדענים מעריכים שהממותות השתמשו בחטים אלו כמו ב"מפלסות שלג" כדי לחשוף עשב, שיחים וטחב שנקברו תחת מטרים של שלג. הפרטים האחרונים של המין שרדו באי ורנגל (Wrangel Island) באוקיינוס הארקטי עד לפני כ-4,000 שנה בלבד – תקופה שבה הפירמידות בגיזה כבר עמדו על תילן!
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-cyan-400">Mammoth:</b> כנראה משפת ה<b>מנסי</b> (רוסיה) | 'מנג אונט' - קרן אדמה (בשל המחשבה שחיו מתחת לאדמה).</li>
-                            <li><b class="text-cyan-400">Primigenius:</b> לטינית | "הראשון להיוולד" או פרימיטיבי.</li>
-                        </ul>
+                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-cyan-400 text-base">Mammuthus (ממותה):</b><br>
+                                    <span class="text-slate-300">השם מגיע מרוסית (мамонт - ממונט), שקרוב לוודאי נגזרה משפות עממיות של עמי סיביר העתיקים (כגון שפת המנסי או הטאטרית), שם משמעות המילה 'maman' היא <b>"של האדמה" או "חופר אדמה"</b>. זאת משום שתושבי סיביר מצאו את העצמות והחטים קבורים עמוק באדמה הקפואה וחשבו שמדובר בחפרפרת ענקית שמתה ברגע שנחשפה לאור השמש.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-cyan-400 text-base">Primigenius:</b><br>
+                                    <span class="text-slate-300">הסיומת של השם המדעי, שמקורה בלטינית ומשמעותה <b>"ראשוני" או "יליד ראשון"</b> (First-born / Original).</span>
+                                </li>
+                                <li>
+                                    <b class="text-cyan-500">המשמעות המלאה:</b> <span class="text-white font-bold">חופר האדמה הראשוני (בתוספת 'צמרירית' בשפת היומיום).</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="bg-cyan-500/5 p-4 rounded-2xl border-r-2 border-cyan-500">
                         <h4 class="text-xs font-bold text-cyan-400 mb-2 underline italic">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> מיכאיל אדאמס (Mikhail Adams) - שחזור ראשון.</p>
-                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> דלתת נהר לנה, סיביר.</p>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה (הגדרה):</b> יוהאן פרידריך בלומנבאך (Johann F. Blumenbach), ביולוג גרמני.</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> בעיקר בסיביר (רוסיה), אירופה וצפון אמריקה.</p>
                         <p class="text-xs leading-relaxed text-slate-400 italic">
-                            <b>נסיבות:</b> נמצאה ממותה שלמה שקפאה בקרח-עד (Permafrost). השימור היה כה מושלם עד שבשרה עדיין היה אדום ועל פרוותה נותרו שרידי צמחים מהארוחה האחרונה שלה לפני 10,000 שנה.
+                            <b>נסיבות הגילוי:</b> שרידי ממותות היו ידועים לאנושות אלפי שנים (אנשים קדמונים אף בנו בקתות מעצמותיהן וציירו אותן במערות), אך ההגדרה המדעית כמין נכחד ניתן לה על ידי בלומנבאך ב-1799. הממותה היא אחד מבעלי החיים הנכחדים הנחקרים ביותר, הודות לגילויים מדהימים של פגרים שלמים שקפאו בפרמפרוסט (Permafrost) הסיבירי, כשהם משמרים לא רק עצמות, אלא גם בשר, פרווה, דם, ותוכן קיבה שלא עוכל במשך עשרות אלפי שנים.
                         </p>
                     </div>
                 </section>
             </div>
         </article>
 
-        <!-- 2. Smilodon - סמילודון (נמר שנחרבי) -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-cyan-600/30">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-cyan-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <!-- 2. Smilodon - סמילודון (טיגריס שנחרבי) -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-cyan-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/smilodon.png', 'סמילודון (טיגריס שנחרבי)')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/smilodon.png" alt="סמילודון" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/06b6d4?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
             <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: ניבי חרב באורך 28 ס"מ</span>
-                    <h3 class="text-3xl font-black text-white mb-1">סמילודון <span class="text-lg font-light text-slate-400 italic">Smilodon</span></h3>
-                    <p class="text-cyan-400 font-medium italic">"שיני אזמל"</p>
+                    <span class="unique-tag">מאפיין ייחודי: ניבי חרב באורך של עד 28 ס"מ</span>
+                    <h3 class="text-3xl font-black text-white mb-1">סמילודון <span class="text-lg font-light text-slate-400">Smilodon</span></h3>
+                    <p class="text-cyan-400 font-medium italic">"שן איזמל / שן חרב"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 2.5M עד 10,000 שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1842</span>
+                        <span class="text-[11px] font-bold">1842</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">אורך</span>
-                        <span class="text-xs font-bold">2.2 מטר</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">אורך נשיכה</span>
+                        <span class="text-[11px] font-bold">נפתח ל-120 מעלות</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">ניבים</span>
-                        <span class="text-xs font-bold">28 ס"מ</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">משקל מרבי</span>
+                        <span class="text-[11px] font-bold">עד 400 ק"ג</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
                         <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            למרות הכינוי הנפוץ "טיגריס שנחרבי", הסמילודון אינו קשור כלל לטיגריסים המודרניים. הוא היה טורף-העל האימתני של יבשות אמריקה. המבנה הגופני שלו היה יוצא דופן: הוא היה הרבה יותר שרירי, חסון וכבד מכל חתול גדול של ימינו (כמו אריה או נמר), במיוחד בפלג גופו הקדמי ובצווארו. בגלל המבנה הכבד הזה, הוא לא היה רץ מהיר, אלא התמחה ב<b>ציד ממארב</b>.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            היה טורף-על עם מבנה גוף חזק בהרבה מאריות מודרניים. ייחודיותו היא ה<b>ניבים העליונים</b> העצומים שלו, ששימשו לשיסוע כלי דם בצוואר הטרף לאחר שהכניע אותו בעזרת גפיו הקדמיות העוצמתיות. הוא יכול היה לפתוח את פיו בזווית של 120 מעלות (פי 2 מאריה מודרני).
+                            נשקו הסודי והאייקוני היו הניבים העליונים שלו, שהיו ארוכים ושבירים יחסית לעצם. לכן, טכניקת הציד שלו כללה התנפלות על טרף גדול (כמו סוסים קדומים או ביזונים), היאבקות והצמדת הטרף לקרקע בעזרת זרועותיו העצומות, ורק אז – פתיחת הלסת לזווית מדהימה של 120 מעלות (לעומת 65 מעלות אריה מודרני), ודקירה מדויקת לצוואר הטרף כדי לחתוך את קנה הנשימה וכלי הדם הראשיים.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-cyan-400">Smilo (σμῖλη):</b> סכין חיתוך / אזמל (יוונית).</li>
-                            <li><b class="text-cyan-400">Odon (ὀδών):</b> שן (יוונית).</li>
-                        </ul>
+                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-cyan-400 text-base">Smilē (σμίλη):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"איזמל מנתחים", "סכין חיתוך" או "פגיון"</b>. הקידומת מתארת את הצורה החדה והדקה של ניביו העליונים.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-cyan-400 text-base">Odous / Odon (ὀδούς / ὀδών):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"שן"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-cyan-500">המשמעות המלאה:</b> <span class="text-white font-bold">"שן איזמל / שן חרב"</span> (Scalpel Tooth).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="bg-cyan-500/5 p-4 rounded-2xl border-r-2 border-cyan-500">
                         <h4 class="text-xs font-bold text-cyan-400 mb-2 underline italic">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> פיטר וילהלם לונד (Peter Wilhelm Lund).</p>
-                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> לאגואה סנטה, ברזיל.</p>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> החוקר הדני פטר וילהלם לונד (Peter Wilhelm Lund).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> ברזיל (במערות בלואה סנטה) וארה"ב (בורות הזפת בלוס אנג'לס).</p>
                         <p class="text-xs leading-relaxed text-slate-400 italic">
-                            <b>נסיבות:</b> המאובנים נמצאו במערות בברזיל. מאוחר יותר, נמצאו אלפי שלדים בבורות הזפת בלוס אנג'לס (La Brea Tar Pits), מה שמעיד על כך שהם חיו וצדו בקבוצות חברתיות.
+                            <b>נסיבות הגילוי (1842):</b> השרידים הראשונים התגלו במערות בברזיל, אך המקור המרהיב והמפורסם ביותר למאובני הסמילודון הוא בורות הזפת של לה בראה (La Brea Tar Pits) שבלוס אנג'לס. לאורך אלפי שנים, טורפים ענקיים אלו נלכדו בזפת הדביקה כשניסו לצוד חיות אוכלות עשב ששקעו בה קודם לכן. אלפי שלדים בשלמות מושלמת חולצו מהזפת, מה שהפך אותו למאובן הלאומי הרשמי של מדינת קליפורניה.
                         </p>
                     </div>
                 </section>
             </div>
         </article>
 
-        <!-- 3. Megatherium - מגאתריום (עצלן קרקע ענק) -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-cyan-600/30">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-cyan-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <!-- 3. Megatherium - מְגָאְתֶרְיוּם (עצלן קרקע ענק) -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-cyan-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/megatherium.png', 'מגאתריום (עצלן קרקע ענק)')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/megatherium.png" alt="מגאתריום" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/06b6d4?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
             <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: עמידה זקופה וטפרים לחפירה ותלישה</span>
-                    <h3 class="text-3xl font-black text-white mb-1">מגאתריום <span class="text-lg font-light text-slate-400 italic">Megatherium</span></h3>
-                    <p class="text-cyan-400 font-medium italic">"חיה גדולה"</p>
+                    <span class="unique-tag">מאפיין ייחודי: יונק יבשתי כבד עם טפרים עצומים</span>
+                    <h3 class="text-3xl font-black text-white mb-1">מגאתריום <span class="text-lg font-light text-slate-400">Megatherium</span></h3>
+                    <p class="text-cyan-400 font-medium italic">"החיה הגדולה / בהמה ענקית"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 4M עד 10,000 שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1787</span>
+                        <span class="text-[11px] font-bold">1788</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">גובה</span>
-                        <span class="text-xs font-bold">6 מטר</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גובה בהזדקפות</span>
+                        <span class="text-[11px] font-bold">כ-6 מטרים</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">משקל</span>
-                        <span class="text-xs font-bold">4 טון</span>
+                        <span class="text-[11px] font-bold">עד 4 טון</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            המגאתריום היה "עצלן קרקע ענק", ואחד מיונקי היבשה הגדולים ביותר שחיו אי פעם, בערך בגודלו של פיל מודרני. בניגוד לעצלנים הקטנים של ימינו התלויים על עצים, המגאתריום חי על הקרקע. היו לו טפרים קדמיים עצומים (באורך של כ-17 ס"מ) שאילצו אותו ללכת על צידי כפות רגליו כדי לא להישען עליהם ולהקהות אותם.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            היה צמחוני ענקי בגודל של פיל מודרני. ייחודיותו היא היכולת לעמוד על <b>רגליו האחוריות</b> בלבד, כשהוא נעזר בזנבו המסיבי כ"חצובה", כדי להגיע לצמרות העצים. היו לו טפרים עצומים ששימשו לתלישת ענפים והגנה מפני טורפים.
+                            הוא השתמש בזנבו העבה והחזק כ"רגל שלישית" (חצובה) כדי להזדקף על רגליו האחוריות לגובה של שתי קומות, וכך להשתמש בטפריו הענקיים כדי למשוך ולתלוש ענפים מעצים גבוהים. למרות שהיה צמחוני איטי, גודלו העצום, עורו שהכיל בליטות עצם נוקשות מתחת לפרווה (אוסטיאודרמים), והטפרים האימתניים שלו, הפכו אותו למטרה קשה עד בלתי אפשרית אפילו לטורפי-על כמו הסמילודון.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-cyan-400">Megas (μέγας):</b> גדול (יוונית).</li>
-                            <li><b class="text-cyan-400">Therion (θηρίον):</b> חיה / בהמה (יוונית).</li>
-                        </ul>
+                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-cyan-400 text-base">Mega (μέγας):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"גדול" או "עצום"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-cyan-400 text-base">Therion (θηρίον):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"חיה" או "בהמה"</b> (לרוב בהקשר של יונקים).</span>
+                                </li>
+                                <li>
+                                    <b class="text-cyan-500">המשמעות המלאה:</b> <span class="text-white font-bold">"החיה הגדולה" או "בהמה ענקית"</span> (Great Beast).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="bg-cyan-500/5 p-4 rounded-2xl border-r-2 border-cyan-500">
                         <h4 class="text-xs font-bold text-cyan-400 mb-2 underline italic">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> מנואל טורס (Manuel Torres).</p>
-                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> לוהאן (Luján), ארגנטינה.</p>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> הכומר מנואל טורס (Manuel Torres), ותואר מדעית על ידי ג'ורג' קיוויה.</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> ליד בואנוס איירס, ארגנטינה.</p>
                         <p class="text-xs leading-relaxed text-slate-400 italic">
-                            <b>נסיבות:</b> השלד נשלח למדריד, שם חקר אותו האנטומיסט ז'ורז' קיווייה. הגילוי הוביל להבנה שקבוצות שלמות של בעלי חיים ענקיים נכחדו מהעולם, רעיון שהיה מהפכני באותה תקופה.
+                            <b>נסיבות הגילוי (1788):</b> השלד התגלה על גדות נהר בארגנטינה ונשלח בשלמותו לספרד. הוא משך את תשומת ליבו של האנטומיסט הצרפתי המבריק ג'ורג' קיוויה (Georges Cuvier) ב-1796. קיוויה השתמש במאובן זה כדי לבסס את תאוריית ה"הכחדה" (Extinction) – קונספט מהפכני וחסר תקדים באותה תקופה, בו הוכיח שקיימים מינים של בעלי חיים עצומים שחיו בעבר אך אינם קיימים עוד בשום מקום בעולם.
                         </p>
                     </div>
                 </section>
@@ -208,115 +268,155 @@
         </article>
 
         <!-- 4. Woolly Rhinoceros - קרנף צמרירי -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-cyan-600/30">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-cyan-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-cyan-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/woollyrhinoceros.png', 'קרנף צמרירי')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/woollyrhinoceros.png" alt="קרנף צמרירי" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/06b6d4?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
             <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: קרן שטוחה ובידוד שומני</span>
-                    <h3 class="text-3xl font-black text-white mb-1">קרנף צמרירי <span class="text-lg font-light text-slate-400 italic">Coelodonta</span></h3>
-                    <p class="text-cyan-400 font-medium italic">"שן חלולה"</p>
+                    <span class="unique-tag">מאפיין ייחודי: קרן קדמית ענקית ופחוסה כ"מפלסת"</span>
+                    <h3 class="text-3xl font-black text-white mb-1">קרנף צמרירי <span class="text-lg font-light text-slate-400">Woolly Rhinoceros</span></h3>
+                    <p class="text-cyan-400 font-medium italic">"שן חלולה עתיקה"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 3.6M עד 10,000 שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">1799</span>
+                        <span class="text-[11px] font-bold">1799 (הגדרה מדעית)</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">אורך</span>
-                        <span class="text-xs font-bold">3-4 מטר</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">קרן קדמית</span>
+                        <span class="text-[11px] font-bold">אורך של עד 1.4 מטר</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">קרן</span>
-                        <span class="text-xs font-bold">1 מטר</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">משקל</span>
+                        <span class="text-[11px] font-bold">2 עד 3 טון</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            הקרנף הצמרירי חלק את "ערבות הממותה" הקפואות עם הממותות הצמריריות והיה מותאם באותה מידה לאקלים הארקטי, עם שכבת שומן עבה, עור עבה ופרווה ארוכה וצפופה במיוחד. ראשו היה ארוך, נוטה מטה, וקרוב לקרקע – התאמה מושלמת לחיה שבילתה את רוב זמנה בלעיסת עשב וצמחייה נמוכה.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            היה מצויד ב<b>פרווה עבה</b> ודחוסה ובשכבת שומן מבודדת. הייחודיות שלו הייתה ה<b>קרן הקדמית</b> שהייתה שטוחה בצידיה (ולא עגולה כשל קרנפים מודרניים), מה שאפשר לו להזיז אותה מצד לצד בתנועת "טאטוא" כדי לסלק שלג מהצמחייה.
+                            המאפיין הבולט ביותר שלו היו שתי קרניים שהורכבו מקרטין דחוס (כמו ציפורניים). הקרן הקדמית הייתה עצומה, אך בניגוד לקרנפים מודרניים היא הייתה <b>פחוסה מהצדדים ודמוית להב</b>. מחקרים על קרניים שנמצאו בקרחונים מראים סימני שחיקה בצדדיהן, מה שמוכיח שהקרנף השתמש בהן כדי להזיז ולפנות ימינה ושמאלה שכבות עבות של שלג וקרח כדי להגיע אל המזון הקפוא שמתחת.
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-cyan-400">Koilos (κοῖλος):</b> חלול (יוונית).</li>
-                            <li><b class="text-cyan-400">Odous (ὀδούς):</b> שן (יוונית) - על שם מבנה תעלות השן.</li>
-                        </ul>
+                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-cyan-400 text-base">Coelodonta (קואלודונטה):</b><br>
+                                    <span class="text-slate-300">השם המדעי מורכב מיוונית. <b class="text-cyan-300">Coelos (κοῖλος)</b> משמעותו "חלול", ו-<b class="text-cyan-300">Odous (ὀδούς)</b> משמעותו "שן". השם "שן חלולה" ניתן לו בגלל תבנית החללים המעגלית הייחודית שנמצאה בתוך השיניים הטוחנות שלו, שעזרה לו לטחון צמחייה קשה וקפואה.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-cyan-400 text-base">Antiquitatis:</b><br>
+                                    <span class="text-slate-300">מילה לטינית שמשמעותה <b>"של העת העתיקה" או "קדומה"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-cyan-500">המשמעות המלאה:</b> <span class="text-white font-bold">"שן חלולה עתיקה"</span> (Hollow-tooth of antiquity). השם השגור "קרנף" מגיע מיוונית "Rhinoceros" - אפי (Rhino) + קרן (Ceros).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="bg-cyan-500/5 p-4 rounded-2xl border-r-2 border-cyan-500">
                         <h4 class="text-xs font-bold text-cyan-400 mb-2 underline italic">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> יוהאן פרידריך בלומנבאך (Blumenbach).</p>
-                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> סיביר, רוסיה.</p>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה (הגדרה):</b> יוהאן פרידריך בלומנבאך (1799).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> צפון אירופה, רוסיה וסיביר.</p>
                         <p class="text-xs leading-relaxed text-slate-400 italic">
-                            <b>נסיבות:</b> המאובנים נמצאו לעיתים קרובות בסיביר. ב-2015 נמצא קרנף צמרירי שלם ("סשה") עם הפרווה והקרניים, מה שאיפשר מחקר על צבע הפרווה שלו שהיה אדמדם-חום.
+                            <b>נסיבות הגילוי:</b> כמו הממותה, עצמותיו התגלו פעמים רבות באירופה לפני שהוגדר מדעית. תגלית מרתקת קרתה בעיר קלגנפורט שבאוסטריה במאה ה-14 – שם מצאו גולגולת שלו והיו משוכנעים שזהו "דרקון". הם אף השתמשו בגולגולת כמודל לפסל הדרקון שניצב עד היום בכיכר העיר! בסיביר התגלו פגרים שלמים שלו קפואים, וקרני הקרטין שלו השתמרו בצורה כה טובה שלעתים חשבו בטעות שמדובר בטפרים של עופות ענק או "גריפונים" מיתולוגיים.
                         </p>
                     </div>
                 </section>
             </div>
         </article>
 
-        <!-- 5. Irish Elk - אייל ענק -->
-        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-cyan-600/30">
-            <div class="relative h-64 zoom-container" onclick="toggleZoom(this)">
-                <div class="w-full h-full bg-slate-800 flex items-center justify-center text-cyan-900 zoom-target">
-                    
-                    <svg class="w-20 h-20 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+        <!-- 5. Irish Elk - אייל ענק (מגלוצרוס) -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-cyan-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/irishelk.png', 'אייל ענק (מגלוצרוס)')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/irishelk.png" alt="אייל ענק" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/06b6d4?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
                 </div>
             </div>
             <div class="p-8 text-right">
                 <header class="mb-6">
-                    <span class="unique-tag">מאפיין ייחודי: קרניים ברוחב 3.6 מטר</span>
-                    <h3 class="text-3xl font-black text-white mb-1">אייל ענק <span class="text-lg font-light text-slate-400 italic">Megaloceros</span></h3>
-                    <p class="text-cyan-400 font-medium italic">"קרן גדולה"</p>
+                    <span class="unique-tag">מאפיין ייחודי: קרניים באורך 3.6 מטר ששקלו 40 ק"ג</span>
+                    <h3 class="text-3xl font-black text-white mb-1">אייל ענק <span class="text-lg font-light text-slate-400">Irish Elk / Megaloceros</span></h3>
+                    <p class="text-cyan-400 font-medium italic">"קרן ענקית עצומה"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-2 mb-8 text-center border-b border-white/5 pb-4">
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 400,000 עד 8,000 שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
                         <span class="data-label">גילוי</span>
-                        <span class="text-xs font-bold">המאה ה-19</span>
+                        <span class="text-[11px] font-bold">מאה 17 (תיאור מדעי 1799)</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">גובה</span>
-                        <span class="text-xs font-bold">2.1 מטר</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גובה (כתף)</span>
+                        <span class="text-[11px] font-bold">כ-2.1 מטרים</span>
                     </div>
-                    <div class="bg-white/5 p-3 rounded-2xl border border-white/5">
-                        <span class="data-label">קרניים</span>
-                        <span class="text-xs font-bold">40 ק"ג</span>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">מוטת קרניים</span>
+                        <span class="text-[11px] font-bold">מעל 3.6 מטרים</span>
                     </div>
                 </div>
 
                 <section class="space-y-6">
                     <div>
-                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase underline italic underline">ייחודיות מדעית:</h4>
+                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            על אף הכינוי "אייל אירי" (Irish Elk), הוא לא היה אקסקלוסיבי לאירלנד, ואיננו שייך כלל למשפחת האלק (קנדי/אמריקאי), אלא נחשב ל<b>צבי/אייל הגדול ביותר שחי אי פעם</b>, וקרוב מבחינה אבולוציונית ליחמור המודרני. תכונתו האייקונית היא זוג הקרניים (Antlers) המטורפות בגודלן שעיטרו את ראשי הזכרים, שהגיעו למוטת-רוחב של מעל 3.65 מטרים ושקלו כ-40 קילוגרמים.
+                        </p>
                         <p class="text-sm text-slate-300 leading-relaxed">
-                            היה האייל הגדול ביותר שחי אי-פעם. ייחודיותו היא ה<b>קרניים העצומות</b> שמוטתן הגיעה ל-3.6 מטרים. הן לא שימשו רק ללחימה, אלא בעיקר כ"שלטי פרסומת" גנטיים למשיכת נקבות – האייל היה חייב לצרוך כמויות עצומות של סידן ומינרלים כדי להצמיח אותן מחדש מדי שנה.
+                            המדהים הוא שבדומה לאיילים מודרניים, המגלוצרוס השיר והצמיח את הקרניים העצומות הללו **מחדש בכל שנה** לקראת עונת הרבייה. גידול מסת עצם כה מאסיבית דרש כמויות אדירות של סידן, פוספט ומינרלים מהתזונה שלו. המדענים מעריכים כי שינויי האקלים בסוף עידן הקרח, שהפכו את הצמחייה העשירה ליערות דלילים במינרלים, הקשו עליו לתחזק את מבנה הקרניים הזה – מה שתרם להכחדתו (לצד ציד בידי האדם הקדמון).
                         </p>
                     </div>
 
                     <div>
-                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת:</h4>
-                        <ul class="text-sm space-y-1">
-                            <li><b class="text-cyan-400">Megalo (μέγας):</b> גדול (יוונית).</li>
-                            <li><b class="text-cyan-400">Keras (κέρας):</b> קרן (יוונית).</li>
-                        </ul>
+                        <h4 class="text-cyan-500 font-bold text-sm mb-3 border-b border-cyan-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-cyan-400 text-base">Megalo (μεγάλος):</b><br>
+                                    <span class="text-slate-300">קידומת מיוונית עתיקה שמשמעותה <b>"גדול", "עצום" או "אדיר"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-cyan-400 text-base">Ceras (κέρας):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"קרן"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-cyan-400 text-base">Giganteus:</b><br>
+                                    <span class="text-slate-300">סיומת לטינית שפירושה <b>"ענק"</b> (Giant).</span>
+                                </li>
+                                <li>
+                                    <b class="text-cyan-500">המשמעות המלאה:</b> <span class="text-white font-bold">"בעל הקרן הגדולה, הענק"</span> (Giant Great-Horn).
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="bg-cyan-500/5 p-4 rounded-2xl border-r-2 border-cyan-500">
                         <h4 class="text-xs font-bold text-cyan-400 mb-2 underline italic">פרטי הגילוי:</h4>
-                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> חוקרי טבע אנונימיים בביצות אירלנד.</p>
-                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> ביצות כבול באירלנד (ומכאן שמו). </p>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> השרידים מוכרים מאות שנים. תיאור מדעי ראשון ניתן על ידי יוהאן בלומנבאך (1799) וג'ושוע ברוקס (1828).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> ברחבי אירואסיה (מסיביר ועד אירלנד).</p>
                         <p class="text-xs leading-relaxed text-slate-400 italic">
-                            <b>נסיבות:</b> המאובנים נמצאו במצב שימור פנומנלי בתוך ביצות כבול (Peat bogs). הכימיה הייחודית של הביצה מנעה ריקבון של העצמות והקרניים, מה שאפשר למצוא שלדים שלמים העומדים בתוך הבוץ הקדום.
+                            <b>נסיבות הגילוי:</b> הסיבה שהוא זכה לכינוי העממי "אייל אירי" היא מכיוון ששלדים מלאים, מושלמים ומהממים שלו נמצאו במספרים אדירים בתוך "ביצות הכבול" (Peat bogs) באירלנד. הסביבה נטולת החמצן של הביצות האיריות שימרה את העצמות והקרניים הענקיות לאורך אלפי שנים כאילו נקברו אתמול, וגולגולות עם קרניים שלו הפכו לפריט אספנות מקובל בטירות ובבתי אצילים בריטים במאה ה-19.
                         </p>
                     </div>
                 </section>
@@ -327,15 +427,65 @@
 
     <!-- פוטר משותף -->
     <footer class="py-8 text-center bg-slate-900 border-t border-white/5 mt-12 w-full">
-        <p class="text-slate-500 text-sm italic">האתר נוצר על ידי ג'מיני ורם | פרויקט מחקר ארכיאולוגי דיגיטלי 2026</p>
+        <p class="text-slate-500 text-sm italic">האתר נוצר על ידי ג'מיני ורם | פרויקט מחקר ארכיאולוגי/פלאונטולוגי דיגיטלי 2026</p>
     </footer>
 
+    <!-- מודל חלון צף (Lightbox) לתמונות -->
+    <div id="imageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm modal-hidden" onclick="closeModal()">
+        <div class="relative w-full max-w-5xl mx-4 flex flex-col items-center">
+            <!-- כפתור סגירה -->
+            <button onclick="closeModal()" class="absolute -top-12 sm:-top-16 right-0 text-slate-300 hover:text-cyan-500 transition-colors p-2 bg-slate-800/50 rounded-full border border-slate-700">
+                <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <!-- התמונה המוצגת בגדול -->
+            <img id="modalImage" src="" alt="תמונה מוגדלת" class="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl border border-white/10" onclick="event.stopPropagation()">
+            
+            <!-- כיתוב התמונה -->
+            <p id="modalCaption" class="text-cyan-500 font-bold mt-4 text-xl sm:text-2xl drop-shadow-md tracking-wider"></p>
+        </div>
+    </div>
+
+    <!-- סקריפטים -->
     <script>
-        function toggleZoom(container) {
-            const img = container.querySelector('.zoom-target');
-            img.classList.toggle('zoomed');
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+
+        function openModal(src, caption) {
+            modalImg.src = src;
+            modalCaption.innerText = caption;
+            
+            // הצגת המודל
+            modal.classList.remove('modal-hidden');
+            modal.classList.add('modal-active');
+            
+            // חסימת גלילה של הרקע כשחלון פתוח
+            document.body.style.overflow = 'hidden';
         }
+
+        function closeModal() {
+            // הסתרת המודל
+            modal.classList.remove('modal-active');
+            modal.classList.add('modal-hidden');
+            
+            // החזרת הגלילה לרקע
+            document.body.style.overflow = 'auto';
+            
+            // ניקוי המקור לאחר האנימציה
+            setTimeout(() => {
+                modalImg.src = '';
+            }, 300);
+        }
+
+        // סגירה עם כפתור Escape במקלדת
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && modal.classList.contains('modal-active')) {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
+
 
