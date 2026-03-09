@@ -3,301 +3,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>עידן הקרבון | ארכיון עולם הפרהיסטוריה</title>
+    <title>עידן הקרבון | Prehistoric World Explorer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;400;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Assistant', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; }
-        .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        body { font-family: 'Assistant', sans-serif; background-color: #020617; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .image-container { overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); cursor: zoom-in; }
+        .image-target { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; height: 100%; object-fit: cover; }
+        .image-container:hover .image-target { transform: scale(1.05); }
+        .data-label { @apply text-[10px] text-slate-500 uppercase tracking-wider mb-1 block; }
+        .unique-tag { @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-[10px] font-bold inline-block mb-2; }
+        .etymology-box { @apply bg-slate-800/50 rounded-xl p-4 border border-slate-700 mt-2; }
         
-        /* Image Container & Zoom Styles */
-        .zoom-container { cursor: zoom-in; overflow: hidden; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.05); height: 24rem; background: #0f172a; }
-        .zoom-target { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; height: 100%; object-fit: cover; }
-        
-        /* Fullscreen Zoom Overlay */
-        #zoom-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95); z-index: 100; align-items: center; justify-content: center; cursor: zoom-out; }
-        #zoom-overlay img { max-width: 95%; max-height: 90%; object-fit: contain; box-shadow: 0 0 50px rgba(0,0,0,0.8); border-radius: 0.5rem; }
-
-        .data-label { @apply text-[10px] text-slate-500 uppercase tracking-widest mb-1 block font-bold; }
-        .unique-tag { @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-4 py-1.5 rounded-full text-[10px] font-black inline-block mb-3 uppercase; }
-        .etymology-box { @apply bg-white/5 p-5 rounded-3xl border border-white/5 text-sm leading-relaxed shadow-inner; }
-        .etymology-title { @apply text-emerald-400 font-extrabold mb-2 block text-base; }
-        .highlight-part { @apply text-emerald-300 font-bold; }
+        /* Modal Animations */
+        #imageModal { transition: opacity 0.3s ease-out; }
+        .modal-active { opacity: 1; pointer-events: auto; }
+        .modal-hidden { opacity: 0; pointer-events: none; }
     </style>
 </head>
-<body class="p-4 sm:p-8 flex flex-col min-h-screen">
+<body class="p-4 sm:p-8 flex flex-col min-h-screen relative">
 
-    <!-- Zoom Overlay -->
-    <div id="zoom-overlay" onclick="closeZoom()">
-        <img id="zoomed-image" src="" alt="Zoomed View">
-        <div class="absolute top-6 right-6 text-white bg-white/10 p-2 rounded-full">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="mb-12 flex justify-between items-end max-w-6xl mx-auto w-full border-b border-white/5 pb-8">
-        <a href="../index.html" class="flex items-center text-emerald-500 font-bold hover:text-emerald-400 transition-colors group">
-            <svg class="w-6 h-6 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-            </svg>
-            <span class="text-base">חזרה לציר הזמן</span>
+    <!-- ניווט עליון -->
+    <nav class="mb-12 flex justify-between items-center max-w-5xl mx-auto w-full">
+        <a href="index.html" class="flex items-center text-emerald-500 font-bold hover:text-emerald-400 transition-colors">
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            חזרה לציר הזמן
         </a>
         <div class="text-left">
-            <h2 class="text-4xl font-black text-emerald-500 leading-none">עידן הקרבון</h2>
-            <p class="text-[11px] text-slate-500 uppercase tracking-[0.3em] mt-3 font-bold italic">The Carboniferous Period | Swamp Giants Archive</p>
+            <h2 class="text-2xl font-black text-emerald-500 uppercase">עידן הקרבון</h2>
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest">The Carboniferous Era</p>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+    <!-- רשימת בעלי חיים -->
+    <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 flex-grow">
         
-        <!-- 1. מגאנוארה (Meganeura) -->
-        <article class="glass-card rounded-[3.5rem] overflow-hidden flex flex-col shadow-2xl border-t-8 border-emerald-500/40">
-            <div class="zoom-container relative" onclick="openZoom('../images/Meganeura.png')">
-                <img src="../images/Meganeura.png" class="zoom-target" alt="מגאנוארה" onerror="this.src='https://via.placeholder.com/800x600?text=Meganeura.png+Missing'">
-                <div class="absolute bottom-4 right-4 bg-black/50 p-2 rounded-lg text-[10px] text-white backdrop-blur-sm pointer-events-none">לחץ להגדלה</div>
+        <!-- 1. Meganeura - מגאנוארה -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-emerald-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/meganeura.png', 'מגאנוארה')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/meganeura.png" alt="מגאנוארה" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/10b981?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                </div>
             </div>
-            <div class="p-10 text-right">
-                <header class="mb-8">
-                    <span class="unique-tag">ייחודיות: החרק המעופף הגדול ביותר בהיסטוריה</span>
-                    <h3 class="text-4xl font-black text-white mb-2">מגאנוארה <span class="text-xl font-light text-slate-500 block">Meganeura</span></h3>
-                    <p class="text-emerald-400 font-bold italic text-lg">"עצב גדול"</p>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: שפירית בגודל של עיט</span>
+                    <h3 class="text-3xl font-black text-white mb-1">מגאנוארה <span class="text-lg font-light text-slate-400">Meganeura</span></h3>
+                    <p class="text-emerald-400 font-medium italic">"עורק ענק"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-3 mb-10 text-center">
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">גילוי</span><span class="text-sm font-black">1880</span></div>
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">מוטה</span><span class="text-sm font-black">75 ס"מ</span></div>
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">סוג</span><span class="text-sm font-black">טורף</span></div>
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 305-299 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-[11px] font-bold">1880</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">מוטת כנפיים</span>
+                        <span class="text-[11px] font-bold">עד 70 ס"מ</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תזונה</span>
+                        <span class="text-[11px] font-bold">חרקים ודו-חיים קטנים</span>
+                    </div>
                 </div>
 
-                <div class="space-y-8">
-                    <div class="etymology-box">
-                        <span class="etymology-title">ניתוח אטימולוגי (חלקי דם):</span>
-                        <p><span class="highlight-part">Megas (μέγας):</span> מיוונית - <span class="text-white font-bold">"גדול"</span>.</p>
-                        <p class="mt-2"><span class="highlight-part">Neuron (νεῦρον):</span> מיוונית - <span class="text-white font-bold">"עצב"</span> או גיד. השם מתייחס לרשת ה"עורקים" (עצבים) המורכבת והצפופה על כנפי המאובן שנמצאו.</p>
-                    </div>
-
-                    <div class="bg-emerald-500/5 p-6 rounded-[2.5rem] border-r-4 border-emerald-500 shadow-md">
-                        <h4 class="text-sm font-black text-emerald-400 mb-3 border-b border-emerald-500/20 pb-2 italic">פרטי הגילוי המדעי:</h4>
-                        <p class="text-sm text-slate-300"><b>המגלה:</b> שארל ברונייאר (Charles Brongniart).</p>
-                        <p class="text-sm text-slate-300 mt-2"><b>מיקום:</b> אגן סטפן (Commentry), צרפת.</p>
-                        <p class="text-xs text-slate-400 mt-4 leading-relaxed italic">
-                            <b>נסיבות הגילוי:</b> המאובן התגלה בתוך מכרות פחם בצרפת. הגילוי זעזע את עולם המדע של המאה ה-19, שכן עד אז לא האמינו שחרקים יכולים להגיע לממדים של עופות דורסים. השרידים השתמרו בפירוט כה גבוה שניתן היה לראות את המבנה המדויק של הכנפיים.
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            המגאנוארה היא אחד מהחרקים המעופפים הגדולים ביותר שחיו אי פעם, ונראתה כמו שפירית מפלצתית בגודל של עיט. צמיחתה לממדים כה עצומים התאפשרה בזכות רמות החמצן הגבוהות באטמוספירה של עידן הקרבון, שהגיעו לכ-35% (לעומת 21% כיום). חרקים אינם נושמים דרך ריאות אלא דרך מערכת של צינורות אוויר (טרכיאות) בגופם, וריכוז החמצן הגבוה אפשר לאוויר לחדור עמוק יותר לגופם של חרקים גדולים.
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            היא הייתה טורפת על בשמי יערות הביצה, וצדה חרקים אחרים, עכבישים, ואפילו דו-חיים קטנים וזוחלים ראשוניים. מבנה הכנפיים שלה היה חזק ומרושת במורכבות עצומה, מה שאפשר לה יכולות טיסה, ריחוף ושינויי כיוון פתאומיים שהפכו אותה לציידת קטלנית. כשרמות החמצן החלו לרדת בסוף עידן הקרבון, חרקי הענק הללו לא יכלו לשרוד ונכחדו.
                         </p>
                     </div>
 
-                    <div class="border-r-2 border-emerald-500/20 pr-6">
-                        <h4 class="text-emerald-500 font-extrabold text-sm mb-4 italic uppercase">ייחודיות אבולוציונית:</h4>
-                        <p class="text-sm text-slate-300 leading-relaxed italic">
-                            המגאנוארה שגשגה בזכות <b>רמות החמצן הגבוהות</b> (כ-35%) באטמוספירת הקרבון. היא הייתה שפירית ענקית, טורפת-על אווירית, שהשתמשה בעיניה העצומות כדי לאתר טרף ולחטוף אותו מהאוויר או מהקרקע בעזרת רגליים קוצניות וחזקות.
+                    <div>
+                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-emerald-400 text-base">Mega (μέγας):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"גדול" או "עצום"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-emerald-400 text-base">Neuron (νεῦρον):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"עורק", "עצב" או "גיד"</b>. בהקשר זה, היא מתייחסת לרשת העורקים (הנימים) הבולטת והמורכבת שנראתה בבירור על פני כנפיה המאובנות.</span>
+                                </li>
+                                <li>
+                                    <b class="text-emerald-500">המשמעות המלאה:</b> <span class="text-white font-bold">"עורק ענק"</span> (Large-veined).
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-500/5 p-4 rounded-2xl border-r-2 border-emerald-500">
+                        <h4 class="text-xs font-bold text-emerald-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> תוארה מדעית על ידי הפלאונטולוג הצרפתי שארל ברוניאר (Charles Brongniart) ב-1885, ממאובנים שנמצאו ב-1880.</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> קומנטרי (Commentry), צרפת.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות הגילוי:</b> המאובן הראשון נמצא במכרות הפחם של קומנטרי בצרפת ב-1880. אזור זה היה מפורסם בזכות מאובני חרקים יוצאי דופן שהשתמרו בפצלים שחורים, אך גילוי המגאנוארה הדהים את החוקרים. ב-1979 נמצא מאובן נוסף, שלם להפליא, במכרה פחם בבולסובר שבאנגליה, המציג את תבנית הכנפיים המורכבת שלה לפרטי פרטים.
                         </p>
                     </div>
-                </div>
+                </section>
             </div>
         </article>
 
-        <!-- 2. ארתרופלאורה (Arthropleura) -->
-        <article class="glass-card rounded-[3.5rem] overflow-hidden flex flex-col shadow-2xl border-t-8 border-emerald-500/40">
-            <div class="zoom-container relative" onclick="openZoom('../images/Arthropleura.png')">
-                <img src="../images/Arthropleura.png" class="zoom-target" alt="ארתרופלאורה" onerror="this.src='https://via.placeholder.com/800x600?text=Arthropleura.png+Missing'">
-                <div class="absolute bottom-4 right-4 bg-black/50 p-2 rounded-lg text-[10px] text-white backdrop-blur-sm pointer-events-none">לחץ להגדלה</div>
+        <!-- 2. Arthropleura - ארתרופלאורה -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-emerald-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/arthropleura.png', 'ארתרופלאורה')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/arthropleura.png" alt="ארתרופלאורה" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/10b981?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                </div>
             </div>
-            <div class="p-10 text-right">
-                <header class="mb-8">
-                    <span class="unique-tag">ייחודיות: חסר החוליות היבשתי הגדול ביותר</span>
-                    <h3 class="text-4xl font-black text-white mb-1">ארתרופלאורה <span class="text-xl font-light text-slate-500 block">Arthropleura</span></h3>
-                    <p class="text-emerald-400 font-bold italic text-lg">"צלעות מפרקיות"</p>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: פרוק הרגליים הגדול ביותר בהיסטוריה</span>
+                    <h3 class="text-3xl font-black text-white mb-1">ארתרופלאורה <span class="text-lg font-light text-slate-400">Arthropleura</span></h3>
+                    <p class="text-emerald-400 font-medium italic">"צלעות מפרקיות"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-3 mb-10 text-center">
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">גילוי</span><span class="text-sm font-black">1854</span></div>
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">אורך</span><span class="text-sm font-black">2.5 מטר</span></div>
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">רגליים</span><span class="text-sm font-black">30 זוגות</span></div>
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 315-299 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-[11px] font-bold">1854</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">אורך משוער</span>
+                        <span class="text-[11px] font-bold">עד 2.6 מטרים</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">מספר רגליים</span>
+                        <span class="text-[11px] font-bold">כ-60 רגליים ויותר</span>
+                    </div>
                 </div>
 
-                <div class="space-y-8">
-                    <div class="etymology-box">
-                        <span class="etymology-title">ניתוח אטימולוגי (חלקי דם):</span>
-                        <p><span class="highlight-part">Arthron (ἄρθρον):</span> מיוונית - <span class="text-white font-bold">"מפרק"</span>.</p>
-                        <p class="mt-2"><span class="highlight-part">Pleura (πλευρά):</span> מיוונית - <span class="text-white font-bold">"צלע"</span> או צד. השם מתאר את הגוף המורכב מלוחות משוריינים ומפרקיים המגינים על צדי הגוף.</p>
-                    </div>
-
-                    <div class="bg-emerald-500/5 p-6 rounded-[2.5rem] border-r-4 border-emerald-500 shadow-md">
-                        <h4 class="text-sm font-black text-emerald-400 mb-3 border-b border-emerald-500/20 pb-2 italic">פרטי הגילוי המדעי:</h4>
-                        <p class="text-sm text-slate-300"><b>המגלה:</b> הרמן פון מאייר (Hermann von Meyer).</p>
-                        <p class="text-sm text-slate-300 mt-2"><b>מיקום:</b> גרמניה, בריטניה וצפון אמריקה.</p>
-                        <p class="text-xs text-slate-400 mt-4 leading-relaxed italic">
-                            <b>נסיבות הגילוי:</b> במשך שנים נמצאו רק מקטעים של השריון החיצוני בתוך שכבות פחם. רק ב-2021 התגלה שלד כמעט שלם בחוף בנורת'מברלנד, אנגליה, מה שאפשר למדענים לקבוע סופית את הממדים המפלצתיים של היצור הזה.
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            הארתרופלאורה הוא נדל (מרבה רגליים) מפלצתי ואחד מפרוקי הרגליים היבשתיים הגדולים ביותר שחיו אי פעם (אם לא הגדול שבהם). באורך של מכונית קטנה וברוחב של חצי מטר, היצור הזה זחל על קרקעית יערות הקרבון, מוגן בשריון גוף עבה המורכב מכ-30 פרקים חופפים, כל אחד מהם נושא זוג רגליים חזקות.
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            למרות מראהו המאיים, רוב המדענים כיום מסכימים כי הארתרופלאורה לא היה טורף, אלא ניזון מצמחייה נרקבת, נבגי שרכים וטחב (צמחוני או אוכל-פוסולת - Detritivore), זאת משום שלא נמצאו במאובניו צבתות ציד משמעותיות, ובבטנו התגלו שאריות צמחים. עם זאת, בזכות שריונו העבה, לא היו לו אויבים טבעיים משמעותיים. גם הוא חייב את גודלו לרמות החמצן העצומות של התקופה.
                         </p>
                     </div>
 
-                    <div class="border-r-2 border-emerald-500/20 pr-6">
-                        <h4 class="text-emerald-500 font-extrabold text-sm mb-4 italic uppercase">ייחודיות אבולוציונית:</h4>
-                        <p class="text-sm text-slate-300 leading-relaxed italic">
-                            קרוב משפחה ענקי של מרבי-הרגליים המודרניים. השריון שלו היה מורכב מלוחות <b>כיטין</b> קשיחים, והוא היה מסוגל לנוע במהירות על קרקע היער הבוצית. למרות מראהו המאיים, מחקרים מראים כי היה כנראה צמחוני או אוכל נבלות שניזון משרכים וצמחייה רקובה.
+                    <div>
+                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-emerald-400 text-base">Arthron (ἄρθρον):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"מפרק"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-emerald-400 text-base">Pleura (πλευρά):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"צלע" או "צד"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-emerald-500">המשמעות המלאה:</b> <span class="text-white font-bold">"צלעות מפרקיות"</span> (Jointed Ribs). השם מתייחס למבנה הפרקים הצדדיים של שריון הגוף שלו, שנראו כמו שורת צלעות בעלות מפרקים המאפשרים גמישות בתנועה.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-500/5 p-4 rounded-2xl border-r-2 border-emerald-500">
+                        <h4 class="text-xs font-bold text-emerald-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> תואר לראשונה על ידי הבוטנאי הגרמני הרמן פון מאייר (Hermann von Meyer) בשנת 1854.</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> גרמניה, צרפת, ובריטניה (מכרות פחם), וכן בצפון אמריקה.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות הגילוי:</b> בתחילה נמצאו רק חלקים בודדים מהשריון הקשיח שלו, ולקח שנים רבות להבין את גודלו האמיתי. חלק מהחוקרים הראשונים אפילו חשבו שאלו חלקי גזע של צמחים. תגלית מדהימה אירעה ב-2018 באנגליה, כאשר גוש סלע ענק נשבר על חוף הים וחשף את המאובן הגדול ביותר של ארתרופלאורה שנמצא אי פעם, המוכיח מעל לכל ספק שהיצור הגיע לאורך של מעל שניים וחצי מטרים.
                         </p>
                     </div>
-                </div>
+                </section>
             </div>
         </article>
 
-        <!-- 3. הילאונומוס (Hylonomus) -->
-        <article class="glass-card rounded-[3.5rem] overflow-hidden flex flex-col shadow-2xl border-t-8 border-emerald-500/40">
-            <div class="zoom-container relative" onclick="openZoom('../images/Hylonomus.png')">
-                <img src="../images/Hylonomus.png" class="zoom-target" alt="הילאונומוס" onerror="this.src='https://via.placeholder.com/800x600?text=Hylonomus.png+Missing'">
-                <div class="absolute bottom-4 right-4 bg-black/50 p-2 rounded-lg text-[10px] text-white backdrop-blur-sm pointer-events-none">לחץ להגדלה</div>
+        <!-- 3. Hylonomus - הילאונומוס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-emerald-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/hylonomus.png', 'הילאונומוס')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/hylonomus.png" alt="הילאונומוס" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/10b981?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                </div>
             </div>
-            <div class="p-10 text-right">
-                <header class="mb-8">
-                    <span class="unique-tag">ייחודיות: הזוחל האמיתי הראשון בהיסטוריה</span>
-                    <h3 class="text-4xl font-black text-white mb-1">הילאונומוס <span class="text-xl font-light text-slate-500 block">Hylonomus</span></h3>
-                    <p class="text-emerald-400 font-bold italic text-lg">"שוכן יערות"</p>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: הזוחל הראשון הידוע שהטיל ביצים ביבשה</span>
+                    <h3 class="text-3xl font-black text-white mb-1">הילאונומוס <span class="text-lg font-light text-slate-400">Hylonomus</span></h3>
+                    <p class="text-emerald-400 font-medium italic">"שוכן היער / שוכן העצים"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-3 mb-10 text-center">
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">גילוי</span><span class="text-sm font-black">1852</span></div>
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">אורך</span><span class="text-sm font-black">20 ס"מ</span></div>
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">סוג</span><span class="text-sm font-black">זוחל</span></div>
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 312 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-[11px] font-bold">1860</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">אורך</span>
+                        <span class="text-[11px] font-bold">כ-20 ס"מ</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">חשיבות אבולוציונית</span>
+                        <span class="text-[11px] font-bold">אבי הזוחלים המודרניים</span>
+                    </div>
                 </div>
 
-                <div class="space-y-8">
-                    <div class="etymology-box">
-                        <span class="etymology-title">ניתוח אטימולוגי (חלקי דם):</span>
-                        <p><span class="highlight-part">Hyle (ὕλη):</span> מיוונית - <span class="text-white font-bold">"יער"</span> או חומר.</p>
-                        <p class="mt-2"><span class="highlight-part">Nomos (νόμος):</span> מיוונית - <span class="text-white font-bold">"שוכן"</span> או חוק. השם מתאר בעל חיים המותאם לחיים בתוך מעבה יערות השרכים המעובים של הקרבון.</p>
-                    </div>
-
-                    <div class="bg-emerald-500/5 p-6 rounded-[2.5rem] border-r-4 border-emerald-500 shadow-md">
-                        <h4 class="text-sm font-black text-emerald-400 mb-3 border-b border-emerald-500/20 pb-2 italic">פרטי הגילוי המדעי:</h4>
-                        <p class="text-sm text-slate-300"><b>המגלה:</b> סר וויליאם דוסון (Sir William Dawson).</p>
-                        <p class="text-sm text-slate-300 mt-2"><b>מיקום:</b> צוקי המאובנים ג'וגינס (Joggins Fossil Cliffs), נובה סקוטיה, קנדה.</p>
-                        <p class="text-xs text-slate-400 mt-4 leading-relaxed italic">
-                            <b>נסיבות הגילוי:</b> המאובן נמצא בתוך גזעי עצים עתיקים ומאובנים (Lycopods). היצורים הקטנים כנראה נפלו לתוך הגזעים החלולים בזמן סערות ונלכדו שם, מה ששמר על השלדים שלהם במצב מושלם במשך 312 מיליון שנה.
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            על אף גודלו הזעיר (בערך בגודל של לטאה קטנה), ההילאונומוס מחזיק בתואר אבולוציוני דרמטי: הוא נחשב ל<b>זוחל הראשון והקדום ביותר</b> הידוע למדע. עד להופעתו, בעלי החוליות היבשתיים היו דו-חיים שהיו חייבים לחזור למים כדי להטיל את ביציהם הרכות (כמו צפרדעים).
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            ההילאונומוס היה מחלוצי ה"אמניוטים" (Amniotes): הוא פיתח את היכולת להטיל <b>ביצה בעלת קליפה קשה</b> המכילה את מי השפיר (אמניון) בתוכה. פריצת דרך זו אפשרה לו, ולכל ממשיכי דרכו (כולל הדינוזאורים, הציפורים והיונקים), להתנתק לחלוטין מהתלות במקווי מים ולהתפשט אל לב היבשות ולמדבריות. מבנה שיניו מצביע על כך שניזון בעיקר מחרקים קטנים ורבי-רגליים שמילאו את יערות הקרבון.
                         </p>
                     </div>
 
-                    <div class="border-r-2 border-emerald-500/20 pr-6">
-                        <h4 class="text-emerald-500 font-extrabold text-sm mb-4 italic uppercase">ייחודיות אבולוציונית:</h4>
-                        <p class="text-sm text-slate-300 leading-relaxed italic">
-                            היה הראשון שהטיל <b>ביצים בעלות קליפה קשיחה</b> (Amniotic egg). פריצת דרך זו אפשרה לבעלי חיים להשתחרר מהתלות במקוואות מים לרבייה ולכבוש את פנים היבשות היבשות יותר – צעד מכריע שהוביל מאוחר יותר לדינוזאורים ולנו.
+                    <div>
+                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-emerald-400 text-base">Hyle (ὕλη):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"יער" או "עץ"</b>.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-emerald-400 text-base">Nomos (νόμος):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"מתגורר", "רועה" או "שוכן"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-emerald-500">המשמעות המלאה:</b> <span class="text-white font-bold">"שוכן היער" או "זה שחי בתוך העצים"</span> (Forest dweller). השם מצביע על האזור שבו הוא חי ובמיוחד על המקום הספציפי שבו מאובניו נמצאו בתוך גזעי עצים קדומים.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-500/5 p-4 rounded-2xl border-r-2 border-emerald-500">
+                        <h4 class="text-xs font-bold text-emerald-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> הגיאולוג ג'ון ויליאם דוסון (John William Dawson).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> צוקי ג'וגינס (Joggins Fossil Cliffs), נובה סקוטיה, קנדה.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות הגילוי (1860):</b> השרידים נמצאו באחד מאתרי המאובנים המפורסמים בעולם (כיום אתר מורשת עולמית). התגלית התרחשה בתוך <b>גזעי עצים חלולים ומאובנים</b> של צמחי ליקופודיום ענקיים. המדענים סבורים שההילאונומוסים הקטנים נפלו לתוך הגזעים החלולים הללו בעת שניסו לצוד חרקים, לא הצליחו לטפס החוצה, ומתו שם, מה שסיפק להם קבר מושלם שהשתמר למעלה מ-300 מיליון שנה. בעקבות חשיבותו, הוכרז ב-2002 כ"מאובן הפרובינציאלי" הרשמי של נובה סקוטיה.
                         </p>
                     </div>
-                </div>
+                </section>
             </div>
         </article>
 
-        <!-- 4. אדפוזאורוס (Edaphosaurus) -->
-        <article class="glass-card rounded-[3.5rem] overflow-hidden flex flex-col shadow-2xl border-t-8 border-emerald-500/40">
-            <div class="zoom-container relative" onclick="openZoom('../images/Edaphosaurus.png')">
-                <img src="../images/Edaphosaurus.png" class="zoom-target" alt="אדפוזאורוס" onerror="this.src='https://via.placeholder.com/800x600?text=Edaphosaurus.png+Missing'">
-                <div class="absolute bottom-4 right-4 bg-black/50 p-2 rounded-lg text-[10px] text-white backdrop-blur-sm pointer-events-none">לחץ להגדלה</div>
+        <!-- 4. Edaphosaurus - אדפוזאורוס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-emerald-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/edaphosaurus.png', 'אדפוזאורוס')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/edaphosaurus.png" alt="אדפוזאורוס" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/10b981?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                </div>
             </div>
-            <div class="p-10 text-right">
-                <header class="mb-8">
-                    <span class="unique-tag">ייחודיות: סנפיר גב עם "ענפי" רוחב לוויסות חום</span>
-                    <h3 class="text-4xl font-black text-white mb-1">אדפוזאורוס <span class="text-xl font-light text-slate-500 block">Edaphosaurus</span></h3>
-                    <p class="text-emerald-400 font-bold italic text-lg">"לטאת קרקע"</p>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: מפרש גב עם שלוחות צדדיות והצמחוני היבשתי הראשון</span>
+                    <h3 class="text-3xl font-black text-white mb-1">אדפוזאורוס <span class="text-lg font-light text-slate-400">Edaphosaurus</span></h3>
+                    <p class="text-emerald-400 font-medium italic">"לטאת פסיפס / לטאת אדמה"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-3 mb-10 text-center border-b border-white/5 pb-8">
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">גילוי</span><span class="text-sm font-black">1882</span></div>
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">אורך</span><span class="text-sm font-black">3.5 מטר</span></div>
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">תזונה</span><span class="text-sm font-black">צמחוני</span></div>
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 303-272 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-[11px] font-bold">1882</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">אורך</span>
+                        <span class="text-[11px] font-bold">עד 3.5 מטרים</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">סוג</span>
+                        <span class="text-[11px] font-bold">סינאפסיד (קרוב ליונקים)</span>
+                    </div>
                 </div>
 
-                <div class="space-y-8">
-                    <div class="etymology-box">
-                        <span class="etymology-title">ניתוח אטימולוגי (חלקי דם):</span>
-                        <p><span class="highlight-part">Edaphos (ἔδαφος):</span> מיוונית - <span class="text-white font-bold">"קרקע"</span> או ריצוף.</p>
-                        <p class="mt-2"><span class="highlight-part">Sauros (σαῦρος):</span> מיוונית - <span class="text-white font-bold">"לטאה"</span>. השם מתייחס לשיניו הצפופות שיוצרות מבנה דמוי "מרצפת" בלסתותיו.</p>
-                    </div>
-
-                    <div class="bg-emerald-500/5 p-6 rounded-[2.5rem] border-r-4 border-emerald-500 shadow-md">
-                        <h4 class="text-sm font-black text-emerald-400 mb-3 border-b border-emerald-500/20 pb-2 italic">פרטי הגילוי המדעי:</h4>
-                        <p class="text-sm text-slate-300"><b>המגלה:</b> אדוארד דרינקר קופ (Edward Drinker Cope).</p>
-                        <p class="text-sm text-slate-300 mt-2"><b>מיקום:</b> טקסס, ארה"ב (תצורות Clear Fork).</p>
-                        <p class="text-xs text-slate-400 mt-4 leading-relaxed italic">
-                            <b>נסיבות הגילוי:</b> נמצא במהלך "מלחמות העצמות" המפורסמות. קופ זיהה את היצור כזוחל דמוי יונק מוקדם מאוד. המאובן היה מיוחד בזכות הסנפיר העצום שהיה בעל בליטות רוחביות (צולבות), מה שהבדיל אותו מהדימטרודון הטורף.
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            האדפוזאורוס חולק דמיון שטחי לדימטרודון המפורסם (שניהם חיו באותה תקופה ויש להם מפרש גב), אך הם שונים לחלוטין. בעוד שהדימטרודון היה טורף, האדפוזאורוס נחשב לאחד מ<b>בעלי החיים היבשתיים הגדולים הראשונים שהיו צמחוניים לחלוטין</b>. פיו היה מצויד בשיניים דמויות-יתד מקדימה לתלישת צמחים, וב"פסיפס" של שיני-מעיכה עבות בחך ובחלק הפנימי של הלסת התחתונה כדי לטחון מזון צמחי קשה.
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            כמו כן, מפרש הגב שלו היה ייחודי: בעוד לדימטרודון היו קוצי עצם חלקים למפרש, הקוצים של האדפוזאורוס כללו <b>שלוחות או זיזים צדדיים (Cross-bars)</b> לכל אורכם (בדומה לצלבות של תורן אנייה). התפקיד המדויק אינו ידוע, אך ההשערות הן שהם הגדילו את שטח הפנים לוויסות חום הגוף, או שימשו כמבנה תמיכה לשכבות שומן או לתצוגה בין-מינית. יש לזכור שהוא איננו דינוזאור, אלא סינאפסיד – קרוב רחוק של היונקים המודרניים.
                         </p>
                     </div>
 
-                    <div class="border-r-2 border-emerald-500/20 pr-6">
-                        <h4 class="text-emerald-500 font-extrabold text-sm mb-4 italic uppercase">ייחודיות אבולוציונית:</h4>
-                        <p class="text-sm text-slate-300 leading-relaxed italic">
-                            אחד ה<b>צמחונים הגדולים הראשונים</b> ביבשה. הסנפיר הגבי שלו שימש לוויסות טמפרטורה (תרמורגולציה), אך הבליטות הרוחביות עליו מעידות על כך ששימש כנראה גם לתצוגת חיזור מורכבת או לאגירת שומן בתקופות קשות.
+                    <div>
+                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-emerald-400 text-base">Edaphos (ἔδαφος):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"רצפה", "אדמה", או "יסוד / פסיפס"</b>. השם ניתן לו על ידי החוקר קופ, שהתייחס למבנה "רצפת השיניים" (Pavement of teeth) הצפופות שמילאו את החך שלו ודמו לפסיפס של אבנים.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-emerald-400 text-base">Sauros (σαῦρος):</b><br>
+                                    <span class="text-slate-300">משמעות המילה ביוונית עתיקה היא <b>"לטאה"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-emerald-500">המשמעות המלאה:</b> <span class="text-white font-bold">"לטאת פסיפס" או "לטאת האדמה"</span> (Pavement lizard / Ground lizard).
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-500/5 p-4 rounded-2xl border-r-2 border-emerald-500">
+                        <h4 class="text-xs font-bold text-emerald-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> הפלאונטולוג האמריקאי המפורסם אדוארד דרינקר קופ (Edward Drinker Cope).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> טקסס וניו מקסיקו (ארה"ב) וכן באירופה.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות הגילוי (1882):</b> אדוארד ד. קופ, יריבו המושבע של עותניאל צ'ארלס מארש ב"מלחמות העצמות", גילה את השרידים הראשונים. בתחילה הוא מצא רק גולגולת מרסוקת ושיניים, ולכן נתן לה את השם המעיד על השיניים בפסיפס. מאוחר יותר התגלה שלד כמעט שלם בטקסס, שהוכיח כי ליצור המסיבי בעל הפסיפס הדנטלי היה גם את אותו מפרש גב מוזר וקוצני שהפך אותו לאחד מסמלי עידן הקרבון המאוחר והפרם המוקדם.
                         </p>
                     </div>
-                </div>
+                </section>
             </div>
         </article>
 
-        <!-- 5. פולמונוסקורפיוס (Pulmonoscorpius) -->
-        <article class="glass-card rounded-[3.5rem] overflow-hidden flex flex-col shadow-2xl border-t-8 border-emerald-500/40">
-            <div class="zoom-container relative" onclick="openZoom('../images/Pulmonoscorpius.png')">
-                <img src="../images/Pulmonoscorpius.png" class="zoom-target" alt="פולמונוסקורפיוס" onerror="this.src='https://via.placeholder.com/800x600?text=Pulmonoscorpius.png+Missing'">
-                <div class="absolute bottom-4 right-4 bg-black/50 p-2 rounded-lg text-[10px] text-white backdrop-blur-sm pointer-events-none">לחץ להגדלה</div>
+        <!-- 5. Pulmonoscorpius - פולמונוסקורפיוס -->
+        <article class="glass-card rounded-[2.5rem] overflow-hidden flex flex-col shadow-2xl border-t-4 border-emerald-500/30">
+            <div class="relative h-64 image-container bg-slate-800" onclick="openModal('https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/pulmonoscorpius.png', 'פולמונוסקורפיוס')">
+                <img src="https://raw.githubusercontent.com/rexram987-create/-prehistoric-world-explorer/main/images/pulmonoscorpius.png" alt="פולמונוסקורפיוס" class="image-target" onerror="this.src='https://via.placeholder.com/800x600/1e293b/10b981?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                </div>
             </div>
-            <div class="p-10 text-right">
-                <header class="mb-8">
-                    <span class="unique-tag">ייחודיות: עקרב ענק עם עיניים מורכבות לציד לילה</span>
-                    <h3 class="text-4xl font-black text-white mb-1">פולמונוסקורפיוס <span class="text-xl font-light text-slate-500 block">Pulmonoscorpius</span></h3>
-                    <p class="text-emerald-400 font-bold italic text-lg">"עקרב ריאה"</p>
+            <div class="p-8 text-right">
+                <header class="mb-6">
+                    <span class="unique-tag">מאפיין ייחודי: עקרב ענק יבשתי נושם אוויר</span>
+                    <h3 class="text-3xl font-black text-white mb-1">פולמונוסקורפיוס <span class="text-lg font-light text-slate-400">Pulmonoscorpius</span></h3>
+                    <p class="text-emerald-400 font-medium italic">"עקרב נושם / עקרב הריאות"</p>
                 </header>
 
-                <div class="grid grid-cols-3 gap-3 mb-10 text-center border-b border-white/5 pb-8">
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">גילוי</span><span class="text-sm font-black">1994</span></div>
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">אורך</span><span class="text-sm font-black">70 ס"מ</span></div>
-                    <div class="bg-white/5 p-4 rounded-3xl border border-white/5"><span class="data-label">נשק</span><span class="text-sm font-black">עוקץ רעיל</span></div>
+                <div class="grid grid-cols-4 gap-2 mb-8 text-center border-b border-white/5 pb-4">
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">תקופת חיים</span>
+                        <span class="text-[11px] font-bold">לפני 336-326 מיליון שנה</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">גילוי</span>
+                        <span class="text-[11px] font-bold">1994</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">אורך</span>
+                        <span class="text-[11px] font-bold">עד 70 ס"מ</span>
+                    </div>
+                    <div class="bg-white/5 p-2 rounded-2xl border border-white/5 flex flex-col justify-center">
+                        <span class="data-label">מאפיין עיניים</span>
+                        <span class="text-[11px] font-bold">עיניים מורכבות גדולות</span>
+                    </div>
                 </div>
 
-                <div class="space-y-8">
-                    <div class="etymology-box">
-                        <span class="etymology-title">ניתוח אטימולוגי (חלקי דם):</span>
-                        <p><span class="highlight-part">Pulmon (pulmo):</span> מלטינית - <span class="text-white font-bold">"ריאה"</span>.</p>
-                        <p class="mt-2"><span class="highlight-part">Scorpius:</span> מלטינית - <span class="text-white font-bold">"עקרב"</span>. השם מדגיש את המעבר לשימוש בריאות ספר (Book lungs) לנשימת אוויר חופשית ביבשה.</p>
-                    </div>
-
-                    <div class="bg-emerald-500/5 p-6 rounded-[2.5rem] border-r-4 border-emerald-500 shadow-md">
-                        <h4 class="text-sm font-black text-emerald-400 mb-3 border-b border-emerald-500/20 pb-2 italic">פרטי הגילוי המדעי:</h4>
-                        <p class="text-sm text-slate-300"><b>המגלה:</b> אנדרו ג'רם (Andrew Jeram).</p>
-                        <p class="text-sm text-slate-300 mt-2"><b>מיקום:</b> מזרח לות'יאן (West Lothian), סקוטלנד.</p>
-                        <p class="text-xs text-slate-400 mt-4 leading-relaxed italic">
-                            <b>נסיבות הגילוי:</b> נמצא בתוך אבן גיר במחצבה. הממצא היה כה משמעותי משום שהוא הראה עקרבים שהיו גדולים פי כמה מהעקרבים המודרניים, והוכיח כי חסרי חוליות שלטו ביבשה לפני הגעת הדינוזאורים.
+                <section class="space-y-6">
+                    <div>
+                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase underline">ייחודיות מדעית:</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-2">
+                            זהו אינו סרטן ים אלא יצור יבשתי לחלוטין – עקרב מפלצתי באורך של יותר מחצי מטר! כמו המגאנוארה, גודלו העצום התאפשר בזכות ריכוז החמצן הפסיכי (35%) ביערות עידן הקרבון. האנטומיה שלו הייתה זהה כמעט לחלוטין לעקרבים של ימינו, עם זוג צבתות גדולות ועוקץ ארסי אימתני בקצה זנבו.
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            המאפיין הבולט ביותר שלו (מלבד גודלו) היה העיניים: היו לו <b>עיניים מורכבות (Compound eyes) גדולות במיוחד</b> ביחס לגופו (בניגוד לעקרבים מודרניים שלרובם ראייה חלשה), מה שמעיד על כך שהוא היה צייד אקטיבי שצד בשעות היום, ולא צייד ממארב לילי. משערים שהארס שלו היה חזק מספיק כדי לשתק ולצוד לא רק חרקים אחרים, אלא גם דו-חיים וזוחלים ראשוניים כמו ההילאונומוס.
                         </p>
                     </div>
 
-                    <div class="border-r-2 border-emerald-500/20 pr-6">
-                        <h4 class="text-emerald-500 font-extrabold text-sm mb-4 italic uppercase">ייחודיות אבולוציונית:</h4>
-                        <p class="text-sm text-slate-300 leading-relaxed italic">
-                            היה טורף לילי קטלני. בזכות <b>עיניים מורכבות</b> גדולות מאוד (יחסית לעקרבים מודרניים), הוא היה מסוגל לצוד בתנאי תאורה נמוכה בתוך היערות העבותים. העוקץ שלו היה גדול מספיק כדי לחדור שריון של דו-חיים קטנים וזוחלים מוקדמים.
+                    <div>
+                        <h4 class="text-emerald-500 font-bold text-sm mb-3 border-b border-emerald-500/20 pb-1 italic uppercase">אטימולוגיה מורחבת (מקור השם):</h4>
+                        <div class="etymology-box">
+                            <ul class="text-sm space-y-3">
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-emerald-400 text-base">Pulmo (פּוּלמוֹ):</b><br>
+                                    <span class="text-slate-300">משמעות המילה בלטינית היא <b>"ריאה"</b>. השם מתייחס ל"ריאות הספר" (Book lungs) – מערכת הנשימה היבשתית שאפשרה לו לנשום אוויר, מה שהוכיח כי הוא איננו יצור ימי כפי שחשבו בתחילה על חלק ממאובני העקרבים הקדומים.</span>
+                                </li>
+                                <li class="border-b border-slate-700/50 pb-2">
+                                    <b class="text-emerald-400 text-base">Scorpius (סקוֹרפּיוּס):</b><br>
+                                    <span class="text-slate-300">משמעות המילה בלטינית (ומיוונית Skorpios) היא <b>"עקרב"</b>.</span>
+                                </li>
+                                <li>
+                                    <b class="text-emerald-500">המשמעות המלאה:</b> <span class="text-white font-bold">"עקרב נושם / עקרב הריאות"</span> (Breathing Scorpion / Lung Scorpion).
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-500/5 p-4 rounded-2xl border-r-2 border-emerald-500">
+                        <h4 class="text-xs font-bold text-emerald-400 mb-2 underline italic">פרטי הגילוי:</h4>
+                        <p class="text-xs text-slate-300 mb-1"><b>המגלה:</b> הפלאונטולוג הבריטי אנדרו יראם (Andrew Jeram).</p>
+                        <p class="text-xs text-slate-300 mb-2"><b>מיקום:</b> מחצבת אסטון (East Kirkton Quarry), סקוטלנד.</p>
+                        <p class="text-xs leading-relaxed text-slate-400 italic">
+                            <b>נסיבות הגילוי (1994):</b> המאובן התגלה באחת המחצבות החשובות ביותר בסקוטלנד, המשמרת מערכת אקולוגית יבשתית שלמה של עידן הקרבון. למרות שהתגלו מספר פרטים (רובם צעירים קטנים יותר מן המקסימום המשוער), ההשתמרות במקום הייתה כה יוצאת דופן שניתן היה לזהות במאובנים את הרקמות הרכות של דרכי הנשימה שלו ("ריאות הספר"), מה שסיפק למדענים הוכחה חותכת ליכולתו לנשום את האוויר העשיר בחמצן של היערות הקדומים.
                         </p>
                     </div>
-                </div>
+                </section>
             </div>
         </article>
 
     </main>
 
-    <footer class="py-16 text-center bg-slate-900/50 border-t border-white/5 mt-20 w-full">
-        <p class="text-slate-500 text-sm font-bold italic tracking-widest">ארכיון עולם הפרהיסטוריה | מחקר רם 2026</p>
-        <p class="text-[10px] text-slate-700 mt-4 uppercase tracking-[0.4em] italic">Optimized for Samsung S25 Ultra Experience</p>
+    <!-- פוטר משותף -->
+    <footer class="py-8 text-center bg-slate-900 border-t border-white/5 mt-12 w-full">
+        <p class="text-slate-500 text-sm italic">האתר נוצר על ידי ג'מיני ורם | פרויקט מחקר ארכיאולוגי/פלאונטולוגי דיגיטלי 2026</p>
     </footer>
 
+    <!-- מודל חלון צף (Lightbox) לתמונות -->
+    <div id="imageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm modal-hidden" onclick="closeModal()">
+        <div class="relative w-full max-w-5xl mx-4 flex flex-col items-center">
+            <!-- כפתור סגירה -->
+            <button onclick="closeModal()" class="absolute -top-12 sm:-top-16 right-0 text-slate-300 hover:text-emerald-500 transition-colors p-2 bg-slate-800/50 rounded-full border border-slate-700">
+                <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <!-- התמונה המוצגת בגדול -->
+            <img id="modalImage" src="" alt="תמונה מוגדלת" class="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl border border-white/10" onclick="event.stopPropagation()">
+            
+            <!-- כיתוב התמונה -->
+            <p id="modalCaption" class="text-emerald-500 font-bold mt-4 text-xl sm:text-2xl drop-shadow-md tracking-wider"></p>
+        </div>
+    </div>
+
+    <!-- סקריפטים -->
     <script>
-        function openZoom(src) {
-            const overlay = document.getElementById('zoom-overlay');
-            const zoomedImg = document.getElementById('zoomed-image');
-            zoomedImg.src = src;
-            overlay.style.display = 'flex';
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+
+        function openModal(src, caption) {
+            modalImg.src = src;
+            modalCaption.innerText = caption;
+            
+            // הצגת המודל
+            modal.classList.remove('modal-hidden');
+            modal.classList.add('modal-active');
+            
+            // חסימת גלילה של הרקע כשחלון פתוח
             document.body.style.overflow = 'hidden';
         }
 
-        function closeZoom() {
-            const overlay = document.getElementById('zoom-overlay');
-            overlay.style.display = 'none';
+        function closeModal() {
+            // הסתרת המודל
+            modal.classList.remove('modal-active');
+            modal.classList.add('modal-hidden');
+            
+            // החזרת הגלילה לרקע
             document.body.style.overflow = 'auto';
+            
+            // ניקוי המקור לאחר האנימציה
+            setTimeout(() => {
+                modalImg.src = '';
+            }, 300);
         }
+
+        // סגירה עם כפתור Escape במקלדת
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && modal.classList.contains('modal-active')) {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
-
